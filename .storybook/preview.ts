@@ -38,6 +38,7 @@ export const globalTypes = {
 const withTheme = (StoryFn: any, context: any) => {
   const theme = context?.parameters?.theme || context?.globals?.theme;
   useEffect(() => {
+    // @ts-ignore
     document.documentElement.classList[theme === "dark" ? "add" : "remove"](
       "dark",
     );
