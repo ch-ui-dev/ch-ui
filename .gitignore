@@ -86,7 +86,7 @@ web-ext-artifacts
 storybook-static
 
 # Protobuf Compiler
-packages/core/protocols/proto
+packages/react-core/protocols/proto
 **/gen
 
 # CLI

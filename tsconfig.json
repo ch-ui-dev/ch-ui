@@ -23,8 +23,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src",
-    ".storybook"
+    "packages/react-core/src",
+    "packages/react-core/.storybook"
   ],
   "references": [
     {
