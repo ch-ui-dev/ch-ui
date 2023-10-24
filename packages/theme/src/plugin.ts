@@ -29,12 +29,12 @@ export const ThemePlugin = (
     {
       jit: true,
       cssPath: resolve(__dirname, "./theme.css"),
-      virtualFileId: "@dxosTheme",
+      virtualFileId: "@chuiTheme",
       ...options,
     };
 
   return {
-    name: "vite-plugin-dxos-ui-theme",
+    name: "vite-plugin-ch-ui-theme",
     config: ({ root }, env) => {
       const content = root
         ? resolveKnownPeers(config.content ?? [], root)

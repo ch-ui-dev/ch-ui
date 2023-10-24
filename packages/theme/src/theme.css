@@ -1,6 +1,5 @@
 @import '@fontsource/roboto-flex/variable-full.css';
 @import '@fontsource/fira-code/variable.css';
-@import '@fontsource/space-grotesk/variable.css';
 
 @tailwind base;
 @tailwind utilities;
@@ -44,40 +43,40 @@
         font-variation-settings: 'wght' 900;
     }
 
-    /* System font weights */
-    .font-system-thin {
+    /* Display font weights */
+    .font-display-thin {
         font-variation-settings: 'wght' 100, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-extralight {
+    .font-display-extralight {
         font-variation-settings: 'wght' 200, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-light {
+    .font-display-light {
         font-variation-settings: 'wght' 300, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-normal {
+    .font-display-normal {
         font-variation-settings: 'wght' 400, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-medium {
+    .font-display-medium {
         font-variation-settings: 'wght' 500, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-semibold {
+    .font-display-semibold {
         font-variation-settings: 'wght' 600, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-bold {
+    .font-display-bold {
         font-variation-settings: 'wght' 700, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-extrabold {
+    .font-display-extrabold {
         font-variation-settings: 'wght' 800, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 
-    .font-system-black {
+    .font-display-black {
         font-variation-settings: 'wght' 900, 'wdth' 112, 'opsz' 64, 'GRAD' 50;
     }
 }

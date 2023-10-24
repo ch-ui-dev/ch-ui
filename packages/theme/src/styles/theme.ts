@@ -4,7 +4,7 @@
 
 import get from "lodash.get";
 
-import { ComponentFunction, Theme } from "@dxos/aurora-types";
+import {ComponentFunction, Theme} from "@ch-ui/types";
 
 import {
   avatarTheme,

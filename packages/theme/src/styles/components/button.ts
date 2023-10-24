@@ -7,7 +7,7 @@ import type {
   Density,
   Elevation,
   Theme,
-} from "@dxos/aurora-types";
+} from "@ch-ui/types";
 
 import { mx } from "../../util";
 import {

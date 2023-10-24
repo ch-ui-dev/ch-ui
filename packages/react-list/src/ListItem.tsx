@@ -21,7 +21,7 @@ import React, {
   SetStateAction,
 } from "react";
 
-import { useId } from "@dxos/react-hooks";
+import {useId} from "@ch-ui/react-hooks";
 
 import { LIST_NAME, ListScopedProps, useListContext } from "./List";
 

@@ -4,16 +4,7 @@
 
 import { resolve } from "node:path";
 
-const knownPeerPackages = [
-  "@braneframe/plugin-markdown",
-  "@braneframe/plugin-stack",
-  "@dxos/aurora",
-  "@dxos/aurora-theme",
-  "@dxos/react-appkit",
-  "@dxos/react-shell",
-  "@dxos/react-surface",
-  "@dxos/aurora-composer",
-];
+const knownPeerPackages = ["@ch-ui/react-core", "@ch-ui/theme"];
 
 const getPackageRootFromResolvedModule = (
   resolvedPath: string,

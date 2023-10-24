@@ -11,7 +11,7 @@ interface PrngFactory {
 
 const Alea: PrngFactory = alea as unknown as PrngFactory;
 
-const prng = new Alea("@dxos/react-hooks");
+const prng = new Alea("@ch-ui/react-hooks");
 
 // TODO(burdon): Replace with PublicKey.random().
 export const randomString = (n = 4) =>

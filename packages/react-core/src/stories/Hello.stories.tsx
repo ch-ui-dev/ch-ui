@@ -1,4 +1,4 @@
-import "@dxosTheme";
+import "@chuiTheme";
 
 const StorybookHello = () => {
   return <h1 className="text-lg font-semibold">Hello, world!</h1>;

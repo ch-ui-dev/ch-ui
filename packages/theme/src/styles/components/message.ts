@@ -7,7 +7,7 @@ import {
   Elevation,
   MessageValence,
   Theme,
-} from "@dxos/aurora-types";
+} from "@ch-ui/types";
 
 import { mx } from "../../util";
 import { contentElevation, messageValence } from "../fragments";

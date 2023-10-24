@@ -1,5 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-vite";
-import { ThemePlugin } from "@dxos/aurora-theme/plugin";
+import {ThemePlugin} from "@ch-ui/theme/plugin";
 import { mergeConfig } from "vite";
 import { resolve } from "path";
 

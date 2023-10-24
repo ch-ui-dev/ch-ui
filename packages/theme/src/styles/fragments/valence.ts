@@ -2,7 +2,7 @@
 // Copyright 2022 DXOS.org
 //
 
-import { MessageValence } from "@dxos/aurora-types";
+import {MessageValence} from "@ch-ui/types";
 
 export const successText =
   "text-xs font-medium text-success-550 dark:text-success-300";

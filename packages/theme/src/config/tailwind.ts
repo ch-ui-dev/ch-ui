@@ -37,62 +37,62 @@ const broadShadeNumbers: number[] = [
   600, 650, 700, 750, 800, 850, 900, 925, 950, 975,
 ];
 
-const dtor = Math.PI / 180;
+const degrad = Math.PI / 180;
 
 export const paletteConfigs: Record<string, PaletteConfig> = {
   red: {
     keyColor: "#ee003b",
     darkCp: 1,
     lightCp: 0.13,
-    hueTorsion: 5.5 * dtor,
+    hueTorsion: 5.5 * degrad,
   },
   orange: {
     keyColor: "#fa6b32",
     darkCp: 0.725,
     lightCp: 1,
-    hueTorsion: 13 * dtor,
+    hueTorsion: 13 * degrad,
   },
   amber: {
     keyColor: "#f08c00",
     darkCp: 1,
     lightCp: 1,
-    hueTorsion: 24 * dtor,
+    hueTorsion: 24 * degrad,
   },
   yellow: {
     keyColor: "#ffd900",
     darkCp: 1,
     lightCp: 1,
-    hueTorsion: 32 * dtor,
+    hueTorsion: 32 * degrad,
   },
   lime: {
     keyColor: "#99c400",
     darkCp: 1,
     lightCp: 1,
-    hueTorsion: -3.5 * dtor,
+    hueTorsion: -3.5 * degrad,
   },
   green: {
     keyColor: "#30a908",
     darkCp: 0.35,
     lightCp: 0.665,
-    hueTorsion: -10.5 * dtor,
+    hueTorsion: -10.5 * degrad,
   },
   emerald: {
     keyColor: "#15e066",
     darkCp: 1,
     lightCp: 0.735,
-    hueTorsion: -7 * dtor,
+    hueTorsion: -7 * degrad,
   },
   teal: {
     keyColor: "#00a270",
     darkCp: 1,
     lightCp: 0.755,
-    hueTorsion: -12 * dtor,
+    hueTorsion: -12 * degrad,
   },
   cyan: {
     keyColor: "#048992",
     darkCp: 1,
     lightCp: 0.855,
-    hueTorsion: -15 * dtor,
+    hueTorsion: -15 * degrad,
   },
   sky: {
     keyColor: "#007bc2",
@@ -104,7 +104,7 @@ export const paletteConfigs: Record<string, PaletteConfig> = {
     keyColor: "#0058cb",
     darkCp: 1,
     lightCp: 0.495,
-    hueTorsion: -7 * dtor,
+    hueTorsion: -7 * degrad,
   },
   indigo: {
     keyColor: "#1b45c5",
@@ -116,7 +116,7 @@ export const paletteConfigs: Record<string, PaletteConfig> = {
     keyColor: "#080886",
     darkCp: 0.195,
     lightCp: 0.635,
-    hueTorsion: -5 * dtor,
+    hueTorsion: -5 * degrad,
   },
   purple: {
     keyColor: "#2c0073",
@@ -152,7 +152,7 @@ export const paletteConfigs: Record<string, PaletteConfig> = {
     keyColor: "#00e0e0",
     darkCp: 1,
     lightCp: 1,
-    hueTorsion: -73.5 * dtor,
+    hueTorsion: -73.5 * degrad,
   },
 };
 
@@ -216,11 +216,7 @@ export const tailwindConfig = ({
   theme: {
     fontFamily: {
       body: ["Roboto FlexVariable", ...defaultConfig.theme.fontFamily.sans],
-      display: [
-        "Space GroteskVariable",
-        "Roboto FlexVariable",
-        ...defaultConfig.theme.fontFamily.sans,
-      ],
+      display: ["Roboto FlexVariable", ...defaultConfig.theme.fontFamily.sans],
       mono: ["Fira CodeVariable", ...defaultConfig.theme.fontFamily.mono],
     },
     extend: merge(

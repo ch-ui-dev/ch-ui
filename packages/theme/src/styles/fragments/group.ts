@@ -2,7 +2,7 @@
 // Copyright 2023 DXOS.org
 //
 
-import { ComponentFragment, Elevation } from "@dxos/aurora-types";
+import {ComponentFragment, Elevation} from "@ch-ui/types";
 
 import { surfaceElevation } from "./elevation";
 

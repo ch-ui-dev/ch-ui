@@ -8,7 +8,7 @@ import {
   MessageValence,
   NeutralPalette,
   Theme,
-} from "@dxos/aurora-types";
+} from "@ch-ui/types";
 
 import { mx } from "../../util";
 

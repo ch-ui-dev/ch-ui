@@ -1,1 +1,1 @@
-# DXOS `react-list` primitive
+# ch-ui/react `List` primitive
