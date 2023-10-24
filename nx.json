@@ -20,6 +20,12 @@
     },
     "format": {
       "cache": true
+    },
+    "test": {
+      "inputs": [
+        "default",
+        "^default"
+      ]
     }
   },
   "affected": {
