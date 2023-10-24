@@ -70,7 +70,6 @@ dist
 out
 lib
 build
-out
 tmp
 .vite-inspect
 
@@ -92,8 +91,10 @@ packages/react-core/protocols/proto
 # CLI
 packages/devtools/cli/src/util/telemetryrc.json
 
+# IntelliJ IDEA
 .idea/workspace.xml
 
+# ASDF VM
 .tool-versions
 
 # Bots
@@ -121,7 +122,6 @@ packages/devtools/cli/src/util/telemetryrc.json
 # Bot temp files
 dxos-tmp
 template
-build
 .secrets
 
 # Custom git hooks
@@ -133,3 +133,5 @@ build
 .husky/pre-auto-gc
 .husky/reference-transaction
 
+# NX
+.nx
