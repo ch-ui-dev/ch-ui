@@ -2,7 +2,7 @@
 // Copyright 2023 DXOS.org
 //
 
-import {ComponentFragment, Elevation} from "@ch-ui/types";
+import { ComponentFragment, Elevation } from "@ch-ui/types";
 
 export const contentElevation: ComponentFragment<{ elevation?: Elevation }> = ({
   elevation,

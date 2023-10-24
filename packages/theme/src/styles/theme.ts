@@ -4,7 +4,7 @@
 
 import get from "lodash.get";
 
-import {ComponentFunction, Theme} from "@ch-ui/types";
+import { ComponentFunction, Theme } from "@ch-ui/types";
 
 import {
   avatarTheme,

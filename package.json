@@ -34,6 +34,14 @@
     "nx": "17.0.1"
   },
   "eslintConfig": {
+    "ignorePatterns": [
+      "coverage",
+      "dist",
+      "node_modules",
+      "out",
+      "tmp",
+      "pnpm-lock.yaml"
+    ],
     "parser": "@typescript-eslint/parser",
     "plugins": [
       "@typescript-eslint/eslint-plugin",

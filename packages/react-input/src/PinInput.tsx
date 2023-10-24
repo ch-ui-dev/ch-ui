@@ -10,7 +10,7 @@ import React, {
   useCallback,
 } from "react";
 
-import {useForwardedRef, useIsFocused} from "@ch-ui/react-hooks";
+import { useForwardedRef, useIsFocused } from "@ch-ui/react-hooks";
 
 import { INPUT_NAME, InputScopedProps, useInputContext, Valence } from "./Root";
 

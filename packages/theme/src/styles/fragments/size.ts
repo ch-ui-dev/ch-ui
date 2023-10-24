@@ -2,7 +2,7 @@
 // Copyright 2022 DXOS.org
 //
 
-import {Size} from "@ch-ui/types";
+import { Size } from "@ch-ui/types";
 
 import { mx } from "../../util";
 

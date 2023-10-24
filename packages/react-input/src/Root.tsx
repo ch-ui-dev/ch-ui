@@ -5,7 +5,7 @@
 import { createContextScope, Scope } from "@radix-ui/react-context";
 import React, { PropsWithChildren } from "react";
 
-import {useId} from "@ch-ui/react-hooks";
+import { useId } from "@ch-ui/react-hooks";
 
 const INPUT_NAME = "Input";
 

@@ -2,7 +2,7 @@
 // Copyright 2022 DXOS.org
 //
 
-import {ComponentFunction, Elevation, Theme} from "@ch-ui/types";
+import { ComponentFunction, Elevation, Theme } from "@ch-ui/types";
 
 import { mx } from "../../util";
 import { chromeSurface, inputSurface, surfaceElevation } from "../fragments";

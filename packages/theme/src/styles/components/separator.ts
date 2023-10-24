@@ -2,7 +2,7 @@
 // Copyright 2023 DXOS.org
 //
 
-import {ComponentFunction, Theme} from "@ch-ui/types";
+import { ComponentFunction, Theme } from "@ch-ui/types";
 
 import { mx } from "../../util";
 import { blockSeparator, inlineSeparator } from "../fragments";
