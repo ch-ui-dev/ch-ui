@@ -5,26 +5,14 @@
       "DOM",
       "ESNext"
     ],
-    "outDir": "dist/types",
-    "types": [
-      "node"
-    ]
+    "outDir": "dist/types"
   },
   "exclude": [
-    "plugin.d.ts",
-    "vite.config.ts"
+    "plugin.d.ts"
   ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/*.ts"
-  ],
-  "references": [
-    {
-      "path": "../../common/node-std"
-    },
-    {
-      "path": "../aurora-types"
-    }
   ]
 }
