@@ -30,6 +30,23 @@
         "{options.outputPath}"
       ]
     },
+    "build-plugin": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/theme/src/plugin.ts",
+        "outputPath": "packages/theme/dist/plugin",
+        "tsConfig": "packages/theme/tsconfig-esbuild.json",
+        "format": [
+          "cjs"
+        ]
+      },
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
