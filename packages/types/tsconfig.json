@@ -5,10 +5,7 @@
       "DOM",
       "ESNext"
     ],
-    "outDir": "dist/types",
-    "types": [
-      "node"
-    ]
+    "outDir": "dist/types"
   },
   "include": [
     "src/**/*.ts",

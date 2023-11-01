@@ -8,10 +8,7 @@
     "Will Shown <w@willshown.com> (https://willshown.com/)",
     "DXOS (https://dxos.org)"
   ],
-  "main": "dist/lib/node/index.cjs",
-  "browser": {
-    "./dist/lib/node/index.cjs": "./dist/lib/browser/index.mjs"
-  },
+  "main": "dist/lib/index.js",
   "types": "dist/types/src/index.d.ts",
   "files": [
     "dist",
