@@ -1,0 +1,24 @@
+{
+  "name": "@ch-ui/colors",
+  "version": "0.4.0",
+  "description": "Procedural color algorithms based upon drawing helical bézier curves in LAB space.",
+  "bugs": "https://github.com/thure/ch-ui/issues",
+  "authors": [
+    "Will Shown <w@willshown.com> (https://willshown.com/)"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "pnpm": ">=7.0.0"
+  },
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/lib/index.js",
+    "module": "dist/lib/index.js",
+    "types": "types/src/index.d.ts"
+  },
+  "files": [
+    "src",
+    "dist"
+  ]
+}
