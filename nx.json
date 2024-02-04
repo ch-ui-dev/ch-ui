@@ -1,0 +1,35 @@
+{
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "build-storybook": {
+      "outputs": [
+        "{projectRoot}/out"
+      ],
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "format": {
+      "cache": true
+    },
+    "test": {
+      "inputs": [
+        "default",
+        "^default"
+      ]
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "nxCloudAccessToken": "ZTY0MzBjOTgtZmU2Mi00M2YxLTk0N2UtNzdkOTJkZjVhN2JmfHJlYWQtd3JpdGU="
+}

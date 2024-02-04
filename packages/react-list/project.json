@@ -1,0 +1,47 @@
+{
+  "sourceRoot": "packages/react-list/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/react-list/src/index.ts",
+        "outputPath": "packages/react-list/dist/types",
+        "tsConfig": "packages/react-list/tsconfig.json"
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/react-list/src/index.ts",
+        "outputPath": "packages/react-list/dist/lib",
+        "tsConfig": "packages/react-list/tsconfig-esbuild.json",
+        "format": [
+          "esm"
+        ]
+      },
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/react-list/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}

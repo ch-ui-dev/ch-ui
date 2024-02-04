@@ -1,0 +1,47 @@
+{
+  "sourceRoot": "packages/colors/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/colors/src/index.ts",
+        "outputPath": "packages/colors/dist/types",
+        "tsConfig": "packages/colors/tsconfig.json"
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/colors/src/index.ts",
+        "outputPath": "packages/colors/dist/lib",
+        "tsConfig": "packages/colors/tsconfig-esbuild.json",
+        "format": [
+          "esm"
+        ]
+      },
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/colors/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}
