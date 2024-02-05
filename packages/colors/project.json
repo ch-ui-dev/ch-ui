@@ -13,11 +13,11 @@
         "{options.outputPath}"
       ]
     },
-    "build": {
+    "build-esm": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
         "main": "packages/colors/src/index.ts",
-        "outputPath": "packages/colors/dist/lib",
+        "outputPath": "packages/colors/dist/esm",
         "tsConfig": "packages/colors/tsconfig-esbuild.json",
         "format": [
           "esm"
@@ -25,6 +25,24 @@
       },
       "dependsOn": [
         "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/colors/src/index.ts",
+        "outputPath": "packages/colors/dist/cjs",
+        "tsConfig": "packages/colors/tsconfig-esbuild.json",
+        "format": [
+          "cjs"
+        ]
+      },
+      "dependsOn": [
+        "compile",
+        "build-esm"
       ],
       "outputs": [
         "{options.outputPath}"
