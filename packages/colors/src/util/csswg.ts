@@ -1,9 +1,11 @@
+// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+
 // The following is a combination of several files retrieved from CSSWG’s
 // CSS Color 4 module. It was modified to support TypeScript types adapted for
-// the Fluent Blocks `colors` package and formatted to meet its style criteria.
+// the `@ch-ui/colors` package and formatted to meet its style criteria.
 import { OutputGamut, Vec2, Vec3, Vec4 } from './types';
 
-// [willshown]: Adjusted to export a TypeScript module. Retrieved on 24 May 2021
+// NOTE(thure): Adjusted to export a TypeScript module. Retrieved on 24 May 2021
 // from https://drafts.csswg.org/css-color-4/multiply-matrices.js
 
 /**
@@ -62,7 +64,7 @@ export default function multiplyMatrices(
 // Conversion can also be done using ICC profiles and a Color Management System
 // For clarity, a library is used for matrix multiplication (multiply-matrices.js)
 
-// [willshown]: Adjusted to export a TypeScript module. Retrieved on 24 May 2021
+// NOTE(thure): Adjusted to export a TypeScript module. Retrieved on 24 May 2021
 // from https://drafts.csswg.org/css-color-4/conversions.js
 
 // sRGB-related functions
@@ -493,7 +495,7 @@ export function rgbToHsv(rgb: Vec3) {
 
 // utility functions for color conversions
 
-// [willshown]: Adjusted to export a TypeScript module.
+// NOTE(thure): Adjusted to export a TypeScript module.
 // Retrieved on 24 May 2021 from https://drafts.csswg.org/css-color-4/utilities.js
 
 export function sRGB_to_luminance(RGB: Vec3) {
@@ -745,7 +747,7 @@ export function XYZ_to_uv(XYZ: Vec3) {
   return [(4 * X) / denom, (9 * Y) / denom] as Vec2
 }
 
-// [willshown]: Truncated to export only relevant functions and adjusted to export a TypeScript
+// NOTE(thure): Truncated to export only relevant functions and adjusted to export a TypeScript
 // module, some additional adjustments to remove alpha support. Retrieved on 24 May 2021
 // from https://raw.githubusercontent.com/LeaVerou/css.land/master/lch/lch.js
 

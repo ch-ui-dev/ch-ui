@@ -4,15 +4,6 @@
   "sourceRoot": "packages/stories/src",
   "projectType": "library",
   "targets": {
-    "lint": {
-      "options": {
-        "lintFilePatterns": [
-          "packages/stories/*-stories/*.mts",
-          "packages/stories/.storybook-shared/*.ts",
-          "packages/stories/src/**/*.{ts,tsx,js,jsx}"
-        ]
-      }
-    },
     "storybook": {
       "configurations": {
         "ci": {
@@ -26,6 +17,20 @@
       "options": {
         "configDir": "packages/stories/all-stories"
       }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/stories/**/*.{ts,mts}",
+          "packages/stories/.storybook-shared/*.ts"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }

@@ -1,3 +1,5 @@
+/** Copyright (c) 2024, Will Shown <ch-ui@willshown.com> **/
+
 import {
   LAB_to_sRGB,
   LCH_to_Lab,

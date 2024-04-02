@@ -1,3 +1,5 @@
+/** Copyright (c) 2024, Will Shown <ch-ui@willshown.com> **/
+
 import { NamedPalette, NamedTheme } from './types'
 
 export const paletteTemplate = (id: string): NamedPalette & { id: string } => ({

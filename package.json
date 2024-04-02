@@ -62,7 +62,7 @@
         "error",
         {
           "mustMatch": "Copyright \\(c\\) [0-9]{0,4}, Will Shown <ch-ui@willshown.com>",
-          "template": "/** Copyright (c) <%= YEAR %>, Will Shown <ch-ui@willshown.com> **/"
+          "template": "// Copyright (c) <%= YEAR %>, Will Shown <ch-ui@willshown.com>\n\n"
         }
       ]
     }

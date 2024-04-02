@@ -1,3 +1,5 @@
+// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+
 import { type StorybookConfig } from '@storybook/react-vite';
 import ReactPlugin from '@vitejs/plugin-react';
 import flatten from 'lodash.flatten';
