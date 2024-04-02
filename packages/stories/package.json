@@ -1,0 +1,40 @@
+{
+  "name": "@ch-ui/stories",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Storybook configuration for the ch-ui project.",
+  "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
+  "authors": [
+    "Will Shown <w@willshown.com> (https://willshown.com/)"
+  ],
+  "license": "Ch Public License",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.0.5",
+    "@storybook/addon-interactions": "^8.0.5",
+    "@storybook/addon-links": "^8.0.5",
+    "@storybook/builder-vite": "^8.0.5",
+    "@storybook/core-server": "^8.0.5",
+    "@storybook/html": "^8.0.5",
+    "@storybook/html-vite": "^8.0.5",
+    "@storybook/react": "^8.0.5",
+    "@storybook/react-vite": "^8.0.5",
+    "@types/lodash.flatten": "^4.4.6",
+    "@vitejs/plugin-react": "^4.2.1",
+    "chromatic": "^10.1.0",
+    "lodash.flatten": "^4.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^5.1.5",
+    "vite-plugin-turbosnap": "^1.0.2"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

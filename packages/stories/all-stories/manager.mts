@@ -1,3 +1,3 @@
 /** Copyright (c) 2024, Will Shown <ch-ui@willshown.com> **/
 
-export * from './util';
+export * from '../.storybook-shared/manager';

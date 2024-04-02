@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "stories",
+  "sourceRoot": "packages/stories/src",
+  "projectType": "library",
+  "targets": {
+    "storybook": {
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      },
+      "dependsOn": [
+        "colors:compile"
+      ],
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "configDir": "packages/stories/all-stories"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/stories/**/*.{ts,mts}",
+          "packages/stories/.storybook-shared/*.ts"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}

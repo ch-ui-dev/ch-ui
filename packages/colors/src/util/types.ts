@@ -1,3 +1,5 @@
+/** Copyright (c) 2024, Will Shown <ch-ui@willshown.com> **/
+
 export type Vec2 = [number, number]
 export type Vec3 = [number, number, number]
 export type Vec4 = [number, number, number, number]
@@ -6,6 +8,8 @@ export type Curve = {
   points: [Vec3, Vec3, Vec3]
   cacheArcLengths?: number[]
 }
+
+export type OutputGamut = 'sRGB' | 'P3';
 
 export interface CurvePath {
   curves: Curve[]

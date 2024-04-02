@@ -1,9 +1,11 @@
+// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+
 // The following is a combination of several files retrieved from CSSWG’s
 // CSS Color 4 module. It was modified to support TypeScript types adapted for
-// the Fluent Blocks `colors` package and formatted to meet its style criteria.
-import { Vec2, Vec3, Vec4 } from './types'
+// the `@ch-ui/colors` package and formatted to meet its style criteria.
+import { OutputGamut, Vec2, Vec3, Vec4 } from './types';
 
-// [willshown]: Adjusted to export a TypeScript module. Retrieved on 24 May 2021
+// NOTE(thure): Adjusted to export a TypeScript module. Retrieved on 24 May 2021
 // from https://drafts.csswg.org/css-color-4/multiply-matrices.js
 
 /**
@@ -62,7 +64,7 @@ export default function multiplyMatrices(
 // Conversion can also be done using ICC profiles and a Color Management System
 // For clarity, a library is used for matrix multiplication (multiply-matrices.js)
 
-// [willshown]: Adjusted to export a TypeScript module. Retrieved on 24 May 2021
+// NOTE(thure): Adjusted to export a TypeScript module. Retrieved on 24 May 2021
 // from https://drafts.csswg.org/css-color-4/conversions.js
 
 // sRGB-related functions
@@ -493,7 +495,7 @@ export function rgbToHsv(rgb: Vec3) {
 
 // utility functions for color conversions
 
-// [willshown]: Adjusted to export a TypeScript module.
+// NOTE(thure): Adjusted to export a TypeScript module.
 // Retrieved on 24 May 2021 from https://drafts.csswg.org/css-color-4/utilities.js
 
 export function sRGB_to_luminance(RGB: Vec3) {
@@ -604,6 +606,19 @@ export function LCH_to_P3(LCH: Vec3) {
   // so check for that :)
 
   return gam_P3(XYZ_to_lin_P3(D50_to_D65(Lab_to_XYZ(LCH_to_Lab(LCH)))))
+}
+
+export function Lab_to_P3(Lab: Vec3) {
+  // convert an array of CIE Lab values to XYZ,
+  // adapt from D50 to D65,
+  // then convert XYZ to linear-light display-p3
+  // and finally to gamma corrected display-p3
+  // for in-gamut colors, components are in the 0.0 to 1.0 range
+  // out of gamut colors may have negative components
+  // or components greater than 1.0
+  // so check for that :)
+
+  return gam_P3(XYZ_to_lin_P3(D50_to_D65(Lab_to_XYZ(Lab))))
 }
 
 export function LCH_to_r2020(LCH: Vec3) {
@@ -732,7 +747,7 @@ export function XYZ_to_uv(XYZ: Vec3) {
   return [(4 * X) / denom, (9 * Y) / denom] as Vec2
 }
 
-// [willshown]: Truncated to export only relevant functions and adjusted to export a TypeScript
+// NOTE(thure): Truncated to export only relevant functions and adjusted to export a TypeScript
 // module, some additional adjustments to remove alpha support. Retrieved on 24 May 2021
 // from https://raw.githubusercontent.com/LeaVerou/css.land/master/lch/lch.js
 
@@ -745,11 +760,22 @@ function is_LCH_inside_sRGB(l: number, c: number, h: number): boolean {
   )
 }
 
-export function snap_into_gamut(Lab: Vec3): Vec3 {
-  // Moves an LCH color into the sRGB gamut
+function is_LCH_inside_P3(l: number, c: number, h: number): boolean {
+  const ε = 0.000005
+  const rgb = LCH_to_P3([+l, +c, +h])
+  return rgb.reduce(
+    (a: boolean, b: number) => a && b >= 0 - ε && b <= 1 + ε,
+    true
+  )
+}
+
+export function snap_into_gamut(Lab: Vec3, gamut: OutputGamut): Vec3 {
+  // Moves an LCH color into the specified gamut
   // by holding the l and h steady,
   // and adjusting the c via binary-search
-  // until the color is on the sRGB boundary.
+  // until the color is on the gamut boundary.
+
+  const is_inside = gamut === 'P3' ? is_LCH_inside_P3 : is_LCH_inside_sRGB;
 
   // .0001 chosen fairly arbitrarily as "close enough"
   const ε = 0.0001
@@ -759,7 +785,7 @@ export function snap_into_gamut(Lab: Vec3): Vec3 {
   let c = LCH[1]
   const h = LCH[2]
 
-  if (is_LCH_inside_sRGB(l, c, h)) {
+  if (is_inside(l, c, h)) {
     return Lab
   }
 
@@ -768,7 +794,7 @@ export function snap_into_gamut(Lab: Vec3): Vec3 {
   c /= 2
 
   while (hiC - loC > ε) {
-    if (is_LCH_inside_sRGB(l, c, h)) {
+    if (is_inside(l, c, h)) {
       loC = c
     } else {
       hiC = c

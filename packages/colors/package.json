@@ -6,7 +6,7 @@
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
   ],
-  "license": "MIT",
+  "license": "Ch Public License",
   "engines": {
     "node": ">=12.0.0"
   },
