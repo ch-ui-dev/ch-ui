@@ -1,24 +1,24 @@
 # `ch-ui`
 
-This is the design system someone asked for. Was it you? Maybe!
+Someone asked for this design system toolchain. Was it you?
 
-- Accessible components from Radix
-    - Extra primitives that should come in handy
-- Internationalization from `i18-next`
-- More patterns for better accessibility
-- Optional Tailwind theme
-    - Procedural color! (if you want)
+## Benefits
 
-### Why `ch-ui` instead of…?
+- Dependency-free procedurally generated color palettes in sRGB or P3 ([`@ch-ui/colors`](https://www.npmjs.com/package/@ch-ui/colors))
 
-#### `shadcn/ui`
+## Drawbacks
 
-- We started building this at least 3 months before their first commit
-- This is a maintained set of components, not codegen
+- Not much here just yet.
 
-#### Radix Theme
+## To do
 
-- Hey, you do you, they’re doing a good job on that
-- It’s probably not as extensible (read: friendly for 3p developers) as with Tailwind
+- [x] [`@ch-ui/colors`](https://www.npmjs.com/package/@ch-ui/colors): procedural color palette tooling
+- [ ] `@ch-ui/icons`: icon sprite tooling
+- [ ] `@ch-ui/elements`: lower-level accessible[¹](#footnotes) elements
+- [ ] `@ch-ui/elemental-theme`: a theme for the elements that is reasonably barebones
 
+See the issues for other items.
 
+## Footnotes
+
+1. [Any claim to “accessibility” should be vetted](https://hidde.blog/accessible-front-end-components-claims-vs-reality/), specifically please check that `ch-ui` is inclusive in the ways it needs to be for your users.
