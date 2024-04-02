@@ -7,6 +7,8 @@ export type Curve = {
   cacheArcLengths?: number[]
 }
 
+export type OutputGamut = 'sRGB' | 'P3';
+
 export interface CurvePath {
   curves: Curve[]
   cacheLengths?: number[]

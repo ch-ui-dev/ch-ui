@@ -2,11 +2,12 @@ import {
   LAB_to_sRGB,
   LCH_to_Lab,
   Lab_to_LCH,
+  Lab_to_P3,
   sRGB_to_LCH,
   snap_into_gamut,
 } from './csswg'
-import { getPointOnCurvePath, getPointsOnCurvePath } from './geometry'
-import { CurvedHelixPath, Palette, Vec3 } from './types'
+import { getPointsOnCurvePath } from './geometry'
+import { CurvedHelixPath, OutputGamut, Palette, Vec3 } from './types';
 
 // This file contains functions that combine geometry and color math to create
 // and work with palette curves.
@@ -45,6 +46,7 @@ function paletteShadesFromCurvePoints(
   curvePoints: Vec3[],
   nShades: number,
   range = [0, 100],
+  gamut: OutputGamut = 'sRGB',
   linearity = defaultLinearity
 ): Vec3[] {
   if (curvePoints.length <= 2) {
@@ -88,13 +90,14 @@ function paletteShadesFromCurvePoints(
     ] as Vec3
   }
 
-  return paletteShades.map(snap_into_gamut)
+  return paletteShades.map((Lab: Vec3)=>snap_into_gamut(Lab, gamut))
 }
 
 export function paletteShadesFromCurve(
   curve: CurvedHelixPath,
   nShades = 16,
   range = [0, 100],
+  gamut: OutputGamut = 'sRGB',
   linearity = defaultLinearity,
   curveDepth = 24
 ): Vec3[] {
@@ -107,6 +110,7 @@ export function paletteShadesFromCurve(
     ),
     nShades,
     range,
+    gamut,
     linearity
   )
 }
@@ -120,7 +124,7 @@ export function sRGB_to_hex(rgb: Vec3): string {
     .join('')}`
 }
 
-export function Lab_to_hex(lab: Vec3): string {
+export function Lab_to_sRGB_value(lab: Vec3): string {
   return sRGB_to_hex(LAB_to_sRGB(lab))
 }
 
@@ -139,8 +143,13 @@ export function hex_to_LCH(hex: string): Vec3 {
   return sRGB_to_LCH(hex_to_sRGB(hex))
 }
 
-function paletteShadesToHex(paletteShades: Vec3[]): string[] {
-  return paletteShades.map(Lab_to_hex)
+export function Lab_to_P3_value(Lab: Vec3) {
+  const [c1, c2, c3] = Lab_to_P3(Lab);
+  return `color(display-p3 ${c1.toFixed(3)} ${c2.toFixed(3)} ${c3.toFixed(3)})`
+}
+
+function paletteShadesToValues(paletteShades: Vec3[], gamut: OutputGamut): string[] {
+  return paletteShades.map(gamut === 'P3' ? Lab_to_P3_value : Lab_to_sRGB_value)
 }
 
 function getPointOnHelix(
@@ -152,19 +161,6 @@ function getPointOnHelix(
   const [l, c, h] = Lab_to_LCH(pointOnCurve)
   const hueOffset = torsion * (t - torsionT0)
   return LCH_to_Lab([l, c, h + hueOffset])
-}
-
-function getPointOnCurvedHelixPathWithinGamut(
-  curvedHelixPath: CurvedHelixPath,
-  t: number
-): Vec3 {
-  return snap_into_gamut(
-    getPointOnHelix(
-      getPointOnCurvePath(curvedHelixPath, t)!,
-      curvedHelixPath.torsion,
-      curvedHelixPath.torsionT0
-    )
-  )
 }
 
 export function curvePathFromPalette({
@@ -195,29 +191,34 @@ export function cssGradientFromCurve(
   curve: CurvedHelixPath,
   nShades = 16,
   range = [0, 100],
+  gamut: OutputGamut = 'sRGB',
   linearity = defaultLinearity,
   curveDepth = 24
 ) {
-  const hexes = paletteShadesToHex(
-    paletteShadesFromCurve(curve, nShades, range, linearity, curveDepth)
+  const values = paletteShadesToValues(
+    paletteShadesFromCurve(curve, nShades, range, gamut, linearity, curveDepth),
+    gamut
   )
-  return `linear-gradient(to right, ${hexes.join(', ')})`
+  return `linear-gradient(to right, ${values.join(', ')})`
 }
 
-export function hexColorsFromPalette(
+export function valuesFromPalette(
   palette: Palette,
   nShades = 16,
   range = [0, 100],
+  gamut: OutputGamut = 'sRGB',
   linearity = defaultLinearity,
   curveDepth = 24
 ): string[] {
-  return paletteShadesToHex(
+  return paletteShadesToValues(
     paletteShadesFromCurve(
       curvePathFromPalette(palette),
       nShades,
       range,
+      gamut,
       linearity,
       curveDepth
-    )
+    ),
+    gamut
   )
 }
