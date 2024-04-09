@@ -1,23 +1,39 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { promisify } from 'node:util';
-import { exec as execProcess } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import { BundleParams } from './types';
 
-const exec = promisify(execProcess);
+const split = /[\s\n"]+/m;
 
-export const findTokens = async ({
-  source,
-  token,
-  path,
-  content,
-}: BundleParams) => {
-  const grep = await exec(
-    `grep -Eroh "${token}" ${resolve(__dirname, content)}`,
-  );
+export const findTokens = ({ tokenPattern, content }: BundleParams) => {
+  return new Promise((res, rej) => {
+    const tokens = new Set<string>();
+    let error = '';
 
-  const tokens = new Set(grep.stdout.split('\n').filter(Boolean));
+    const grep = spawn('grep', [
+      '-Eroh',
+      `"${tokenPattern}"`,
+      resolve(__dirname, content),
+    ]);
 
-  return Array.from(tokens);
+    grep.stdout.on('data', (data) => {
+      data
+        .toString()
+        .split(split)
+        .map((token: string) => token && tokens.add(token));
+    });
+
+    grep.stderr.on('data', (data) => {
+      error += data.toString();
+    });
+
+    grep.on('close', () => {
+      if (error) {
+        rej(error);
+      } else {
+        res(tokens);
+      }
+    });
+  });
 };

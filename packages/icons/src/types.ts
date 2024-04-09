@@ -2,7 +2,7 @@
 
 export type BundleParams = {
   source: string;
-  token: string;
+  tokenPattern: string;
   path: string;
   content: string;
 };
