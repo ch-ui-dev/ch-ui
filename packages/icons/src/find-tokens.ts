@@ -6,7 +6,10 @@ import { BundleParams } from './types';
 
 const split = /[\s\n"]+/m;
 
-export const findTokens = ({ tokenPattern, content }: BundleParams) => {
+export const findTokens = ({
+  tokenPattern,
+  content,
+}: BundleParams): Promise<Set<string>> => {
   return new Promise((res, rej) => {
     const tokens = new Set<string>();
     let error = '';

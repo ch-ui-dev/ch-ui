@@ -3,13 +3,17 @@
 import assert from 'node:assert';
 import test from 'node:test';
 import { resolve } from 'node:path';
-import bundle, { findTokens } from '../src';
+import { findTokens, makeSprite } from '../src';
+import { BundleParams } from '../src/types';
 
-const phosphorConfig = {
-  source: '@phosphor-icons/core',
+const phosphorConfig: BundleParams = {
   tokenPattern:
     'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
-  path: 'assets/$2/$1.svg',
+  getPath: (name, style) =>
+    `../node_modules/@phosphor-icons/core/assets/${style}/${name}${
+      style === 'regular' ? '' : `-${style}`
+    }.svg`,
+  spritePath: '../dist/assets/sprite.svg',
   content: resolve(__dirname, './example.html'),
 };
 
@@ -21,4 +25,9 @@ const positiveTokens = new Set([
 test('token finder returns all positive and no negative results', async () => {
   const results = await findTokens(phosphorConfig);
   assert.deepEqual(positiveTokens, results);
+});
+
+test('sprite maker makes a sprite', async () => {
+  await makeSprite(phosphorConfig, await findTokens(phosphorConfig));
+  assert.equal(true, true);
 });

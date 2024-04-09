@@ -1,7 +1,7 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-import { bundle } from './bundle';
+import { makeSprite } from './make-sprite';
 
 export * from './find-tokens';
 
-export { bundle };
-export default bundle;
+export { makeSprite };
+export default makeSprite;
