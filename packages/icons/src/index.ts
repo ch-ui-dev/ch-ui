@@ -1,7 +1,5 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-import { makeSprite } from './make-sprite';
 
-export * from './find-tokens';
-
-export { makeSprite };
-export default makeSprite;
+export * from './make-sprite';
+export * from './scan-files';
+export * from './scan-string';

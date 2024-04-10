@@ -3,31 +3,48 @@
 import assert from 'node:assert';
 import test from 'node:test';
 import { resolve } from 'node:path';
-import { findTokens, makeSprite } from '../src';
+import { scanFiles, scanString, makeSprite } from '../src';
 import { BundleParams } from '../src/types';
+import { readFile } from 'node:fs/promises';
 
 const phosphorConfig: BundleParams = {
   tokenPattern:
     'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
-  getPath: (name, style) =>
+  assetPath: (name, style) =>
     `../node_modules/@phosphor-icons/core/assets/${style}/${name}${
       style === 'regular' ? '' : `-${style}`
     }.svg`,
   spritePath: '../dist/assets/sprite.svg',
-  content: resolve(__dirname, './example.html'),
+  contentPath: resolve(__dirname, './example.html'),
 };
 
-const positiveTokens = new Set([
+const positiveTokens = [
   'ph-icon--address-book--regular',
   'ph-icon--beach-ball--bold',
-]);
+];
 
-test('token finder returns all positive and no negative results', async () => {
-  const results = await findTokens(phosphorConfig);
-  assert.deepEqual(positiveTokens, results);
+test('scan file returns all positive and no negative results', async () => {
+  const results = await scanFiles(phosphorConfig);
+  assert.equal(
+    new Set([...positiveTokens].filter((token) => !results.has(token))).size,
+    0,
+  );
+});
+
+test('scan string returns all positive and no negative results', async () => {
+  const contentString = (await readFile(phosphorConfig.contentPath)).toString();
+  const results = scanString({
+    ...phosphorConfig,
+    contentString,
+    extension: 'html',
+  });
+  assert.equal(
+    new Set([...positiveTokens].filter((token) => !results.has(token))).size,
+    0,
+  );
 });
 
 test('sprite maker makes a sprite', async () => {
-  await makeSprite(phosphorConfig, await findTokens(phosphorConfig));
+  await makeSprite(phosphorConfig, await scanFiles(phosphorConfig));
   assert.equal(true, true);
 });

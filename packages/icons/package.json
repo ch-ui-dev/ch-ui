@@ -27,7 +27,11 @@
     "@phosphor-icons/core": "^2.1.1",
     "@types/node": "^20.12.3",
     "@types/svg-sprite": "^0.0.39",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "vite": "^5.2.8"
+  },
+  "peerDependencies": {
+    "vite": "^5.2.8"
   },
   "scripts": {
     "test": "ts-node ./test/sanity.spec.ts"

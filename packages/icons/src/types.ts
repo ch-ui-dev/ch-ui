@@ -4,8 +4,8 @@ import { Config } from 'svg-sprite';
 
 export type BundleParams = {
   tokenPattern: string;
-  getPath: (...matches: string[]) => string;
+  assetPath: (...matches: string[]) => string;
   spritePath: string;
-  content: string;
+  contentPath: string;
   config?: Config;
 };
