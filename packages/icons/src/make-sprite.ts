@@ -3,32 +3,48 @@
 import { BundleParams } from './types';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
-import svgstore from 'svgstore';
+import SVGSpriter from 'svg-sprite';
+
+type Resource = {
+  path: string;
+  contents: string;
+};
 
 export const makeSprite = async (
-  { getPath, tokenPattern, spritePath }: BundleParams,
+  { getPath, tokenPattern, spritePath, config = {} }: BundleParams,
   tokens: Set<string>,
 ) => {
+  const resolvedSpritePath = resolve(__dirname, spritePath);
+
+  const sprite = new SVGSpriter({
+    dest: dirname(resolvedSpritePath),
+    mode: { symbol: { dest: '.', sprite: 'sprite.svg' }, ...config.mode },
+    ...config,
+  });
+
   const tokenExp = new RegExp(tokenPattern);
-  // TODO(thure): Make this configurable.
-  const sprite = svgstore({ symbolAttrs: { fill: 'currentColor' } });
+
   await Promise.all(
     Array.from(tokens)
       .map((token) => {
         const match = token.match(tokenExp);
         if (match && match[1] && match[2]) {
           const [_, ...matches] = match;
-          return readFile(
-            resolve(__dirname, getPath(...matches)),
-            'utf-8',
-          ).then((svg) => sprite.add(token, svg));
+          const svgPath = resolve(__dirname, getPath(...matches));
+          return readFile(svgPath, 'utf-8').then((svg) =>
+            sprite.add(token, token, svg),
+          );
         } else {
           return null;
         }
       })
       .filter(Boolean),
   );
-  const resolvedSpritePath = resolve(__dirname, spritePath);
-  await mkdir(dirname(resolvedSpritePath), { recursive: true });
-  return writeFile(resolve(__dirname, spritePath), sprite.toString());
+  const { result } = await sprite.compileAsync();
+  for (const mode of Object.values(result)) {
+    for (const resource of Object.values(mode as Record<string, Resource>)) {
+      await mkdir(dirname(resource.path), { recursive: true });
+      await writeFile(resource.path, resource.contents);
+    }
+  }
 };
