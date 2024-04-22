@@ -3,3 +3,4 @@
 export * from './make-sprite';
 export * from './scan-files';
 export * from './scan-string';
+export * from './types';

@@ -1,7 +1,7 @@
 {
-  "name": "@ch-ui/icons",
+  "name": "@ch-ui/vite-plugin-icons",
   "version": "0.5.0",
-  "description": "Tools for automating icon sprite bundling.",
+  "description": "Vite plugin for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -21,15 +21,14 @@
     "dist"
   ],
   "dependencies": {
-    "svg-sprite": "^2.0.4"
+    "@ch-ui/icons": "workspace:*"
   },
   "devDependencies": {
     "@phosphor-icons/core": "^2.1.1",
     "@types/node": "^20.12.3",
-    "@types/svg-sprite": "^0.0.39",
-    "ts-node": "^10.9.2"
+    "vite": "^5.2.8"
   },
-  "scripts": {
-    "test": "ts-node ./test/sanity.spec.ts"
+  "peerDependencies": {
+    "vite": "^5.2.8"
   }
 }

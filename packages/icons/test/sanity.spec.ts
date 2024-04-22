@@ -3,8 +3,7 @@
 import assert from 'node:assert';
 import test from 'node:test';
 import { resolve } from 'node:path';
-import { scanFiles, scanString, makeSprite } from '../src';
-import { BundleParams } from '../src/types';
+import { scanFiles, scanString, makeSprite, type BundleParams } from '../src';
 import { readFile } from 'node:fs/promises';
 
 const phosphorConfig: BundleParams = {
