@@ -5,6 +5,8 @@ import ReactPlugin from '@vitejs/plugin-react';
 import flatten from 'lodash.flatten';
 import { mergeConfig } from 'vite';
 import TurbosnapPlugin from 'vite-plugin-turbosnap';
+import IconsPlugin from '@ch-ui/vite-plugin-icons';
+import { resolve } from 'node:path';
 
 export const config = (
   specificConfig: Partial<StorybookConfig> & Pick<StorybookConfig, 'stories'>,
@@ -34,8 +36,8 @@ export const config = (
                     jsxRuntime: 'classic',
                   })
                 : plugin.name === 'vite:react-jsx'
-                  ? undefined
-                  : plugin;
+                ? undefined
+                : plugin;
             }),
           }
         : config,
@@ -48,7 +50,19 @@ export const config = (
           },
         },
         plugins: [
-          TurbosnapPlugin({ rootDir: turbosnapRootDir ?? config.root ?? __dirname }),
+          TurbosnapPlugin({
+            rootDir: turbosnapRootDir ?? config.root ?? __dirname,
+          }),
+          IconsPlugin({
+            tokenPattern:
+              'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
+            assetPath: (name, variant) =>
+              `../node_modules/@phosphor-icons/core/assets/${variant}/${name}${
+                variant === 'regular' ? '' : `-${variant}`
+              }.svg`,
+            spritePath: '../dist/assets/sprite.svg',
+            contentPath: '**/*.stories.tsx',
+          }),
         ],
       },
     );

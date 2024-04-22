@@ -7,15 +7,13 @@ export const scanString = ({
   contentString,
 }: Pick<BundleParams, 'tokenPattern'> & {
   contentString: string;
-  extension?: string;
 }): Set<string> => {
   const tokenExp = new RegExp(tokenPattern, 'gm');
 
   const matchResult = contentString.match(tokenExp);
 
   if (matchResult) {
-    const [_, ...matches] = matchResult;
-    return new Set<string>(matches);
+    return new Set<string>(matchResult);
   } else {
     return new Set<string>();
   }

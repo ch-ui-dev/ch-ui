@@ -4,10 +4,18 @@
 import path from 'node:path';
 import type { Plugin, Update, ViteDevServer } from 'vite';
 import { type BundleParams, scanString } from '@ch-ui/icons';
+import pm from 'picomatch';
 
 export default function vitePluginChUiIcons({
   tokenPattern,
+  contentPath,
 }: BundleParams): Plugin[] {
+  const isContent = pm(contentPath);
+
+  function shouldIgnore(id: string, src: string) {
+    return !isContent(id);
+  }
+
   let server: ViteDevServer | null = null;
   let candidates = new Set<string>();
   // In serve mode this is treated as a set — the content doesn't matter.
@@ -55,23 +63,18 @@ export default function vitePluginChUiIcons({
     }
   }
 
-  function scan(src: string, extension: string) {
+  function scan(src: string) {
     let updated = false;
-    // Parse all candidates given the resolved files
     const nextCandidates = scanString({
       contentString: src,
-      extension,
       tokenPattern,
     });
-    for (let candidate in nextCandidates) {
-      // On an initial or full build, updated becomes true immediately so we
-      // won't be making extra checks.
-      if (!updated) {
-        if (candidates.has(candidate)) continue;
+    Array.from(nextCandidates).forEach((candidate) => {
+      if (!candidates.has(candidate)) {
         updated = true;
       }
       candidates.add(candidate);
-    }
+    });
     return updated;
   }
 
@@ -91,7 +94,7 @@ export default function vitePluginChUiIcons({
 
       // Scan index.html for candidates
       transformIndexHtml(html) {
-        let updated = scan(html, 'html');
+        let updated = scan(html);
 
         if (updated) {
           updateIconModules(isSSR);
@@ -100,11 +103,10 @@ export default function vitePluginChUiIcons({
 
       // Scan all non-CSS files for candidates
       transform(src, id, options) {
-        if (id.includes('/.vite/')) return;
-        let extension = getExtension(id);
-        if (extension === '' || extension === 'svg') return;
+        if (shouldIgnore(id, src)) return;
 
-        scan(src, extension);
+        scan(src);
+
         updateIconModules(options?.ssr ?? false);
       },
     },
@@ -115,11 +117,12 @@ export default function vitePluginChUiIcons({
      */
 
     {
-      // Step 2 (serve mode): Generate CSS
+      // Step 2 (serve mode): Generate Icons
       name: '@ch-ui/icons:generate:serve',
       apply: 'serve',
 
       async transform(src, id, options) {
+        if (shouldIgnore(id, src)) return;
         // In serve mode, we treat iconModules as a set, ignoring the value.
         iconModules[id] = { content: '', handled: true };
 
@@ -130,9 +133,9 @@ export default function vitePluginChUiIcons({
           await server?.waitForRequestsIdle?.(id);
         }
 
-        console.log('[serve]', src, id, options);
+        console.log('[serve]', id, options);
 
-        return { code: '' };
+        return { code: src };
       },
     },
 
@@ -142,6 +145,7 @@ export default function vitePluginChUiIcons({
       apply: 'build',
 
       transform(src, id) {
+        if (shouldIgnore(id, src)) return;
         iconModules[id] = { content: src, handled: false };
       },
 
