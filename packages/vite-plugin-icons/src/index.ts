@@ -3,13 +3,12 @@
 
 import path from 'node:path';
 import type { Plugin, Update, ViteDevServer } from 'vite';
-import { type BundleParams, scanString } from '@ch-ui/icons';
+import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
 import pm from 'picomatch';
 
-export default function vitePluginChUiIcons({
-  tokenPattern,
-  contentPath,
-}: BundleParams): Plugin[] {
+export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
+  const { tokenPattern, contentPath } = params;
+
   const isContent = pm(contentPath);
 
   function shouldIgnore(id: string, src: string) {
@@ -17,7 +16,8 @@ export default function vitePluginChUiIcons({
   }
 
   let server: ViteDevServer | null = null;
-  let candidates = new Set<string>();
+  let detectedTokens = new Set<string>();
+  let updated = true;
   // In serve mode this is treated as a set — the content doesn't matter.
   // In build mode, we store file contents to use them in renderChunk.
   let iconModules: Record<
@@ -27,41 +27,6 @@ export default function vitePluginChUiIcons({
       handled: boolean;
     }
   > = {};
-  let isSSR = false;
-
-  // Trigger update to all CSS modules
-  function updateIconModules(isSSR: boolean) {
-    // If we're building then we don't need to update anything
-    if (!server) return;
-
-    let updates: Update[] = [];
-    for (let id of Object.keys(iconModules)) {
-      let iconModule = server.moduleGraph.getModuleById(id);
-      if (!iconModule) {
-        // Note: Removing this during SSR is not safe and will produce
-        // inconsistent results based on the timing of the removal and
-        // the order / timing of transforms.
-        if (!isSSR) {
-          // It is safe to remove the item here since we're iterating on a copy
-          // of the keys.
-          delete iconModules[id];
-        }
-        continue;
-      }
-
-      server.moduleGraph.invalidateModule(iconModule);
-      updates.push({
-        type: `${iconModule.type}-update`,
-        path: iconModule.url,
-        acceptedPath: iconModule.url,
-        timestamp: Date.now(),
-      });
-    }
-
-    if (updates.length > 0) {
-      server.hot.send({ type: 'update', updates });
-    }
-  }
 
   function scan(src: string) {
     let updated = false;
@@ -70,17 +35,17 @@ export default function vitePluginChUiIcons({
       tokenPattern,
     });
     Array.from(nextCandidates).forEach((candidate) => {
-      if (!candidates.has(candidate)) {
+      if (!detectedTokens.has(candidate)) {
         updated = true;
       }
-      candidates.add(candidate);
+      detectedTokens.add(candidate);
     });
     return updated;
   }
 
   return [
     {
-      // Step 1: Scan source files for candidates
+      // Step 1: Scan source files for detectedTokens
       name: '@ch-ui/icons:scan',
       enforce: 'pre',
 
@@ -88,33 +53,17 @@ export default function vitePluginChUiIcons({
         server = _server;
       },
 
-      async configResolved(config) {
-        isSSR = config.build.ssr !== false && config.build.ssr !== undefined;
-      },
-
-      // Scan index.html for candidates
       transformIndexHtml(html) {
-        let updated = scan(html);
-
-        if (updated) {
-          updateIconModules(isSSR);
-        }
+        scan(html);
+        updated = true;
       },
 
-      // Scan all non-CSS files for candidates
       transform(src, id, options) {
         if (shouldIgnore(id, src)) return;
-
         scan(src);
-
-        updateIconModules(options?.ssr ?? false);
+        updated = true;
       },
     },
-
-    /*
-     * The plugins that generate CSS must run after 'enforce: pre' so @imports
-     * are expanded in transform.
-     */
 
     {
       // Step 2 (serve mode): Generate Icons
@@ -123,51 +72,43 @@ export default function vitePluginChUiIcons({
 
       async transform(src, id, options) {
         if (shouldIgnore(id, src)) return;
-        // In serve mode, we treat iconModules as a set, ignoring the value.
-        iconModules[id] = { content: '', handled: true };
 
         if (!options?.ssr) {
           // Wait until all other files have been processed, so we can extract
-          // all candidates before generating CSS. This must not be called
-          // during SSR or it will block the server.
+          // all detected tokens before generating the sprite. This must not be
+          // called during SSR, or it will block the server.
           await server?.waitForRequestsIdle?.(id);
         }
 
-        console.log('[serve]', id, options);
+        if (updated) {
+          await makeSprite(params, detectedTokens);
+          updated = false;
+        }
 
         return { code: src };
       },
     },
 
     {
-      // Step 2 (full build): Generate CSS
+      // Step 2 (full build): Generate sprite
       name: '@ch-ui/icons:generate:build',
       apply: 'build',
 
-      transform(src, id) {
-        if (shouldIgnore(id, src)) return;
-        iconModules[id] = { content: src, handled: false };
-      },
-
       // renderChunk runs in the bundle generation stage after all transforms.
-      // We must run before `enforce: post` so the updated chunks are picked up
-      // by vite:css-post.
       async renderChunk(_code, _chunk) {
         for (let [id, file] of Object.entries(iconModules)) {
           if (file.handled) {
             continue;
           }
-
-          console.log('[render chunk]', id, file);
-
           file.handled = true;
+          console.warn(
+            '[@ch-ui/vite-plugin-icons]',
+            'not implemented',
+            id,
+            file,
+          );
         }
       },
     },
   ] satisfies Plugin[];
-}
-
-function getExtension(id: string) {
-  let [filename] = id.split('?', 2);
-  return path.extname(filename).slice(1);
 }

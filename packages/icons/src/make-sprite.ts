@@ -14,7 +14,7 @@ export const makeSprite = async (
   { assetPath, tokenPattern, spritePath, config = {} }: BundleParams,
   tokens: Set<string>,
 ) => {
-  const resolvedSpritePath = resolve(__dirname, spritePath);
+  const resolvedSpritePath = resolve(spritePath);
 
   const sprite = new SVGSpriter({
     dest: dirname(resolvedSpritePath),
@@ -30,7 +30,7 @@ export const makeSprite = async (
         const match = token.match(tokenExp);
         if (match && match[1] && match[2]) {
           const [_, ...matches] = match;
-          const svgPath = resolve(__dirname, assetPath(...matches));
+          const svgPath = resolve(assetPath(...matches));
           return readFile(svgPath, 'utf-8').then((svg) =>
             sprite.add(token, token, svg),
           );

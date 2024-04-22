@@ -24,6 +24,7 @@ export const config = (
       strictMode: true,
     },
   },
+  staticDirs: [resolve(__dirname, '../dist')],
   viteFinal: async (config, { configType }) => {
     return mergeConfig(
       configType === 'PRODUCTION'
@@ -57,10 +58,10 @@ export const config = (
             tokenPattern:
               'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
             assetPath: (name, variant) =>
-              `../node_modules/@phosphor-icons/core/assets/${variant}/${name}${
+              `./packages/icons/node_modules/@phosphor-icons/core/assets/${variant}/${name}${
                 variant === 'regular' ? '' : `-${variant}`
               }.svg`,
-            spritePath: '../dist/assets/sprite.svg',
+            spritePath: resolve(__dirname, '../dist/assets/sprite.svg'),
             contentPath: '**/*.stories.tsx',
           }),
         ],

@@ -1,22 +1,39 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import React from 'react';
+import React, { ComponentPropsWithRef, forwardRef } from 'react';
 
-const SPRITE = './sprite.svg';
+const SPRITE = './assets/sprite.svg';
 
 type IconName = string;
 type IconVariant = 'bold' | 'duotone' | 'fill' | 'light' | 'regular' | 'thin';
 
-const Icon = ({ icon }: { icon: `ph-icon--${IconName}--${IconVariant}` }) => {
-  return (
-    <svg viewBox="0 0 256 256">
-      <use href={`${SPRITE}#${icon}`} />
-    </svg>
-  );
+type IconProps = ComponentPropsWithRef<'svg'> & {
+  token: `ph-icon--${IconName}--${IconVariant}`;
 };
 
-export default { title: 'icons' };
+const Icon = forwardRef<SVGSVGElement, IconProps>(
+  ({ token, ...props }, forwardedRef) => {
+    return (
+      <svg viewBox="0 0 256 256" {...props} ref={forwardedRef}>
+        <use href={`${SPRITE}#${token}`} />
+      </svg>
+    );
+  },
+);
+
+export default { title: 'Icons' };
 
 export const Icons = () => {
-  return <Icon icon="ph-icon--address-book--regular" />;
+  return (
+    <>
+      <style>{`
+        svg{ inline-size: 4rem; block-size: 4rem; display: inline-block; margin:.25rem; color: blue }
+      `}</style>
+      <Icon token="ph-icon--address-book--regular" />
+      <Icon token="ph-icon--planet--thin" />
+      <Icon token="ph-icon--anchor--bold" />
+      <Icon token="ph-icon--cards-three--light" />
+      <Icon token="ph-icon--map-pin-simple-area--duotone" />
+    </>
+  );
 };

@@ -5,7 +5,8 @@ import React from 'react';
 import {
   curvePathFromPalette,
   paletteShadesFromCurve,
-  Lab_to_P3_value as LabToP3, Vec3
+  Lab_to_P3_value as LabToP3,
+  Vec3,
 } from '../util';
 
 type PaletteConfig = {
@@ -15,13 +16,15 @@ type PaletteConfig = {
   hueTorsion: number;
 };
 
-const shadeNumbers: number[] = /* [...Array(19)].map((_, i) => 50 + i * 50); */ [
-  50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950,
-];
+const shadeNumbers: number[] =
+  /* [...Array(19)].map((_, i) => 50 + i * 50); */ [
+    50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750,
+    800, 850, 900, 950,
+  ];
 
 const broadShadeNumbers: number[] = [
-  12, 25, 37, 50, 75, 100, 125, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 825, 850, 875,
-  900, 925, 950, 975,
+  12, 25, 37, 50, 75, 100, 125, 150, 200, 250, 300, 350, 400, 450, 500, 550,
+  600, 650, 700, 750, 800, 825, 850, 875, 900, 925, 950, 975,
 ];
 
 const dtor = Math.PI / 180;
@@ -42,7 +45,14 @@ const physicalColors = Object.keys(paletteConfigs).reduce(
     const isBroad = palette === 'neutral' || palette === 'primary';
     const paletteConfig = paletteConfigs[palette as ConfigPalette];
     const curve = curvePathFromPalette(paletteConfig);
-    const defaultShades = paletteShadesFromCurve(curve, 21, [0, 100 * (22 / 21)], 'P3', 1, 24).reverse();
+    const defaultShades = paletteShadesFromCurve(
+      curve,
+      21,
+      [0, 100 * (22 / 21)],
+      'P3',
+      1,
+      24,
+    ).reverse();
     const renderCssValue = (shadeNumber: number) => {
       if (shadeNumber > 999) {
         return 'black';
@@ -55,13 +65,20 @@ const physicalColors = Object.keys(paletteConfigs).reduce(
         const k1 = 1 - k2;
         const [l1, a1, b1] = defaultShades[Math.floor(shadeNumber / 50)];
         const [l2, a2, b2] = defaultShades[Math.ceil(shadeNumber / 50)];
-        return LabToP3([l1 * k1 + l2 * k2, a1 * k1 + a2 * k2, b1 * k1 + b2 * k2]);
+        return LabToP3([
+          l1 * k1 + l2 * k2,
+          a1 * k1 + a2 * k2,
+          b1 * k1 + b2 * k2,
+        ]);
       }
     };
-    acc[palette] = (isBroad ? broadShadeNumbers : shadeNumbers).reduce((acc: Record<string, string>, shadeNumber) => {
-      acc[shadeNumber] = renderCssValue(shadeNumber);
-      return acc;
-    }, {});
+    acc[palette] = (isBroad ? broadShadeNumbers : shadeNumbers).reduce(
+      (acc: Record<string, string>, shadeNumber) => {
+        acc[shadeNumber] = renderCssValue(shadeNumber);
+        return acc;
+      },
+      {},
+    );
 
     return acc;
   },
@@ -69,18 +86,30 @@ const physicalColors = Object.keys(paletteConfigs).reduce(
 );
 
 export default {
-  title: 'colors'
+  title: 'Colors',
 };
 
 export const Colors = () => {
-  return Object.entries(physicalColors).map(([paletteName, palette])=>{
-    return <>
-      <h1>{paletteName}</h1>
-      <ul>
-        {Object.entries(palette).map(([shadeNumber, value])=> {
-          return <li style={{ inlineSize: '4rem', blockSize: '4rem', backgroundColor: value }}>{shadeNumber}</li>
-        })}
-      </ul>
-    </>
-  })
-}
+  return Object.entries(physicalColors).map(([paletteName, palette]) => {
+    return (
+      <>
+        <h1>{paletteName}</h1>
+        <ul>
+          {Object.entries(palette).map(([shadeNumber, value]) => {
+            return (
+              <li
+                style={{
+                  inlineSize: '4rem',
+                  blockSize: '4rem',
+                  backgroundColor: value,
+                }}
+              >
+                {shadeNumber}
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
+  });
+};
