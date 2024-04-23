@@ -1,7 +1,7 @@
 {
-  "name": "@ch-ui/colors",
+  "name": "@ch-ui/icons",
   "version": "0.5.0",
-  "description": "Procedural color algorithms based upon drawing helical bézier curves in LAB space.",
+  "description": "Tools for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -19,5 +19,17 @@
   "files": [
     "src",
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "svg-sprite": "^2.0.4"
+  },
+  "devDependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@types/node": "^20.12.3",
+    "@types/svg-sprite": "^0.0.39",
+    "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "test": "ts-node ./test/sanity.spec.ts"
+  }
 }

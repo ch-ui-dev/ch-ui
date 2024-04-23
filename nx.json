@@ -9,6 +9,15 @@
       ],
       "cache": true
     },
+    "compile": {
+      "dependsOn": [
+        "^compile"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
     "build-storybook": {
       "outputs": [
         "{projectRoot}/out"

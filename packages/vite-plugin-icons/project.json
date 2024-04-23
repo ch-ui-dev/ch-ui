@@ -1,0 +1,65 @@
+{
+  "sourceRoot": "packages/vite-plugin-icons/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/vite-plugin-icons/src/index.ts",
+        "outputPath": "packages/vite-plugin-icons/dist/types",
+        "tsConfig": "packages/vite-plugin-icons/tsconfig.json"
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build-esm": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/vite-plugin-icons/src/index.ts",
+        "outputPath": "packages/vite-plugin-icons/dist/esm",
+        "tsConfig": "packages/vite-plugin-icons/tsconfig-esbuild.json",
+        "format": [
+          "esm"
+        ]
+      },
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/vite-plugin-icons/src/index.ts",
+        "outputPath": "packages/vite-plugin-icons/dist/cjs",
+        "tsConfig": "packages/vite-plugin-icons/tsconfig-esbuild.json",
+        "format": [
+          "cjs"
+        ]
+      },
+      "dependsOn": [
+        "compile",
+        "build-esm"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/vite-plugin-icons/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}

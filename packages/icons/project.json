@@ -1,0 +1,65 @@
+{
+  "sourceRoot": "packages/icons/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/icons/src/index.ts",
+        "outputPath": "packages/icons/dist/types",
+        "tsConfig": "packages/icons/tsconfig.json"
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build-esm": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/icons/src/index.ts",
+        "outputPath": "packages/icons/dist/esm",
+        "tsConfig": "packages/icons/tsconfig-esbuild.json",
+        "format": [
+          "esm"
+        ]
+      },
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/icons/src/index.ts",
+        "outputPath": "packages/icons/dist/cjs",
+        "tsConfig": "packages/icons/tsconfig-esbuild.json",
+        "format": [
+          "cjs"
+        ]
+      },
+      "dependsOn": [
+        "compile",
+        "build-esm"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/icons/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}
