@@ -1,8 +1,7 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { type Preview } from '@storybook/react';
-
 import { defineCustomElements } from '@ch-ui/elements/loader';
+import { Preview } from '@storybook/html';
 
 /**
  * Load @ch-ui/elements.
