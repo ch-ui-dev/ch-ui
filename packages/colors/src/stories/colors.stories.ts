@@ -1,7 +1,5 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import React from 'react';
-
 import {
   curvePathFromPalette,
   paletteShadesFromCurve,
@@ -90,26 +88,23 @@ export default {
 };
 
 export const Colors = () => {
-  return Object.entries(physicalColors).map(([paletteName, palette]) => {
-    return (
-      <>
-        <h1>{paletteName}</h1>
+  return Object.entries(physicalColors)
+    .map(([paletteName, palette]) => {
+      return `
+        <h1>${paletteName}</h1>
         <ul>
-          {Object.entries(palette).map(([shadeNumber, value]) => {
-            return (
-              <li
-                style={{
-                  inlineSize: '4rem',
-                  blockSize: '4rem',
-                  backgroundColor: value,
-                }}
+          ${Object.entries(palette)
+            .map(([shadeNumber, value]) => {
+              return `
+              <li style="inline-size: 4rem; block-size: 4rem; background: ${value}"
               >
-                {shadeNumber}
+              ${shadeNumber}
               </li>
-            );
-          })}
+            `;
+            })
+            .join('')}
         </ul>
-      </>
-    );
-  });
+    `;
+    })
+    .join('');
 };
