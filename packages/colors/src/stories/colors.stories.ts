@@ -89,22 +89,21 @@ export default {
 
 export const Colors = () => {
   return Object.entries(physicalColors)
-    .map(([paletteName, palette]) => {
-      return `
+    .map(
+      ([paletteName, palette]) => `
         <h1>${paletteName}</h1>
         <ul>
           ${Object.entries(palette)
-            .map(([shadeNumber, value]) => {
-              return `
-              <li style="inline-size: 4rem; block-size: 4rem; background: ${value}"
-              >
-              ${shadeNumber}
+            .map(
+              ([shadeNumber, value]) => `
+              <li style="inline-size: 4rem; block-size: 4rem; background: ${value}">
+                ${shadeNumber}
               </li>
-            `;
-            })
+            `,
+            )
             .join('')}
         </ul>
-    `;
-    })
+    `,
+    )
     .join('');
 };
