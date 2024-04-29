@@ -1,0 +1,48 @@
+{
+  "name": "@ch-ui/elements",
+  "version": "0.5.0",
+  "description": "Tools for automating icon sprite bundling.",
+  "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
+  "authors": [
+    "Will Shown <w@willshown.com> (https://willshown.com/)"
+  ],
+  "license": "Ch Public License",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/elements/elements.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/elements/elements.esm.js",
+      "require": "./dist/elements/elements.cjs.js"
+    },
+    "./my-component": {
+      "import": "./dist/components/my-component.js",
+      "types": "./dist/components/my-component.d.ts"
+    },
+    "./loader": {
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs",
+      "types": "./loader/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@stencil/core": "^4.7.0",
+    "@types/jest": "^29.5.6",
+    "@types/node": "^20.12.3"
+  }
+}

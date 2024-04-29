@@ -2,6 +2,13 @@
 
 import { type Preview } from '@storybook/react';
 
+import { defineCustomElements } from '@ch-ui/elements/loader';
+
+/**
+ * Load @ch-ui/elements.
+ */
+defineCustomElements();
+
 /**
  * Configure Storybook rendering.
  * https://storybook.js.org/docs/configure#configure-story-rendering
@@ -21,9 +28,8 @@ const preview: Preview = {
     // Disables Chromatic's snapshotting on a global level.
     chromatic: {
       disableSnapshot: true,
-    }
+    },
   },
-
 };
 
 export const parameters: Preview['parameters'] = preview.parameters;

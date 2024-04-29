@@ -28,7 +28,7 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-storybook": "^0.6.13",
     "jsdom": "~22.1.0",
-    "nx": "17.0.1",
+    "nx": "18.3.4",
     "prettier": "3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
