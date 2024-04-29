@@ -11,7 +11,7 @@ const Template = (args) =>
 export const Example = Template.bind({});
 
 Example.args = {
-  first: 'Winnie',
-  middle: 'The',
-  last: 'Pooh',
+  first: '@ch-ui',
+  middle: '/',
+  last: 'elements',
 };
