@@ -135,3 +135,5 @@ template
 
 # NX
 .nx
+
+*storybook.log

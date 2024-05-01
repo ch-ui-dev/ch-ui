@@ -1,4 +1,5 @@
 {
+  "root": "packages/vite-plugin-icons",
   "sourceRoot": "packages/vite-plugin-icons/src",
   "projectType": "library",
   "targets": {

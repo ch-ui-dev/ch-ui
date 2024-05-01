@@ -1,6 +1,12 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { type Preview } from '@storybook/react';
+import { defineCustomElements } from '@ch-ui/elements/loader';
+import { Preview } from '@storybook/html';
+
+/**
+ * Load @ch-ui/elements.
+ */
+defineCustomElements();
 
 /**
  * Configure Storybook rendering.
@@ -21,9 +27,8 @@ const preview: Preview = {
     // Disables Chromatic's snapshotting on a global level.
     chromatic: {
       disableSnapshot: true,
-    }
+    },
   },
-
 };
 
 export const parameters: Preview['parameters'] = preview.parameters;

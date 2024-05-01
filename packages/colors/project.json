@@ -1,4 +1,5 @@
 {
+  "root": "packages/colors",
   "sourceRoot": "packages/colors/src",
   "projectType": "library",
   "targets": {
