@@ -1,6 +1,5 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "stories",
+  "root": "utils/stories",
   "sourceRoot": "utils/stories/src",
   "projectType": "library",
   "targets": {
@@ -11,7 +10,9 @@
         }
       },
       "dependsOn": [
-        "colors:compile"
+        "colors:build",
+        "icons:build",
+        "elements:build"
       ],
       "executor": "@nx/storybook:storybook",
       "options": {

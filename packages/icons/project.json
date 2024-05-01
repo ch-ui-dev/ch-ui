@@ -1,4 +1,5 @@
 {
+  "root": "packages/icons",
   "sourceRoot": "packages/icons/src",
   "projectType": "library",
   "targets": {

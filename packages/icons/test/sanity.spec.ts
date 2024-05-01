@@ -35,7 +35,6 @@ test('scan string returns all positive and no negative results', async () => {
   const results = scanString({
     ...phosphorConfig,
     contentString,
-    extension: 'html',
   });
   assert.equal(
     new Set([...positiveTokens].filter((token) => !results.has(token))).size,

@@ -7,10 +7,10 @@
     "format": "prettier --write packages"
   },
   "devDependencies": {
-    "@nx/esbuild": "^17.0.2",
-    "@nx/js": "17.0.1",
-    "@nx/storybook": "^18.2.1",
-    "@nx/vite": "^17.0.1",
+    "@nx/esbuild": "^18.3.4",
+    "@nx/js": "18.3.4",
+    "@nx/storybook": "^18.3.4",
+    "@nx/vite": "^18.3.4",
     "@swc-node/register": "^1.8.0",
     "@swc/core": "~1.3.85",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

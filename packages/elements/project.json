@@ -1,0 +1,19 @@
+{
+  "root": "packages/elements",
+  "sourceRoot": "packages/elements/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd packages/elements && ./node_modules/.bin/stencil build"
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": ["packages/elements/src/**/*.{js,jsx,ts,tsx}"],
+        "quiet": true
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}
