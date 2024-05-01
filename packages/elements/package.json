@@ -1,7 +1,7 @@
 {
   "name": "@ch-ui/elements",
   "version": "0.5.0",
-  "description": "Tools for automating icon sprite bundling.",
+  "description": "A set of (mostly) friendly web components.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
