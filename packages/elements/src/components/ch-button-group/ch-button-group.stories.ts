@@ -6,7 +6,7 @@ export default {
 };
 
 const Template = (args) =>
-  `<my-component first="${args.first}" middle="${args.middle}" last="${args.last}"></my-component>`;
+  `<ch-button-group first="${args.first}" middle="${args.middle}" last="${args.last}"></ch-button-group>`;
 
 export const Example = Template.bind({});
 

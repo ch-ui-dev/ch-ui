@@ -1,13 +1,12 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Prop, Host, h } from '@stencil/core';
 
 @Component({
-  tag: 'my-component',
-  styleUrl: 'my-component.css',
+  tag: 'ch-button-group',
   shadow: false,
 })
-export class MyComponent {
+export class ChButtonGroup {
   /**
    * The first name
    */
@@ -29,6 +28,6 @@ export class MyComponent {
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return <Host>Hello, World! I'm {this.getText()}</Host>;
   }
 }

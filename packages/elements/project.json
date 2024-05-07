@@ -6,6 +6,9 @@
     "build": {
       "command": "cd packages/elements && ./node_modules/.bin/stencil build"
     },
+    "serve": {
+      "command": "cd packages/elements && ./node_modules/.bin/stencil build --serve --watch --dev"
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {

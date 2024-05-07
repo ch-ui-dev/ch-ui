@@ -21,9 +21,9 @@
       "import": "./dist/elements/elements.esm.js",
       "require": "./dist/elements/elements.cjs.js"
     },
-    "./my-component": {
-      "import": "./dist/components/my-component.js",
-      "types": "./dist/components/my-component.d.ts"
+    "./ch-button-group": {
+      "import": "./dist/components/ch-button-group.js",
+      "types": "./dist/components/ch-button-group.d.ts"
     },
     "./loader": {
       "import": "./loader/index.js",

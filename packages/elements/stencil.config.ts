@@ -3,7 +3,7 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'Ch',
+  namespace: 'ch-ui',
   outputTargets: [
     {
       type: 'dist',
