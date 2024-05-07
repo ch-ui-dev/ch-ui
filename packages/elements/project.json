@@ -9,6 +9,14 @@
     "serve": {
       "command": "cd packages/elements && ./node_modules/.bin/stencil build --serve --watch --dev"
     },
+    "build-watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd packages/elements && ./node_modules/.bin/stencil build --watch",
+        "parallel": true,
+        "readyWhen": "build finished"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {

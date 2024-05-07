@@ -12,7 +12,7 @@
       "dependsOn": [
         "colors:build",
         "icons:build",
-        "elements:build"
+        "elements:build-watch"
       ],
       "executor": "@nx/storybook:storybook",
       "options": {

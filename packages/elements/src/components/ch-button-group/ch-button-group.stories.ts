@@ -2,7 +2,7 @@
 
 export default {
   // this creates a ‘Components’ folder and a ‘MyComponent’ subfolder
-  title: 'Components/MyComponent',
+  title: 'Elements/ch-button-group',
 };
 
 const Template = (args) =>

@@ -23,8 +23,8 @@ export class ChButtonGroup {
   @Prop() last: string;
 
   private getText(): string {
-    const { first, middle, last } = this;
-    return `${first} ${middle} ${last}`;
+    const { first, last } = this;
+    return `${first} Apples ${last}`;
   }
 
   render() {
