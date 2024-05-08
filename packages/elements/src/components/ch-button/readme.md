@@ -1,4 +1,4 @@
-# ch-button-group
+# ch-button
 
 
 

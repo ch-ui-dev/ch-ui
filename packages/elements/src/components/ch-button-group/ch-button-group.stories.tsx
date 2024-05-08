@@ -6,12 +6,10 @@ export default {
 };
 
 const Template = (args) =>
-  `<ch-button-group first="${args.first}" middle="${args.middle}" last="${args.last}"></ch-button-group>`;
+  `<ch-button-group aria-label='potatoes' class='squirrels'>${args.children}</ch-button-group>`;
 
 export const Example = Template.bind({});
 
 Example.args = {
-  first: '@ch-ui',
-  middle: '/',
-  last: 'elements',
+  children: `<ch-button>Left</ch-button><ch-button>Right</ch-button>`,
 };

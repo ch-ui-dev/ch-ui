@@ -3,11 +3,11 @@
 import { Component, Host, h } from '@stencil/core';
 
 @Component({
-  tag: 'ch-button-group',
+  tag: 'ch-button',
   shadow: false,
 })
-export class ChButtonGroup {
+export class ChButton {
   render() {
-    return <Host role="group"></Host>;
+    return <Host role="button"></Host>;
   }
 }
