@@ -1,0 +1,7 @@
+/* Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+
+@layer tokens utilities elements;
+
+:root {
+    font-family: sans-serif;
+}

@@ -18,13 +18,13 @@
   "unpkg": "dist/elements/elements.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/elements/elements.esm.js",
-      "require": "./dist/elements/elements.cjs.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/types/index.d.ts"
     },
-    "./ch-button-group": {
-      "import": "./dist/components/ch-button-group.js",
-      "types": "./dist/components/ch-button-group.d.ts"
-    },
+    "./ch-default-root.css": "./dist/ch-ui/ch-ui.css",
+    "./ch-button-group.css": "./dist/collection/components/ch-button-group/ch-button-group.css",
+    "./ch-button.css": "./dist/collection/components/ch-button-group/ch-button.css",
     "./loader": {
       "import": "./loader/index.js",
       "require": "./loader/index.cjs",

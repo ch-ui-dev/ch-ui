@@ -1,12 +1,15 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { defineCustomElements } from '@ch-ui/elements/loader';
-import { Preview } from '@storybook/html';
+import { setMode } from '@ch-ui/elements';
+import { Preview } from '@storybook/web-components';
+import '@ch-ui/elements/ch-default-root.css';
 
 /**
  * Load @ch-ui/elements.
  */
 defineCustomElements();
+setMode(() => 'default');
 
 /**
  * Configure Storybook rendering.

@@ -1,0 +1,21 @@
+/* Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+
+@layer elements {
+    ch-button {
+        display: var(--ch-display-button, inline-flex);
+
+        cursor: var(--ch-cursor-button, pointer);
+
+        background: var(--ch-bg-button, var(--ch-bg-input, #888));
+
+        border-radius: var(--ch-rounded-input, .25rem);
+
+        padding-block-start: var(--ch-pbs-button);
+        padding-block-end: var(--ch-pbe-button);
+        padding-block: var(--ch-plb-button, .5rem);
+
+        padding-inline-start: var(--ch-pis-button);
+        padding-inline-end: var(--ch-pie-button);
+        padding-inline: var(--ch-pli-button, 1rem);
+    }
+}
