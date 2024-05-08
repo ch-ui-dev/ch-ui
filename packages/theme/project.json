@@ -1,0 +1,68 @@
+{
+  "root": "packages/theme",
+  "sourceRoot": "packages/theme/src",
+  "projectType": "library",
+  "targets": {
+    "targets": {
+      "compile": {
+        "executor": "@nx/js:tsc",
+        "options": {
+          "main": "packages/theme/src/index.ts",
+          "outputPath": "packages/theme/dist/types",
+          "tsConfig": "packages/theme/tsconfig.json"
+        },
+        "outputs": [
+          "{options.outputPath}"
+        ]
+      },
+      "build-esm": {
+        "executor": "@nx/esbuild:esbuild",
+        "options": {
+          "main": "packages/theme/src/index.ts",
+          "outputPath": "packages/theme/dist/esm",
+          "tsConfig": "packages/theme/tsconfig-esbuild.json",
+          "format": [
+            "esm"
+          ]
+        },
+        "dependsOn": [
+          "compile"
+        ],
+        "outputs": [
+          "{options.outputPath}"
+        ]
+      },
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "options": {
+          "main": "packages/theme/src/index.ts",
+          "outputPath": "packages/theme/dist/cjs",
+          "tsConfig": "packages/theme/tsconfig-esbuild.json",
+          "format": [
+            "cjs"
+          ]
+        },
+        "dependsOn": [
+          "compile",
+          "build-esm"
+        ],
+        "outputs": [
+          "{options.outputPath}"
+        ]
+      },
+      "lint": {
+        "executor": "@nx/linter:eslint",
+        "options": {
+          "format": "unix",
+          "lintFilePatterns": [
+            "packages/theme/src/**/*.{js,jsx,ts,tsx}"
+          ],
+          "quiet": true
+        },
+        "outputs": [
+          "{options.outputFile}"
+        ]
+      }
+    }
+  }
+}

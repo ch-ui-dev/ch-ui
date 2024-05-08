@@ -15,7 +15,7 @@ Someone asked for this design system toolchain. Was it you?
 - [x] [`@ch-ui/colors`](https://www.npmjs.com/package/@ch-ui/colors): procedural color palette tooling
 - [x] `@ch-ui/icons`: icon sprite tooling
 - [ ] `@ch-ui/elements`: lower-level accessible[¹](#footnotes) elements
-- [ ] `@ch-ui/elemental-theme`: a theme for the elements that is reasonably barebones
+- [ ] `@ch-ui/theme`: a theme for the elements that is reasonably barebones
 
 See the issues for other items.
 
