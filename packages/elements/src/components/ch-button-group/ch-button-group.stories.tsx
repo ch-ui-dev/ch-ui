@@ -2,16 +2,14 @@
 
 export default {
   // this creates a ‘Components’ folder and a ‘MyComponent’ subfolder
-  title: 'Components/MyComponent',
+  title: 'Elements/ch-button-group',
 };
 
 const Template = (args) =>
-  `<my-component first="${args.first}" middle="${args.middle}" last="${args.last}"></my-component>`;
+  `<ch-button-group aria-label='potatoes' class='squirrels'>${args.children}</ch-button-group>`;
 
 export const Example = Template.bind({});
 
 Example.args = {
-  first: '@ch-ui',
-  middle: '/',
-  last: 'elements',
+  children: `<ch-button>Left</ch-button><ch-button>Right</ch-button>`,
 };

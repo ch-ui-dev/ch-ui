@@ -1,6 +1,6 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { type StorybookConfig } from '@storybook/html-vite';
+import { type StorybookConfig } from '@storybook/web-components-vite';
 import { mergeConfig } from 'vite';
 import TurbosnapPlugin from 'vite-plugin-turbosnap';
 import IconsPlugin from '@ch-ui/vite-plugin-icons';
@@ -18,7 +18,7 @@ export const config = (
     '@chromatic-com/storybook',
   ],
   framework: {
-    name: '@storybook/html-vite',
+    name: '@storybook/web-components-vite',
     options: {},
   },
   docs: {
@@ -39,7 +39,7 @@ export const config = (
               variant === 'regular' ? '' : `-${variant}`
             }.svg`,
           spritePath: resolve(__dirname, '../dist/assets/sprite.svg'),
-          contentPath: '**/*.stories.ts',
+          contentPath: '**/*.stories.{ts,tsx}',
         }),
       ],
     });

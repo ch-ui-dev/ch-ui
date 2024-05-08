@@ -4,6 +4,6 @@ import { config } from '../.storybook-shared/config';
 
 export default config({
   stories: [
-    '../../../packages/*/src/**/*.stories.ts',
+    '../../../packages/*/src/**/*.stories.{ts,tsx}'
   ],
 });
