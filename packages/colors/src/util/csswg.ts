@@ -775,8 +775,17 @@ function is_LCH_inside_sRGB(l: number, c: number, h: number): boolean {
 
 function is_LCH_inside_P3(l: number, c: number, h: number): boolean {
   const ε = 0.000005;
-  const rgb = LCH_to_P3([+l, +c, +h]);
-  return rgb.reduce(
+  const p3 = LCH_to_P3([+l, +c, +h]);
+  return p3.reduce(
+    (a: boolean, b: number) => a && b >= 0 - ε && b <= 1 + ε,
+    true,
+  );
+}
+
+function is_LCH_inside_r2020(l: number, c: number, h: number): boolean {
+  const ε = 0.000005;
+  const r2020 = LCH_to_r2020([+l, +c, +h]);
+  return r2020.reduce(
     (a: boolean, b: number) => a && b >= 0 - ε && b <= 1 + ε,
     true,
   );
@@ -788,7 +797,12 @@ export function snap_into_gamut(Lab: Vec3, gamut: OutputGamut): Vec3 {
   // and adjusting the c via binary-search
   // until the color is on the gamut boundary.
 
-  const is_inside = gamut === 'P3' ? is_LCH_inside_P3 : is_LCH_inside_sRGB;
+  const is_inside =
+    gamut === 'rec2020'
+      ? is_LCH_inside_r2020
+      : gamut === 'P3'
+      ? is_LCH_inside_P3
+      : is_LCH_inside_sRGB;
 
   // .0001 chosen fairly arbitrarily as "close enough"
   const ε = 0.0001;
