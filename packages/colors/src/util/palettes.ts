@@ -148,12 +148,14 @@ export function hex_to_LCH(hex: string): Vec3 {
 
 export function Lab_to_P3_value(Lab: Vec3) {
   const [c1, c2, c3] = Lab_to_P3(Lab);
-  return `color(display-p3 ${c1.toFixed(3)} ${c2.toFixed(3)} ${c3.toFixed(3)})`;
+  return `color(display-p3 ${+c1.toFixed(3)} ${+c2.toFixed(3)} ${+c3.toFixed(
+    3,
+  )})`;
 }
 
 export function Lab_to_rec2020_value(Lab: Vec3) {
   const [c1, c2, c3] = Lab_to_r2020(Lab);
-  return `color(rec2020 ${c1.toFixed(3)} ${c2.toFixed(3)} ${c3.toFixed(3)})`;
+  return `color(rec2020 ${+c1.toFixed(3)} ${+c2.toFixed(3)} ${+c3.toFixed(3)})`;
 }
 
 function paletteShadesToValues(

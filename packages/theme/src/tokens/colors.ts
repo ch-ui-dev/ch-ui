@@ -23,6 +23,8 @@ import {
   Lab_to_rec2020_value,
 } from '@ch-ui/colors';
 
+const dtor = Math.PI / 180;
+
 const defaultLuminosities: number[] = [...Array(19)].map((_, i) => 50 + i * 50);
 
 type PaletteConfig = Palette &
@@ -40,7 +42,7 @@ type ColorTokensConfig = {
    */
   shadeNumbering?: 'reflective' | 'emissive';
   /**
-   * Palette curves (using LCH key colors), keyed by their id
+   * Palette curves (using LCH key colors and degree(º) hue torsion), keyed by their id
    */
   palettes: { [paletteId: string]: PaletteConfig };
   /**
@@ -56,12 +58,12 @@ type ColorTokensConfig = {
 const colorGamutBlock = (gamut: OutputGamut, block: string) => {
   switch (gamut) {
     case 'rec2020':
-      return `@media (color-gamut: rec2020) { ${block} }`;
+      return `@media (color-gamut: rec2020) {\n  :root{\n${block}\n  }\n}`;
     case 'P3':
-      return `@media (color-gamut: p3) { ${block} }`;
+      return `@media (color-gamut: p3) {\n  :root{\n${block}\n  }\n}`;
     case 'sRGB':
     default:
-      return block;
+      return `:root {\n${block}\n}`;
   }
 };
 
@@ -125,14 +127,21 @@ export const renderPhysicalColorTokens = ({
           .map(
             ([
               paletteId,
-              { luminosities = defaultLuminosities, ...palette },
+              {
+                luminosities = defaultLuminosities,
+                hueTorsion: hueTorsionDeg,
+                ...palette
+              },
             ]) => {
-              const landmarks = landmarksFromPalette(gamut, palette);
+              const landmarks = landmarksFromPalette(gamut, {
+                hueTorsion: dtor & hueTorsionDeg,
+                ...palette,
+              });
               return luminosities
                 .map((luminosity) => {
                   const lab = lerp(luminosity, landmarks);
                   return `${
-                    gamut === 'sRGB' ? '' : '  '
+                    gamut === 'sRGB' ? '  ' : '    '
                   }--${namespace}${paletteId}-${shadeNumber(
                     shadeNumbering,
                     luminosity,

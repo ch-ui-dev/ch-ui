@@ -4,3 +4,5 @@
 //   - colors
 //   - typography
 //   - spacings/absolute-sizes
+
+export { renderPhysicalColorTokens } from './colors';

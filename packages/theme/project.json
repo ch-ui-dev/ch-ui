@@ -2,7 +2,6 @@
   "root": "packages/theme",
   "sourceRoot": "packages/theme/src",
   "projectType": "library",
-  "targets": {
     "targets": {
       "compile": {
         "executor": "@nx/js:tsc",
@@ -62,7 +61,9 @@
         "outputs": [
           "{options.outputFile}"
         ]
+      },
+      "test": {
+        "command": "cd packages/theme && ts-node ./test/sanity.spec.ts"
       }
-    }
   }
 }
