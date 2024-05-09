@@ -61,6 +61,9 @@
       "outputs": [
         "{options.outputFile}"
       ]
+    },
+    "test": {
+      "command": "cd packages/icons && ts-node ./test/sanity.spec.ts"
     }
   }
 }
