@@ -10,7 +10,7 @@ test('physical color tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
   const tokens = renderPhysicalColorTokens({
-    gamuts: ['rec2020', 'P3'],
+    gamuts: ['P3', 'rec2020'],
     shadeNumbering: 'emissive',
     palettes: {
       primary: {
