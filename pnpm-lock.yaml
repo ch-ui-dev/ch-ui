@@ -109,6 +109,10 @@ importers:
         version: 10.9.2(@swc/core@1.3.107)(@types/node@20.12.3)(typescript@5.4.5)
 
   packages/theme:
+    dependencies:
+      '@ch-ui/colors':
+        specifier: workspace:*
+        version: link:../colors
     devDependencies:
       '@types/node':
         specifier: ^20.12.3
