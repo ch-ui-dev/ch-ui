@@ -63,7 +63,7 @@
         ]
       },
       "test": {
-        "command": "cd packages/theme && ts-node ./test/sanity.spec.ts"
+        "command": "cd packages/theme && ts-node ./test/*.spec.ts"
       }
   }
 }

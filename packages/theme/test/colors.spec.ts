@@ -5,17 +5,18 @@ import test from 'node:test';
 import { resolve } from 'node:path';
 import { writeFile, mkdir } from 'node:fs/promises';
 import {
-  PhysicalColorTokensConfig,
+  type PhysicalColorTokensConfig,
+  type SemanticColorTokensConfig,
   renderPhysicalColorTokens,
   renderSemanticColorTokens,
 } from '../src';
-import { SemanticColorTokensConfig } from '../src/semanticColors';
 
 const physicalColorsConfig: PhysicalColorTokensConfig = {
   gamuts: ['P3', 'rec2020'],
   shadeNumbering: 'emissive',
   palettes: {
     primary: {
+      luminosities: [50, 100, 850, 900],
       keyColor: [43, 81, 282],
       darkCp: 0.86,
       lightCp: 1,
@@ -48,5 +49,22 @@ test('physical and semantic color tokens are generated as expected', async () =>
   )}\n\n${renderSemanticColorTokens<typeof physicalColorsConfig>(
     semanticColorsConfig,
   )}`;
-  await writeFile(resolve(dir, 'physical.css'), tokens);
+  await writeFile(resolve(dir, 'colors.css'), tokens);
+  assert.equal(
+    tokens.includes(
+      '@media (prefers-color-scheme: dark) {\n' +
+        '  :root{\n' +
+        '    --link: var(--primary-900);\n' +
+        '    --link-hover: var(--primary-850);',
+    ),
+    true,
+  );
+  assert.equal(
+    tokens.includes(
+      '@media (color-gamut: rec2020) {\n' +
+        '  :root{\n' +
+        '    --primary-50: color(rec2020 0.004 0.021 0.176);',
+    ),
+    true,
+  );
 });

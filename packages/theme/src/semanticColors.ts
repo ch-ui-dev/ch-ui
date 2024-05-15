@@ -36,7 +36,11 @@ export type SemanticColorTokensConfig<
 };
 
 const themeBlock = (predicate: string | null, block: string) => {
-  return `${predicate ?? ':root'} {\n${block}\n}`;
+  if (predicate) {
+    return `${predicate} {\n  :root{\n${block}\n  }\n}`;
+  } else {
+    return `:root {\n${block}\n}`;
+  }
 };
 
 export const renderSemanticColorTokens = <
@@ -55,7 +59,9 @@ export const renderSemanticColorTokens = <
         Object.entries(semanticColors)
           .map(
             ([tokenName, { [themeId]: tokenValue }]) =>
-              `  --${namespace}${tokenName}: var(${tokenValue});`,
+              `${
+                predicate ? '    ' : '  '
+              }--${namespace}${tokenName}: var(${tokenValue});`,
           )
           .join('\n'),
       ),
