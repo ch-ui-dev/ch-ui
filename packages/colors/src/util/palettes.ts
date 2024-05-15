@@ -216,24 +216,3 @@ export function cssGradientFromCurve(
   );
   return `linear-gradient(to right, ${values.join(', ')})`;
 }
-
-export function valuesFromPalette(
-  palette: Palette,
-  nShades = 16,
-  range = [0, 100],
-  gamut: OutputGamut = 'sRGB',
-  linearity = defaultLinearity,
-  curveDepth = 24,
-): string[] {
-  return paletteShadesToValues(
-    paletteShadesFromCurve(
-      curvePathFromPalette(palette),
-      nShades,
-      range,
-      gamut,
-      linearity,
-      curveDepth,
-    ),
-    gamut,
-  );
-}
