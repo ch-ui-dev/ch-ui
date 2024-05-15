@@ -26,6 +26,10 @@
       "import": "./dist/loader/index.js",
       "require": "./dist/loader/index.cjs",
       "types": "./dist/loader/index.d.ts"
+    },
+    "./ch-default-root.css": {
+      "import": "./dist/ch-ui/ch-ui.css",
+      "require": "./dist/ch-ui/ch-ui.css"
     }
   },
   "files": [ "dist", "src" ],
