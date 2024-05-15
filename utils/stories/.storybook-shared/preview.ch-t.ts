@@ -1,9 +1,14 @@
-const physicalColors = {
+import {
+  type PhysicalColorTokensConfig,
+  type SemanticColorTokensConfig,
+} from '@ch-ui/vite-plugin-theme';
+
+const physicalColors: PhysicalColorTokensConfig = {
   gamuts: ['P3', 'rec2020'],
   shadeNumbering: 'emissive',
   palettes: {
     primary: {
-      keyColor: [43, 81, 282],
+      keyColor: [43, 83, 282],
       darkCp: 0.86,
       lightCp: 1,
       hueTorsion: -30,
@@ -11,7 +16,7 @@ const physicalColors = {
   },
 };
 
-const semanticColors = {
+const semanticColors: SemanticColorTokensConfig<typeof physicalColors> = {
   themes: { light: null, dark: '@media (prefers-color-scheme: dark)' },
   semanticColors: {
     'ch-bg-input': {

@@ -3,16 +3,21 @@
 import { Plugin } from 'vite';
 import autoprefixer from 'autoprefixer';
 import nesting from 'postcss-nesting';
-import chTheme from '@ch-ui/theme';
+import chTheme, { type PluginOptions } from '@ch-ui/theme';
 
-const ext = /ch-t/;
+export {
+  type SemanticColorTokensConfig,
+  type PhysicalColorTokensConfig,
+  type ThemeConfig,
+  type PluginOptions,
+} from '@ch-ui/theme';
 
-export default function vitePluginTheme(options?: { root?: string }): Plugin {
+export default function vitePluginTheme(options?: PluginOptions): Plugin {
   // TODO: render CSS custom property declarations from options…?
   //  …or, like tailwind, could this be made into a postcss plugin?
   return {
     name: 'vite-plugin-ch-ui-theme',
-    config: async ({ root }, env) => {
+    config: async () => {
       return {
         css: {
           postcss: {

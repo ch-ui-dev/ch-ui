@@ -1,2 +1,5 @@
-@chui ./preview.ch-t.js;
+@chui preview;
 
+:root{
+    font-family: sans-serif;
+}

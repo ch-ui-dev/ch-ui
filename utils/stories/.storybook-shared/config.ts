@@ -6,6 +6,7 @@ import TurbosnapPlugin from 'vite-plugin-turbosnap';
 import IconsPlugin from '@ch-ui/vite-plugin-icons';
 import ThemePlugin from '@ch-ui/vite-plugin-theme';
 import { resolve } from 'node:path';
+import previewThemeConfig from './preview.ch-t';
 
 export const config = (
   specificConfig: Partial<StorybookConfig> & Pick<StorybookConfig, 'stories'>,
@@ -33,7 +34,7 @@ export const config = (
           rootDir: turbosnapRootDir ?? config.root ?? __dirname,
         }),
         ThemePlugin({
-          root: __dirname,
+          config: () => previewThemeConfig,
         }),
         IconsPlugin({
           tokenPattern:

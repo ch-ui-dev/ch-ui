@@ -1,15 +1,12 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { PluginCreator, parse } from 'postcss';
-import { resolve } from 'node:path';
-export * from './physicalColors';
-export * from './semanticColors';
+import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';
 import { renderPhysicalColorTokens } from './physicalColors';
 import { renderSemanticColorTokens } from './semanticColors';
 
-type PluginOptions = {
-  root?: string;
+export type PluginOptions = {
+  config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
 };
 
 const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
@@ -17,12 +14,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
     postcssPlugin: '@ch-ui/theme',
     AtRule: {
       async chui(rule) {
-        console.log('[Encountered @chui]', rule.params);
-        const configModule = await import(
-          resolve(...(opts?.root ? [opts.root, rule.params] : [rule.params]))
-        );
-        const config: ThemeConfig = configModule.default.default;
-        console.log('[theme plugin config]', config);
+        const config = (await opts?.config(rule.params)) ?? {};
         rule.replaceWith(
           parse(
             `${
@@ -42,5 +34,9 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 };
 
 creator.postcss = true;
+
+export * from './physicalColors';
+export * from './semanticColors';
+export * from './theme';
 
 export default creator;
