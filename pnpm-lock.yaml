@@ -113,6 +113,9 @@ importers:
       '@ch-ui/colors':
         specifier: workspace:*
         version: link:../colors
+      postcss:
+        specifier: ^8.4.38
+        version: 8.4.38
     devDependencies:
       '@types/node':
         specifier: ^20.12.3
@@ -142,9 +145,9 @@ importers:
 
   packages/vite-plugin-theme:
     dependencies:
-      '@ch-ui/colors':
+      '@ch-ui/theme':
         specifier: workspace:*
-        version: link:../colors
+        version: link:../theme
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -167,6 +170,9 @@ importers:
       '@ch-ui/vite-plugin-icons':
         specifier: workspace:*
         version: link:../../packages/vite-plugin-icons
+      '@ch-ui/vite-plugin-theme':
+        specifier: workspace:*
+        version: link:../../packages/vite-plugin-theme
       '@chromatic-com/storybook':
         specifier: ^1.3.3
         version: 1.3.3(react@18.2.0)
@@ -3442,6 +3448,23 @@ packages:
       - verdaccio
     dev: true
 
+  /@nrwl/js@18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)(@types/node@20.12.7)(nx@18.3.4)(typescript@5.4.5):
+    resolution: {integrity: sha512-oyiMoxzDVGQe5E4UFGO/WAOU211HEIdRxSEOfs1lPhvA8lKbUa0IWDqPOugNws/YHAr+vUTU3sZDJ3uU3RJuYQ==}
+    dependencies:
+      '@nx/js': 18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)(@types/node@20.12.7)(nx@18.3.4)(typescript@5.4.5)
+    transitivePeerDependencies:
+      - '@babel/traverse'
+      - '@swc-node/register'
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - nx
+      - supports-color
+      - typescript
+      - verdaccio
+    dev: true
+
   /@nrwl/storybook@18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)(@types/node@20.12.7)(nx@18.3.4)(typescript@5.3.3):
     resolution: {integrity: sha512-EfaIYCLUiQsUKnlbC0t5TlNsrsUf1tmiKNM3KB1v0jj2yM7BQOchd8N1uFQVvjrbAouMoFMry1EWJKA+O220Vg==}
     dependencies:
@@ -3669,7 +3692,7 @@ packages:
       '@babel/preset-env': 7.24.5(@babel/core@7.24.5)
       '@babel/preset-typescript': 7.24.1(@babel/core@7.24.5)
       '@babel/runtime': 7.24.5
-      '@nrwl/js': 18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)(@types/node@20.12.7)(nx@18.3.4)(typescript@5.3.3)
+      '@nrwl/js': 18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)(@types/node@20.12.7)(nx@18.3.4)(typescript@5.4.5)
       '@nx/devkit': 18.3.4(nx@18.3.4)
       '@nx/workspace': 18.3.4(@swc-node/register@1.9.0)(@swc/core@1.3.107)
       '@phenomnomnominal/tsquery': 5.0.1(typescript@5.4.5)

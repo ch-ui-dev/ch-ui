@@ -10,12 +10,26 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "main": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./types/src/index.d.ts"
+    }
+  },
+  "publishConfig": {
+    "main": "dist/cjs/index.cjs",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/src/index.d.ts"
+  },
   "files": [
     "src",
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/colors": "workspace:*"
+    "@ch-ui/colors": "workspace:*",
+    "postcss": "^8.4.38"
   },
   "devDependencies": {
     "@types/node": "^20.12.3",

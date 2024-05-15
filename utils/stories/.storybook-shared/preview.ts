@@ -3,7 +3,7 @@
 import { defineCustomElements } from '@ch-ui/elements/loader';
 import { setMode } from '@ch-ui/elements';
 import { Preview } from '@storybook/web-components';
-import '@ch-ui/elements/ch-default-root.css';
+import './preview.css';
 
 /**
  * Load @ch-ui/elements.

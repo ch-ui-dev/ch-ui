@@ -12,6 +12,8 @@
       "dependsOn": [
         "colors:build",
         "icons:build",
+        "vite-plugin-theme:build",
+        "vite-plugin-icons:build",
         "elements:build-watch"
       ],
       "executor": "@nx/storybook:storybook",

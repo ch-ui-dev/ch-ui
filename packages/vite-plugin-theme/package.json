@@ -10,7 +10,14 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./types/src/index.d.ts"
+    }
+  },
   "publishConfig": {
     "main": "dist/cjs/index.cjs",
     "module": "dist/esm/index.js",
@@ -21,7 +28,7 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/colors": "workspace:*",
+    "@ch-ui/theme": "workspace:*",
     "autoprefixer": "^10.4.19",
     "postcss-nesting": "^12.1.2"
   },

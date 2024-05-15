@@ -10,6 +10,7 @@
         "outputPath": "packages/vite-plugin-theme/dist/types",
         "tsConfig": "packages/vite-plugin-theme/tsconfig.json"
       },
+      "dependsOn": ["theme:build"],
       "outputs": [
         "{options.outputPath}"
       ]
