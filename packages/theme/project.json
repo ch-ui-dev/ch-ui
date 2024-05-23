@@ -25,6 +25,7 @@
           ]
         },
         "dependsOn": [
+          "^build",
           "compile"
         ],
         "outputs": [
@@ -42,6 +43,7 @@
           ]
         },
         "dependsOn": [
+          "^build",
           "compile",
           "build-esm"
         ],

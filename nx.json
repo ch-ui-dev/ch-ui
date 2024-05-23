@@ -18,35 +18,12 @@
       ],
       "cache": true
     },
-    "build-storybook": {
-      "outputs": [
-        "{projectRoot}/out"
-      ],
-      "cache": true
-    },
     "lint": {
       "cache": true
-    },
-    "format": {
-      "cache": true
-    },
-    "test": {
-      "inputs": [
-        "default",
-        "^default"
-      ]
     }
   },
   "affected": {
     "defaultBase": "main"
-  },
-  "implicitDependencies": {
-    "pnpm-workspace.yaml": "*",
-    "pnpm-lock.yaml": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    }
   },
   "nxCloudAccessToken": "ZTY0MzBjOTgtZmU2Mi00M2YxLTk0N2UtNzdkOTJkZjVhN2JmfHJlYWQtd3JpdGU="
 }

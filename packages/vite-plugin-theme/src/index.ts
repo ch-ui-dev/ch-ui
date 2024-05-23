@@ -15,6 +15,7 @@ export {
 export default function vitePluginTheme(options?: PluginOptions): Plugin {
   // TODO: render CSS custom property declarations from options…?
   //  …or, like tailwind, could this be made into a postcss plugin?
+  console.log('[options]', options);
   return {
     name: 'vite-plugin-ch-ui-theme',
     config: async () => {
