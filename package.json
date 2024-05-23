@@ -55,8 +55,8 @@
       "notice/notice": [
         "error",
         {
-          "mustMatch": "Copyright \\(c\\) [0-9]{0,4}, Will Shown <ch-ui@willshown.com>",
-          "template": "// Copyright (c) <%= YEAR %>, Will Shown <ch-ui@willshown.com>\n\n"
+          "mustMatch": "Required notice: Copyright \\(c\\) [0-9]{0,4}, Will Shown <ch-ui@willshown.com>",
+          "template": "// Required notice: Copyright (c) <%= YEAR %>, Will Shown <ch-ui@willshown.com>\n\n"
         }
       ]
     }

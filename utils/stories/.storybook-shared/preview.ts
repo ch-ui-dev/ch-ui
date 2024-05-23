@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { defineCustomElements } from '@ch-ui/elements/loader';
 import { setMode } from '@ch-ui/elements';

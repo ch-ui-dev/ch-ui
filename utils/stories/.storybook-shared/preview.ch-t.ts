@@ -1,3 +1,5 @@
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+
 import {
   type PhysicalColorTokensConfig,
   type SemanticColorTokensConfig,

@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';

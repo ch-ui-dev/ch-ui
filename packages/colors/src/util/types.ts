@@ -1,4 +1,4 @@
-/** Copyright (c) 2024, Will Shown <ch-ui@willshown.com> **/
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 export type Vec2 = [number, number];
 export type Vec3 = [number, number, number];

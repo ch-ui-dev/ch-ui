@@ -1,15 +1,15 @@
-/* Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+/* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
 
 @layer elements {
-    ch-button-group {
-        display: inline-flex;
-    }
-    ch-button-group > ch-button:first-child {
-        border-start-end-radius: 0;
-        border-end-end-radius: 0;
-    }
-    ch-button-group > ch-button:last-child {
-        border-start-start-radius: 0;
-        border-end-start-radius: 0;
-    }
+  ch-button-group {
+    display: inline-flex;
+  }
+  ch-button-group > ch-button:first-child {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+  ch-button-group > ch-button:last-child {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
 }
