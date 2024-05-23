@@ -1,14 +1,14 @@
 {
-  "root": "packages/icons",
-  "sourceRoot": "packages/icons/src",
+  "root": "packages/vite-plugin-theme",
+  "sourceRoot": "packages/vite-plugin-theme/src",
   "projectType": "library",
   "targets": {
     "compile": {
       "executor": "@nx/js:tsc",
       "options": {
-        "main": "packages/icons/src/index.ts",
-        "outputPath": "packages/icons/dist/types",
-        "tsConfig": "packages/icons/tsconfig.json"
+        "main": "packages/vite-plugin-theme/src/index.ts",
+        "outputPath": "packages/vite-plugin-theme/dist/types",
+        "tsConfig": "packages/vite-plugin-theme/tsconfig.json"
       },
       "outputs": [
         "{options.outputPath}"
@@ -17,9 +17,9 @@
     "build-esm": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "main": "packages/icons/src/index.ts",
-        "outputPath": "packages/icons/dist/esm",
-        "tsConfig": "packages/icons/tsconfig-esbuild.json",
+        "main": "packages/vite-plugin-theme/src/index.ts",
+        "outputPath": "packages/vite-plugin-theme/dist/esm",
+        "tsConfig": "packages/vite-plugin-theme/tsconfig-esbuild.json",
         "format": [
           "esm"
         ]
@@ -35,9 +35,9 @@
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "main": "packages/icons/src/index.ts",
-        "outputPath": "packages/icons/dist/cjs",
-        "tsConfig": "packages/icons/tsconfig-esbuild.json",
+        "main": "packages/vite-plugin-theme/src/index.ts",
+        "outputPath": "packages/vite-plugin-theme/dist/cjs",
+        "tsConfig": "packages/vite-plugin-theme/tsconfig-esbuild.json",
         "format": [
           "cjs"
         ]
@@ -56,16 +56,13 @@
       "options": {
         "format": "unix",
         "lintFilePatterns": [
-          "packages/icons/src/**/*.{js,jsx,ts,tsx}"
+          "packages/vite-plugin-theme/src/**/*.{js,jsx,ts,tsx}"
         ],
         "quiet": true
       },
       "outputs": [
         "{options.outputFile}"
       ]
-    },
-    "test": {
-      "command": "cd packages/icons && ts-node ./test/sanity.spec.ts"
     }
   }
 }

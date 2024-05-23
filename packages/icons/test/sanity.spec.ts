@@ -10,7 +10,7 @@ const phosphorConfig: BundleParams = {
   tokenPattern:
     'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
   assetPath: (name, style) =>
-    `../node_modules/@phosphor-icons/core/assets/${style}/${name}${
+    `./node_modules/@phosphor-icons/core/assets/${style}/${name}${
       style === 'regular' ? '' : `-${style}`
     }.svg`,
   spritePath: '../dist/assets/sprite.svg',

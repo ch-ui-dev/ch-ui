@@ -18,23 +18,21 @@
   "unpkg": "dist/elements/elements.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/elements/elements.esm.js",
-      "require": "./dist/elements/elements.cjs.js"
-    },
-    "./ch-button-group": {
-      "import": "./dist/components/ch-button-group.js",
-      "types": "./dist/components/ch-button-group.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/types/index.d.ts"
     },
     "./loader": {
-      "import": "./loader/index.js",
-      "require": "./loader/index.cjs",
-      "types": "./loader/index.d.ts"
+      "import": "./dist/loader/index.js",
+      "require": "./dist/loader/index.cjs",
+      "types": "./dist/loader/index.d.ts"
+    },
+    "./ch-default-root.css": {
+      "import": "./dist/ch-ui/ch-ui.css",
+      "require": "./dist/ch-ui/ch-ui.css"
     }
   },
-  "files": [
-    "dist/",
-    "loader/"
-  ],
+  "files": [ "dist", "src" ],
   "devDependencies": {
     "@stencil/core": "^4.7.0",
     "@types/jest": "^29.5.6",

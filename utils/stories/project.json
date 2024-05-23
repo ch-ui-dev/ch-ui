@@ -10,8 +10,7 @@
         }
       },
       "dependsOn": [
-        "colors:build",
-        "icons:build",
+        "^build",
         "elements:build-watch"
       ],
       "executor": "@nx/storybook:storybook",

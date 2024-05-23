@@ -1,7 +1,7 @@
 {
-  "name": "@ch-ui/icons",
+  "name": "@ch-ui/theme",
   "version": "0.5.0",
-  "description": "Tools for automating icon sprite bundling.",
+  "description": "A theme system for @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -11,6 +11,13 @@
     "node": ">=20.0.0"
   },
   "main": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./types/src/index.d.ts"
+    }
+  },
   "publishConfig": {
     "main": "dist/cjs/index.cjs",
     "module": "dist/esm/index.js",
@@ -21,14 +28,11 @@
     "dist"
   ],
   "dependencies": {
-    "svg-sprite": "^2.0.4"
+    "@ch-ui/colors": "workspace:*",
+    "postcss": "^8.4.38"
   },
   "devDependencies": {
-    "@phosphor-icons/core": "^2.1.1",
     "@types/node": "^20.12.3",
-    "@types/svg-sprite": "^0.0.39"
-  },
-  "scripts": {
-    "test": "ts-node ./test/sanity.spec.ts"
+    "ts-node": "^10.9.2"
   }
 }

@@ -1,4 +1,5 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import './ch-button.css';
 
 export default {
   // this creates a ‘Components’ folder and a ‘MyComponent’ subfolder

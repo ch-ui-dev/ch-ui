@@ -18,23 +18,8 @@
       ],
       "cache": true
     },
-    "build-storybook": {
-      "outputs": [
-        "{projectRoot}/out"
-      ],
-      "cache": true
-    },
     "lint": {
       "cache": true
-    },
-    "format": {
-      "cache": true
-    },
-    "test": {
-      "inputs": [
-        "default",
-        "^default"
-      ]
     }
   },
   "affected": {
