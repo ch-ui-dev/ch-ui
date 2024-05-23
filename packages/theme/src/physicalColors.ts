@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 // TODO: define how color tokens get specified
 

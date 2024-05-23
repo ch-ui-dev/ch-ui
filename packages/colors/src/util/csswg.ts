@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 // The following is a combination of several files retrieved from CSSWG’s
 // CSS Color 4 module. It was modified to support TypeScript types adapted for

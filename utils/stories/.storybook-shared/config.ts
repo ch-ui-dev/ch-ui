@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { type StorybookConfig } from '@storybook/web-components-vite';
 import { mergeConfig } from 'vite';
