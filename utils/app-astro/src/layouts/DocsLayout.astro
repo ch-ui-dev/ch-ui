@@ -1,0 +1,18 @@
+---
+import Head from '../components/Head.astro';
+import Nav from '../components/Nav.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={Astro.currentLocale ?? 'en'}>
+  <Head title={title}/>
+  <body>
+    <Nav/>
+    <slot/>
+  </body>
+</html>

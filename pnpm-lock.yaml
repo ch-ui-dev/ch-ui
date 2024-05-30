@@ -158,6 +158,9 @@ importers:
       '@types/node':
         specifier: ^20.12.3
         version: 20.12.7
+      postcss:
+        specifier: ^8.4.38
+        version: 8.4.38
       vite:
         specifier: ^5.2.8
         version: 5.2.8(@types/node@20.12.7)
@@ -167,6 +170,9 @@ importers:
       '@ch-ui/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@ch-ui/vite-plugin-theme':
+        specifier: workspace:*
+        version: link:../../packages/vite-plugin-theme
       astro:
         specifier: ^4.8.7
         version: 4.8.7(@types/node@20.12.7)(typescript@5.3.3)

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ch-ui/elements": "workspace:*",
+    "@ch-ui/vite-plugin-theme": "workspace:*",
     "astro": "^4.8.7"
   },
   "devDependencies": {
