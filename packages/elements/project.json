@@ -9,9 +9,6 @@
     "serve": {
       "command": "cd packages/elements && ./node_modules/.bin/stencil build --serve --watch --dev"
     },
-    "docs": {
-      "command": "cd packages/elements && ./node_modules/.bin/stencil docs"
-    },
     "build-watch": {
       "executor": "nx:run-commands",
       "options": {
