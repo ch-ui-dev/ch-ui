@@ -17,5 +17,15 @@
     padding-inline-start: var(--ch-pis-button);
     padding-inline-end: var(--ch-pie-button);
     padding-inline: var(--ch-pli-button, 1rem);
+
+    .ch-button-group > &:first-child {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    .ch-button-group > &:last-child {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
   }
 }
