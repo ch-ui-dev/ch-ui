@@ -7,6 +7,9 @@ import { Component, Host, h } from '@stencil/core';
   shadow: false,
   styleUrls: { default: ['./ch-button-group.css'] },
 })
+/**
+ * A way of grouping buttons. If the
+ */
 export class ChButtonGroup {
   render() {
     return <Host role="group"></Host>;

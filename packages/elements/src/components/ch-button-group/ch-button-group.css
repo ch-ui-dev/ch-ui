@@ -2,7 +2,7 @@
 
 @layer elements {
   ch-button-group {
-    display: inline-flex;
+    display: var(--ch-display-button-group, inline-flex);
   }
   ch-button-group > ch-button:first-child {
     border-start-end-radius: 0;
