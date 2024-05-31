@@ -13,10 +13,11 @@ import { Component, h, Prop } from '@stencil/core';
 export class ChIcon {
   @Prop() sprite: string = global['chIconSprite'] ?? './icons.svg';
   @Prop() symbol: string;
+  @Prop() size: string = '1em';
 
   render() {
     return (
-      <svg>
+      <svg style={{ blockSize: this.size, inlineSize: this.size }}>
         <use href={`${this.sprite}#${this.symbol}`} />
       </svg>
     );

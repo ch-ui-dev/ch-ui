@@ -13,18 +13,19 @@ Basic.args = {
   symbol: 'ph--feather--duotone',
 };
 
-export const Demo = () => `<div role='toolbar' class='ch-button-group'>
+export const Demo =
+  () => `<div role='toolbar' class='ch-button-group' style='display:inline-flex;'>
   <ch-button>
     <ch-icon sprite="./assets/sprite.svg" symbol="ph--skip-back--regular"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon sprite="./assets/sprite.svg" symbol="ph--rewind--regular"></ch-icon>
+    <ch-icon sprite="./assets/sprite.svg" symbol="ph--rewind--light" size="1.4em"></ch-icon>
   </ch-button>
   <ch-button>
     <ch-icon sprite="./assets/sprite.svg" symbol="ph--play--regular"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon sprite="./assets/sprite.svg" symbol="ph--fast-forward--regular"></ch-icon>
+    <ch-icon sprite="./assets/sprite.svg" symbol="ph--fast-forward--light" size="1.4em"></ch-icon>
   </ch-button>
   <ch-button>
     <ch-icon sprite="./assets/sprite.svg" symbol="ph--skip-forward--regular"></ch-icon>

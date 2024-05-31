@@ -2,13 +2,16 @@
 
 @layer elements {
   ch-button {
+    --ch-local-border-radius-button: var(--ch-border-radius-button, var(--ch-border-radius-input, 0.25rem));
+
     display: var(--ch-display-button, inline-flex);
+    align-items: var(--ch-align-items-button, center);
 
     cursor: var(--ch-cursor-button, pointer);
 
     background: var(--ch-bg-button, var(--ch-bg-input, #888));
 
-    border-radius: var(--ch-rounded-input, 0.25rem);
+    border-radius: var(--ch-local-border-radius-button);
 
     padding-block-start: var(--ch-pbs-button);
     padding-block-end: var(--ch-pbe-button);
@@ -18,14 +21,18 @@
     padding-inline-end: var(--ch-pie-button);
     padding-inline: var(--ch-pli-button, 1rem);
 
+    .ch-button-group > & {
+      border-radius: 0;
+    }
+
     .ch-button-group > &:first-child {
-      border-start-end-radius: 0;
-      border-end-end-radius: 0;
+      border-start-start-radius: --ch-local-border-radius-button;
+      border-end-start-radius: --ch-local-border-radius-button;
     }
 
     .ch-button-group > &:last-child {
-      border-start-start-radius: 0;
-      border-end-start-radius: 0;
+      border-start-end-radius: --ch-local-border-radius-button;
+      border-end-end-radius: --ch-local-border-radius-button;
     }
   }
 }

@@ -1,0 +1,7 @@
+/* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+
+@layer elements {
+    ch-icon {
+        display: grid;
+    }
+}
