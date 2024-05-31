@@ -6,6 +6,6 @@ export type BundleParams = {
   tokenPattern: string;
   assetPath: (...matches: string[]) => string;
   spritePath: string;
-  contentPath: string;
+  contentPaths: string[];
   config?: Config;
 };

@@ -1,15 +1,15 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 // Based upon @tailwindcss/vite, fetched on 9 April 2024 from <https://github.com/tailwindlabs/tailwindcss/blob/next/packages/%40tailwindcss-vite/package.json>
 
-import path from 'node:path';
-import type { Plugin, Update, ViteDevServer } from 'vite';
+import type { Plugin, ViteDevServer } from 'vite';
 import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
 import pm from 'picomatch';
 
 export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
-  const { tokenPattern, contentPath } = params;
+  const { tokenPattern, contentPaths } = params;
 
-  const isContent = pm(contentPath);
+  const pms = contentPaths.map((contentPath) => pm(contentPath));
+  const isContent = (id: string) => !!pms.find((pm) => pm(id));
 
   function shouldIgnore(id: string, src: string) {
     return !isContent(id);

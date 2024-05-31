@@ -6,11 +6,11 @@ import { BundleParams } from './types';
 
 const split = /[\s\n"]+/m;
 
-export const scanFiles = ({
+const scanFile = ({
   tokenPattern,
   contentPath,
-}: Pick<BundleParams, 'tokenPattern' | 'contentPath'> & {
-  extension?: string;
+}: Pick<BundleParams, 'tokenPattern'> & {
+  contentPath: BundleParams['contentPaths'][number];
 }): Promise<Set<string>> => {
   return new Promise((res, rej) => {
     const tokens = new Set<string>();
@@ -42,3 +42,18 @@ export const scanFiles = ({
     });
   });
 };
+
+export const scanFiles = ({
+  tokenPattern,
+  contentPaths,
+}: Pick<BundleParams, 'tokenPattern' | 'contentPaths'> & {
+  extension?: string;
+}): Promise<Set<string>> =>
+  Promise.all(
+    contentPaths.map((contentPath) => scanFile({ tokenPattern, contentPath })),
+  ).then((tokenSets) => {
+    return tokenSets.reduce((acc, tokenSet) => {
+      Array.from(tokenSet).forEach((token) => acc.add(token));
+      return acc;
+    }, new Set<string>());
+  });

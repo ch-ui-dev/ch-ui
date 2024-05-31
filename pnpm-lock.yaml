@@ -170,6 +170,9 @@ importers:
       '@ch-ui/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@ch-ui/vite-plugin-icons':
+        specifier: workspace:*
+        version: link:../../packages/vite-plugin-icons
       '@ch-ui/vite-plugin-theme':
         specifier: workspace:*
         version: link:../../packages/vite-plugin-theme
