@@ -10,7 +10,7 @@ import './preview.css';
 /**
  * Load @ch-ui/elements.
  */
-chConfigProvider.sprite = './assets/sprite.svg';
+chConfigProvider.sprite = '/assets/sprite.svg';
 defineCustomElements();
 setMode(() => 'default');
 

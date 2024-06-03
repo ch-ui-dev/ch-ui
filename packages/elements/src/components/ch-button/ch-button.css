@@ -26,13 +26,13 @@
     }
 
     .ch-button-group > &:first-child {
-      border-start-start-radius: --ch-local-border-radius-button;
-      border-end-start-radius: --ch-local-border-radius-button;
+      border-start-start-radius: var(--ch-local-border-radius-button);
+      border-end-start-radius: var(--ch-local-border-radius-button);
     }
 
     .ch-button-group > &:last-child {
-      border-start-end-radius: --ch-local-border-radius-button;
-      border-end-end-radius: --ch-local-border-radius-button;
+      border-start-end-radius: var(--ch-local-border-radius-button);
+      border-end-end-radius: var(--ch-local-border-radius-button);
     }
   }
 }

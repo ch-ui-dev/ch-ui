@@ -2,6 +2,6 @@
 
 @layer elements {
     ch-icon {
-        display: grid;
+        display: contents;
     }
 }

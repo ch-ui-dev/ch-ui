@@ -15,19 +15,19 @@ Basic.args = {
 export const Demo =
   () => `<div role='toolbar' class='ch-button-group' style='display:inline-flex;'>
   <ch-button>
-    <ch-icon symbol="ph--skip-back--regular"></ch-icon>
+    <ch-icon symbol="ph--skip-back--fill"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon symbol="ph--rewind--light" size="1.4em"></ch-icon>
+    <ch-icon symbol="ph--rewind--fill" size="1.4em"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon symbol="ph--play--regular"></ch-icon>
+    <ch-icon symbol="ph--play--fill"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon symbol="ph--fast-forward--light" size="1.4em"></ch-icon>
+    <ch-icon symbol="ph--fast-forward--fill" size="1.4em"></ch-icon>
   </ch-button>
   <ch-button>
-    <ch-icon symbol="ph--skip-forward--regular"></ch-icon>
+    <ch-icon symbol="ph--skip-forward--fill"></ch-icon>
   </ch-button>
 </div>`;
 

@@ -1,6 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, Host } from '@stencil/core';
 import { chConfigProvider } from '../../providers';
 
 @Component({
@@ -18,9 +18,11 @@ export class ChIcon {
 
   render() {
     return (
-      <svg style={{ blockSize: this.size, inlineSize: this.size }}>
-        <use href={`${this.sprite}#${this.symbol}`} />
-      </svg>
+      <Host role="none">
+        <svg style={{ blockSize: this.size, inlineSize: this.size }}>
+          <use href={`${this.sprite}#${this.symbol}`} />
+        </svg>
+      </Host>
     );
   }
 }
