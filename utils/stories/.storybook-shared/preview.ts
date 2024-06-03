@@ -1,13 +1,16 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+// TODO(thure): why is IDEA finding the type but TSC is not?
+// @ts-ignore
 import { defineCustomElements } from '@ch-ui/elements/loader';
-import { setMode } from '@ch-ui/elements';
+import { setMode, chConfigProvider } from '@ch-ui/elements';
 import { Preview } from '@storybook/web-components';
 import './preview.css';
 
 /**
  * Load @ch-ui/elements.
  */
+chConfigProvider.sprite = './assets/sprite.svg';
 defineCustomElements();
 setMode(() => 'default');
 

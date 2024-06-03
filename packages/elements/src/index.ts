@@ -1,6 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 export { setMode } from '@stencil/core';
+export * from './providers';
 
 /**
  * @fileoverview entry point for your component library

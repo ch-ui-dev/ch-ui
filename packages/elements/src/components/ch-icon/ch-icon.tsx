@@ -1,6 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { Component, h, Prop } from '@stencil/core';
+import { chConfigProvider } from '../../providers';
 
 @Component({
   tag: 'ch-icon',
@@ -11,7 +12,7 @@ import { Component, h, Prop } from '@stencil/core';
  * An icon component which uses an icon sprite.
  */
 export class ChIcon {
-  @Prop() sprite: string = global['chIconSprite'] ?? './icons.svg';
+  @Prop() sprite: string = chConfigProvider.sprite ?? './icons.svg';
   @Prop() symbol: string;
   @Prop() size: string = '1em';
 
