@@ -14,14 +14,14 @@ function resolveSprite(symbol?: string) {
   }
 }
 
+/**
+ * An icon component which uses an icon sprite.
+ */
 @Component({
   tag: 'ch-icon',
   shadow: false,
   styleUrls: { default: ['./ch-icon.css'] },
 })
-/**
- * An icon component which uses an icon sprite.
- */
 export class ChIcon {
   /**
    * The path to the .svg file to pass to `href`. This will default to a value
