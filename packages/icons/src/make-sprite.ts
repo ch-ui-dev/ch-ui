@@ -2,7 +2,7 @@
 
 import { BundleParams } from './types';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, basename } from 'node:path';
 import SVGSpriter from 'svg-sprite';
 
 type Resource = {
@@ -18,7 +18,10 @@ export const makeSprite = async (
 
   const sprite = new SVGSpriter({
     dest: dirname(resolvedSpritePath),
-    mode: { symbol: { dest: '.', sprite: 'sprite.svg' }, ...config.mode },
+    mode: {
+      symbol: { dest: '.', sprite: basename(resolvedSpritePath) },
+      ...config.mode,
+    },
     ...config,
   });
 
