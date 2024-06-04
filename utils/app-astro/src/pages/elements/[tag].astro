@@ -1,0 +1,21 @@
+---
+import { Markdown } from '@astropub/md'
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import elementsDocs from '@ch-ui/elements/docs';
+
+export function getStaticPaths() {
+  return elementsDocs.components.map(({ tag }) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+
+const component = elementsDocs.components.find((component) => tag === component.tag);
+
+if (!component) return Astro.redirect('/404');
+
+const { docs } = component;
+---
+<DocsLayout title={`${tag} element | ch—ui: a malleable design system`}>
+  <h1>{tag}</h1>
+  <Markdown of={docs} />
+</DocsLayout>

@@ -27,6 +27,11 @@
       "require": "./dist/loader/index.cjs",
       "types": "./dist/loader/index.d.ts"
     },
+    "./docs": {
+      "import": "./dist/docs.json",
+      "require": "./dist/docs.json",
+      "types": "./dist/docs.d.ts"
+    },
     "./ch-default-root.css": {
       "import": "./dist/ch-ui/ch-ui.css",
       "require": "./dist/ch-ui/ch-ui.css"
