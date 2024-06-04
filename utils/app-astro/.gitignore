@@ -3,4 +3,3 @@
 # Files built by other packages in the workspace. To populate, ensure dependent builds run.
 
 public/icons.svg
-src/pages/elements
