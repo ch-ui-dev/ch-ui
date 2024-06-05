@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import assert from 'node:assert';
 import test from 'node:test';
@@ -28,7 +28,10 @@ const physicalColorsConfig: PhysicalColorTokensConfig = {
 const semanticColorsConfig: SemanticColorTokensConfig<
   typeof physicalColorsConfig
 > = {
-  themes: { light: null, dark: '@media (prefers-color-scheme: dark)' },
+  themes: {
+    light: [':root'],
+    dark: ['@media (prefers-color-scheme: dark)', ':root'],
+  },
   semanticColors: {
     link: {
       light: '--primary-100',
@@ -53,7 +56,7 @@ test('physical and semantic color tokens are generated as expected', async () =>
   assert.equal(
     tokens.includes(
       '@media (prefers-color-scheme: dark) {\n' +
-        '  :root{\n' +
+        '  :root {\n' +
         '    --link: var(--primary-900);\n' +
         '    --link-hover: var(--primary-850);',
     ),
@@ -62,7 +65,7 @@ test('physical and semantic color tokens are generated as expected', async () =>
   assert.equal(
     tokens.includes(
       '@media (color-gamut: rec2020) {\n' +
-        '  :root{\n' +
+        '  :root {\n' +
         '    --primary-50: color(rec2020 0.004 0.021 0.176);',
     ),
     true,

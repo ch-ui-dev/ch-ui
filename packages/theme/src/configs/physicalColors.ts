@@ -22,6 +22,7 @@ import {
   Lab_to_sRGB_value,
   Lab_to_rec2020_value,
 } from '@ch-ui/colors';
+import { renderBlock } from '../render';
 
 const dtor = Math.PI / 180;
 
@@ -63,12 +64,12 @@ export type PhysicalColorTokensConfig = {
 const colorGamutBlock = (gamut: OutputGamut, block: string) => {
   switch (gamut) {
     case 'rec2020':
-      return `@media (color-gamut: rec2020) {\n  :root{\n${block}\n  }\n}`;
+      return renderBlock(block, 0, ['@media (color-gamut: rec2020)', ':root']);
     case 'P3':
-      return `@media (color-gamut: p3) {\n  :root{\n${block}\n  }\n}`;
+      return renderBlock(block, 0, ['@media (color-gamut: p3)', ':root']);
     case 'sRGB':
     default:
-      return `:root {\n${block}\n}`;
+      return renderBlock(block, 0, [':root']);
   }
 };
 
@@ -145,9 +146,7 @@ export const renderPhysicalColorTokens = ({
               return luminosities
                 .map((luminosity) => {
                   const lab = lerp(luminosity, constellation);
-                  return `${
-                    gamut === 'sRGB' ? '  ' : '    '
-                  }--${namespace}${paletteId}-${shadeNumber(
+                  return `--${namespace}${paletteId}-${shadeNumber(
                     shadeNumbering,
                     luminosity,
                   )}: ${colorValue(gamut, lab)};`;

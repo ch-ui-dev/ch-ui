@@ -2,8 +2,10 @@
 
 import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';
-import { renderPhysicalColorTokens } from './physicalColors';
-import { renderSemanticColorTokens } from './semanticColors';
+import {
+  renderPhysicalColorTokens,
+  renderSemanticColorTokens,
+} from './configs';
 
 export type PluginOptions = {
   config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
@@ -35,8 +37,8 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 
 creator.postcss = true;
 
-export * from './physicalColors';
-export * from './semanticColors';
+export * from './configs';
+export * from './types';
 export * from './theme';
 
 export default creator;

@@ -4,13 +4,14 @@ import {
   DefaultLuminosities,
   PhysicalColorTokensConfig,
 } from './physicalColors';
+import { renderBlock } from '../render';
+import { ConfigThemes, Statements } from '../types';
 
 /**
- * Mapping theme ids to the wrapping predicate
+ * Mapping theme ids to the set of nested at-rules-or-selectors
  */
-export type SemanticColorThemes = Record<string, string | null>;
 
-type DefaultThemes = Record<'light' | 'dark', string | null>;
+type DefaultThemes = Record<'light' | 'dark', Statements>;
 
 export type SemanticColorTokensConfig<
   /**
@@ -20,7 +21,7 @@ export type SemanticColorTokensConfig<
   /**
    * The map of theme ids to their wrapping predicates
    */
-  T extends SemanticColorThemes = DefaultThemes,
+  T extends ConfigThemes = DefaultThemes,
   /**
    * Possible values of luminosities from the physical color tokens config.
    * Can provide `string | number` to make fully broad.
@@ -35,17 +36,9 @@ export type SemanticColorTokensConfig<
   namespace?: string;
 };
 
-const themeBlock = (predicate: string | null, block: string) => {
-  if (predicate) {
-    return `${predicate} {\n  :root{\n${block}\n  }\n}`;
-  } else {
-    return `:root {\n${block}\n}`;
-  }
-};
-
 export const renderSemanticColorTokens = <
   P extends PhysicalColorTokensConfig,
-  T extends SemanticColorThemes = DefaultThemes,
+  T extends ConfigThemes = DefaultThemes,
   L extends string | number = DefaultLuminosities,
 >({
   themes,
@@ -53,17 +46,16 @@ export const renderSemanticColorTokens = <
   namespace = '',
 }: SemanticColorTokensConfig<P, T, L>): string => {
   return Object.entries(themes)
-    .map(([themeId, predicate]) =>
-      themeBlock(
-        predicate,
+    .map(([themeId, statements]) =>
+      renderBlock(
         Object.entries(semanticColors)
           .map(
             ([tokenName, { [themeId]: tokenValue }]) =>
-              `${
-                predicate ? '    ' : '  '
-              }--${namespace}${tokenName}: var(${tokenValue});`,
+              `--${namespace}${tokenName}: var(${tokenValue});`,
           )
           .join('\n'),
+        0,
+        statements,
       ),
     )
     .join('\n\n');
