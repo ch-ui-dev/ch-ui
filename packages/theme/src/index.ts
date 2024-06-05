@@ -5,6 +5,7 @@ import { ThemeConfig } from './theme';
 import {
   renderPhysicalColorTokens,
   renderSemanticColorTokens,
+  renderTypographyTokens,
 } from './configs';
 
 export type PluginOptions = {
@@ -27,6 +28,8 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
               config.semanticColors
                 ? renderSemanticColorTokens(config.semanticColors)
                 : ''
+            }\n\n${
+              config.typography ? renderTypographyTokens(config.typography) : ''
             }`,
           ),
         );

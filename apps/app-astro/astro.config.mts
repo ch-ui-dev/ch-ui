@@ -1,39 +1,8 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { defineConfig } from 'astro/config';
-import chThemePlugin, {
-  type PhysicalColorTokensConfig,
-  type SemanticColorTokensConfig
-} from '@ch-ui/vite-plugin-theme';
-import chIconsPlugin from '@ch-ui/vite-plugin-icons'
-
-const physicalColors: PhysicalColorTokensConfig = {
-  gamuts: ['P3', 'rec2020'],
-  shadeNumbering: 'emissive',
-  palettes: {
-    primary: {
-      keyColor: [43, 83, 282],
-      darkCp: 0.86,
-      lightCp: 1,
-      hueTorsion: -30
-    }
-  }
-};
-
-const semanticColors: SemanticColorTokensConfig<typeof physicalColors> = {
-  themes: { light: [':root'], dark: ['@media (prefers-color-scheme: dark)', ':root'] },
-  semanticColors: {
-    'ch-bg-input': {
-      light: '--primary-100',
-      dark: '--primary-900'
-    }
-  }
-};
-
-const defaultTheme = {
-  physicalColors,
-  semanticColors
-};
+import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-theme';
+import chIconsPlugin from '@ch-ui/vite-plugin-icons';
 
 export default defineConfig({
   site: 'https://ch-ui.dev',
@@ -45,7 +14,7 @@ export default defineConfig({
     plugins: [
       // @ts-ignore
       chThemePlugin({
-        config: () => defaultTheme,
+        config: () => defaultTheme
       }),
       // @ts-ignore
       chIconsPlugin({
@@ -56,7 +25,7 @@ export default defineConfig({
             variant === 'regular' ? '' : `-${variant}`
           }.svg`,
         spritePath: 'public/icons.svg',
-        contentPaths: ['**/src/**/*.{ts,tsx,astro,md}'],
+        contentPaths: ['**/src/**/*.{ts,tsx,astro,md}']
       })
     ]
   }
