@@ -19,7 +19,10 @@ const physicalColors: PhysicalColorTokensConfig = {
 };
 
 const semanticColors: SemanticColorTokensConfig<typeof physicalColors> = {
-  themes: { light: null, dark: '@media (prefers-color-scheme: dark)' },
+  themes: {
+    light: [':root'],
+    dark: ['@media (prefers-color-scheme: dark)', ':root'],
+  },
   semanticColors: {
     'ch-bg-input': {
       light: '--primary-100',
