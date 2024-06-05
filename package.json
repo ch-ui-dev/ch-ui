@@ -17,8 +17,9 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitest/ui": "^1.4.0",
     "esbuild": "~0.19.2",
-    "eslint": "^8.45.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-astro": "^1.2.0",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
@@ -42,6 +43,7 @@
     ],
     "parser": "@typescript-eslint/parser",
     "plugins": [
+      "astro",
       "@typescript-eslint/eslint-plugin",
       "react-hooks",
       "react-refresh",
@@ -49,7 +51,8 @@
     ],
     "extends": [
       "prettier",
-      "plugin:storybook/recommended"
+      "plugin:storybook/recommended",
+      "plugin:astro/recommended"
     ],
     "rules": {
       "notice/notice": [
