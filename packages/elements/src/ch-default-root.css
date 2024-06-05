@@ -3,7 +3,3 @@
 @layer tokens utilities elements;
 
 @import "./components/ch-button/ch-button.css";
-
-:root {
-  font-family: sans-serif;
-}
