@@ -12,7 +12,7 @@ import {
 } from '../src';
 
 const physicalColorsConfig: PhysicalColorTokensConfig = {
-  gamuts: ['P3', 'rec2020'],
+  gamuts: ['p3', 'rec2020'],
   shadeNumbering: 'emissive',
   palettes: {
     primary: {

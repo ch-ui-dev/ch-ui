@@ -16,7 +16,7 @@ export type ThemeConfig = {
 // DEFAULT THEME VALUES
 
 const defaultPhysicalColors: PhysicalColorTokensConfig = {
-  gamuts: ['P3', 'rec2020'],
+  gamuts: ['p3', 'rec2020'],
   shadeNumbering: 'emissive',
   palettes: {
     primary: {

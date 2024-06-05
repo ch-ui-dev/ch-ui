@@ -1,16 +1,8 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import {
-  Lab_to_sRGB,
-  LCH_to_Lab,
-  Lab_to_LCH,
-  Lab_to_P3,
-  sRGB_to_LCH,
-  snap_into_gamut,
-  Lab_to_r2020,
-} from './csswg';
 import { getPointsOnCurvePath } from './geometry';
 import { CurvedHelixPath, OutputGamut, Palette, Vec3 } from './types';
+import Color from 'colorjs.io';
 
 // This file contains functions that combine geometry and color math to create
 // and work with palette curves.
@@ -21,7 +13,6 @@ import { CurvedHelixPath, OutputGamut, Palette, Vec3 } from './types';
  * value to this degree between zero and one, zero meaning use the logarithmic
  * value, one meaning use the linear value.
  */
-const defaultLinearity = 0.75;
 
 function getLinearSpace(min: number, max: number, n: number) {
   const result = [];
@@ -32,25 +23,11 @@ function getLinearSpace(min: number, max: number, n: number) {
   return result;
 }
 
-const getLogSpace = (min: number, max: number, n: number) => {
-  const a = min <= 0 ? 0 : Math.log(min);
-  const b = Math.log(max);
-  const delta = (b - a) / n;
-
-  const result = [Math.pow(Math.E, a)];
-  for (let i = 1; i < n; i += 1) {
-    result.push(Math.pow(Math.E, a + delta * i));
-  }
-  result.push(Math.pow(Math.E, b));
-  return result;
-};
-
 function paletteShadesFromCurvePoints(
   curvePoints: Vec3[],
   nShades: number,
-  range = [0, 100],
-  gamut: OutputGamut = 'sRGB',
-  linearity = defaultLinearity,
+  range = [0, 1],
+  _gamut: OutputGamut = 'srgb',
 ): Vec3[] {
   if (curvePoints.length <= 2) {
     return [];
@@ -58,24 +35,12 @@ function paletteShadesFromCurvePoints(
 
   const paletteShades = [];
 
-  const logLightness = getLogSpace(
-    Math.log10(range[0]),
-    Math.log10(range[1]),
-    nShades,
-  );
-
   const linearLightness = getLinearSpace(range[0], range[1], nShades);
 
   let c = 0;
 
   for (let i = 0; i < nShades; i++) {
-    const l = Math.min(
-      range[1],
-      Math.max(
-        range[0],
-        logLightness[i] * (1 - linearity) + linearLightness[i] * linearity,
-      ),
-    );
+    const l = Math.min(range[1], Math.max(range[0], linearLightness[i]));
 
     while (l > curvePoints[c + 1][0]) {
       c++;
@@ -93,15 +58,15 @@ function paletteShadesFromCurvePoints(
     ] as Vec3;
   }
 
-  return paletteShades.map((Lab: Vec3) => snap_into_gamut(Lab, gamut));
+  // does this need to be snapped into the gamut?
+  return paletteShades;
 }
 
 export function paletteShadesFromCurve(
   curve: CurvedHelixPath,
   nShades = 16,
-  range = [0, 100],
-  gamut: OutputGamut = 'sRGB',
-  linearity = defaultLinearity,
+  range = [0, 1],
+  gamut: OutputGamut = 'srgb',
   curveDepth = 24,
 ): Vec3[] {
   return paletteShadesFromCurvePoints(
@@ -114,57 +79,18 @@ export function paletteShadesFromCurve(
     nShades,
     range,
     gamut,
-    linearity,
   );
 }
 
-export function sRGB_to_hex(rgb: Vec3): string {
-  return `#${rgb
-    .map((x) => {
-      const channel = x < 0 ? 0 : Math.floor(x >= 1.0 ? 255 : x * 256);
-      return channel.toString(16).padStart(2, '0');
-    })
-    .join('')}`;
-}
-
-export function Lab_to_sRGB_value(lab: Vec3): string {
-  return sRGB_to_hex(Lab_to_sRGB(lab));
-}
-
-export function hex_to_sRGB(hex: string): Vec3 {
-  const aRgbHex = hex.match(/#?(..)(..)(..)/);
-  return aRgbHex
-    ? [
-        parseInt(aRgbHex[1], 16) / 255,
-        parseInt(aRgbHex[2], 16) / 255,
-        parseInt(aRgbHex[3], 16) / 255,
-      ]
-    : [0, 0, 0];
-}
-
-export function hex_to_LCH(hex: string): Vec3 {
-  return sRGB_to_LCH(hex_to_sRGB(hex));
-}
-
-export function Lab_to_P3_value(Lab: Vec3) {
-  const [c1, c2, c3] = Lab_to_P3(Lab);
-  return `color(display-p3 ${+c1.toFixed(3)} ${+c2.toFixed(3)} ${+c3.toFixed(
-    3,
-  )})`;
-}
-
-export function Lab_to_rec2020_value(Lab: Vec3) {
-  const [c1, c2, c3] = Lab_to_r2020(Lab);
-  return `color(rec2020 ${+c1.toFixed(3)} ${+c2.toFixed(3)} ${+c3.toFixed(3)})`;
+export function shadeToValue(Lab: Vec3, gamut: OutputGamut): string {
+  return new Color('oklab', Lab).to(gamut).toString({ inGamut: true });
 }
 
 function paletteShadesToValues(
   paletteShades: Vec3[],
   gamut: OutputGamut,
 ): string[] {
-  return paletteShades.map(
-    gamut === 'P3' ? Lab_to_P3_value : Lab_to_sRGB_value,
-  );
+  return paletteShades.map((shade) => shadeToValue(shade, gamut));
 }
 
 function getPointOnHelix(
@@ -173,24 +99,27 @@ function getPointOnHelix(
   torsionT0 = 50,
 ): Vec3 {
   const t = pointOnCurve[0];
-  const [l, c, h] = Lab_to_LCH(pointOnCurve);
+  const [l, c, h] = new Color('oklab', pointOnCurve).to('oklch').oklch;
   const hueOffset = torsion * (t - torsionT0);
-  return LCH_to_Lab([l, c, h + hueOffset]);
+  return Array.from(
+    new Color('oklch', [l, c, h + hueOffset]).to('oklab').oklab,
+  ) as Vec3;
 }
 
 export function curvePathFromPalette({
-  keyColor,
+  keyColor: keyColorCoords,
   darkCp,
   lightCp,
   hueTorsion,
 }: Palette): CurvedHelixPath {
   const blackPosition = [0, 0, 0];
-  const whitePosition = [100, 0, 0];
-  const keyColorPosition = LCH_to_Lab(keyColor);
-  const [l, a, b] = keyColorPosition;
+  const whitePosition = [1, 0, 0];
+  const keyColor = new Color('lch', keyColorCoords);
+  const [l, a, b] = keyColor.to('oklab').oklab;
 
+  const keyColorPosition = [l, a, b];
   const darkControlPosition = [l * (1 - darkCp), a, b];
-  const lightControlPosition = [l + (100 - l) * lightCp, a, b];
+  const lightControlPosition = [l + (1 - l) * lightCp, a, b];
 
   return {
     curves: [
@@ -205,13 +134,12 @@ export function curvePathFromPalette({
 export function cssGradientFromCurve(
   curve: CurvedHelixPath,
   nShades = 16,
-  range = [0, 100],
-  gamut: OutputGamut = 'sRGB',
-  linearity = defaultLinearity,
+  range = [0, 1],
+  gamut: OutputGamut = 'srgb',
   curveDepth = 24,
 ) {
   const values = paletteShadesToValues(
-    paletteShadesFromCurve(curve, nShades, range, gamut, linearity, curveDepth),
+    paletteShadesFromCurve(curve, nShades, range, gamut, curveDepth),
     gamut,
   );
   return `linear-gradient(to right, ${values.join(', ')})`;

@@ -1,5 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+import SpaceAccessors from 'colorjs.io/types/src/space-coord-accessors';
+
 export type Vec2 = [number, number];
 export type Vec3 = [number, number, number];
 export type Vec4 = [number, number, number, number];
@@ -9,7 +11,7 @@ export type Curve = {
   cacheArcLengths?: number[];
 };
 
-export type OutputGamut = 'sRGB' | 'P3' | 'rec2020';
+export type OutputGamut = keyof SpaceAccessors;
 
 export interface CurvePath {
   curves: Curve[];

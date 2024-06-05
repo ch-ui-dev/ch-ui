@@ -18,9 +18,7 @@ import {
   type Vec3,
   curvePathFromPalette,
   paletteShadesFromCurve,
-  Lab_to_P3_value,
-  Lab_to_sRGB_value,
-  Lab_to_rec2020_value,
+  shadeToValue,
 } from '@ch-ui/colors';
 import { renderBlock } from '../render';
 
@@ -65,9 +63,9 @@ const colorGamutBlock = (gamut: OutputGamut, block: string) => {
   switch (gamut) {
     case 'rec2020':
       return renderBlock(block, 0, ['@media (color-gamut: rec2020)', ':root']);
-    case 'P3':
+    case 'p3':
       return renderBlock(block, 0, ['@media (color-gamut: p3)', ':root']);
-    case 'sRGB':
+    case 'srgb':
     default:
       return renderBlock(block, 0, [':root']);
   }
@@ -96,25 +94,12 @@ const shadeNumber = (
   return shadeNumbering === 'emissive' ? luminosity : 1000 - luminosity;
 };
 
-const colorValue = (gamut: OutputGamut, lab: Vec3) => {
-  switch (gamut) {
-    case 'rec2020':
-      return Lab_to_rec2020_value(lab);
-    case 'P3':
-      return Lab_to_P3_value(lab);
-    case 'sRGB':
-    default:
-      return Lab_to_sRGB_value(lab);
-  }
-};
-
 const constellationFromPalette = (gamut: OutputGamut, palette: Palette) =>
   paletteShadesFromCurve(
     curvePathFromPalette(palette),
     21,
-    [0, 100 * (22 / 21)],
+    [0, 22 / 21],
     gamut,
-    1,
     24,
   );
 
@@ -124,7 +109,7 @@ export const renderPhysicalColorTokens = ({
   gamuts = [],
   namespace = '',
 }: PhysicalColorTokensConfig): string => {
-  const outputGamuts = ['sRGB' as const, ...gamuts];
+  const outputGamuts = ['srgb' as const, ...gamuts];
   return `${outputGamuts
     .map((gamut) =>
       colorGamutBlock(
@@ -149,7 +134,7 @@ export const renderPhysicalColorTokens = ({
                   return `--${namespace}${paletteId}-${shadeNumber(
                     shadeNumbering,
                     luminosity,
-                  )}: ${colorValue(gamut, lab)};`;
+                  )}: ${shadeToValue(lab, gamut)};`;
                 })
                 .join('\n');
             },
