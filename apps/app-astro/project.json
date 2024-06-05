@@ -1,21 +1,21 @@
 {
-  "root": "utils/app-astro",
-  "sourceRoot": "utils/app-astro/src",
+  "root": "apps/app-astro",
+  "sourceRoot": "apps/app-astro/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "command": "cd utils/app-astro && ./node_modules/.bin/astro build"
+      "command": "cd apps/app-astro && ./node_modules/.bin/astro build"
     },
     "serve": {
-      "command": "cd utils/app-astro && ./node_modules/.bin/astro dev"
+      "command": "cd apps/app-astro && ./node_modules/.bin/astro dev"
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
         "format": "unix",
         "lintFilePatterns": [
-          "utils/app-astro/**/*.{ts,mts}",
-          "utils/app-astro/.storybook-shared/*.ts"
+          "apps/app-astro/**/*.{ts,mts}",
+          "apps/app-astro/.storybook-shared/*.ts"
         ],
         "quiet": true
       },

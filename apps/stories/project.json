@@ -1,6 +1,6 @@
 {
-  "root": "utils/stories",
-  "sourceRoot": "utils/stories/src",
+  "root": "apps/stories",
+  "sourceRoot": "apps/stories/src",
   "projectType": "library",
   "targets": {
     "storybook": {
@@ -15,7 +15,7 @@
       ],
       "executor": "@nx/storybook:storybook",
       "options": {
-        "configDir": "utils/stories/all-stories"
+        "configDir": "apps/stories/all-stories"
       }
     },
     "lint": {
@@ -23,8 +23,8 @@
       "options": {
         "format": "unix",
         "lintFilePatterns": [
-          "utils/stories/**/*.{ts,mts}",
-          "utils/stories/.storybook-shared/*.ts"
+          "apps/stories/**/*.{ts,mts}",
+          "apps/stories/.storybook-shared/*.ts"
         ],
         "quiet": true
       },

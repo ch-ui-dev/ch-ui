@@ -1,6 +1,6 @@
 packages:
   - packages/**/*
-  - utils/**/*
+  - apps/**/*
   - '!**/dist/**'
   - '!**/out/**'
   - '!**/tmp/**'
