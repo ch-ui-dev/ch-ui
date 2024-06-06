@@ -7,20 +7,17 @@
       "command": "cd apps/app-astro && ./node_modules/.bin/astro build"
     },
     "serve": {
-      "command": "cd apps/app-astro && ./node_modules/.bin/astro dev"
+      "command": "cd apps/app-astro && ./node_modules/.bin/astro dev",
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
         "format": "unix",
-        "lintFilePatterns": [
-          "apps/app-astro/**/*.{ts,astro}"
-        ],
+        "lintFilePatterns": ["apps/app-astro/**/*.{ts,astro}"],
         "quiet": true
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

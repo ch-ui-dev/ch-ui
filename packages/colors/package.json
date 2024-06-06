@@ -21,6 +21,6 @@
     "dist"
   ],
   "dependencies": {
-    "colorjs.io": "^0.5.0"
+    "colorjs": "npm:colorjs.io@^0.5.0"
   }
 }

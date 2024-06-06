@@ -1,6 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import SpaceAccessors from 'colorjs.io/types/src/space-coord-accessors';
+import SpaceAccessors from 'colorjs/types/src/space-coord-accessors';
 
 export type Vec2 = [number, number];
 export type Vec3 = [number, number, number];

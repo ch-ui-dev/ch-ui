@@ -29,5 +29,10 @@
     "typescript": "^5.0.2",
     "vite": "^5.0.0",
     "vitest": "^1.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "colorjs.io": "colorjsio"
+    }
   }
 }

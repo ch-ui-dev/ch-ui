@@ -2,7 +2,7 @@
 
 import { getPointsOnCurvePath } from './geometry';
 import { CurvedHelixPath, OutputGamut, Palette, Vec3 } from './types';
-import Color from 'colorjs.io';
+import Color from 'colorjs';
 
 // This file contains functions that combine geometry and color math to create
 // and work with palette curves.

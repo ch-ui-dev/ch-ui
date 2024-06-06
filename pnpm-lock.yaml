@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  colorjs.io: colorjsio
+
 importers:
 
   .:
@@ -177,9 +180,9 @@ importers:
 
   packages/colors:
     dependencies:
-      colorjs.io:
-        specifier: ^0.5.0
-        version: 0.5.0
+      colorjs:
+        specifier: npm:colorjs.io@^0.5.0
+        version: /colorjs.io@0.5.0
 
   packages/elements:
     devDependencies:

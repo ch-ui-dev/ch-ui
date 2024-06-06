@@ -1,7 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { curvePathFromPalette, paletteShadesFromCurve, Vec3 } from '../util';
-import Color from 'colorjs.io';
+import Color from 'colorjs';
 
 type PaletteConfig = {
   keyColor: Vec3;
