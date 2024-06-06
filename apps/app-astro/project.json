@@ -14,8 +14,7 @@
       "options": {
         "format": "unix",
         "lintFilePatterns": [
-          "apps/app-astro/**/*.{ts,mts}",
-          "apps/app-astro/.storybook-shared/*.ts"
+          "apps/app-astro/**/*.{ts,astro}"
         ],
         "quiet": true
       },
