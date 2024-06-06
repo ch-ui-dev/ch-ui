@@ -1,35 +1,7 @@
-# LAB curved color system tooling
+# (OK) LAB curved color system tooling
 
-This package exports functions that help generate sRGB color systems by drawing bézier curves through CIELAB color space.
+This package exports functions that help generate color systems by drawing helically transformed bézier curves through [OK Lab color space](https://bottosson.github.io/posts/oklab/).
 
 This package is a direct successor to [thure/cielab-curved-palette](https://github.com/thure/cielab-curved-palette/), which has substantially better documentation, so go there if you want to read how this works in greater detail, but file issues here if you have any questions or encounter issues.
 
-Unlike that project, this package has no dependencies, so `@ch-ui/colors` can be used anywhere TypeScript can transpile to.
-
-## Usage
-
-The most often used top-level function is `hexColorsFromPalette`. Fluent Blocks React uses it (generally) like so:
-
-```ts
-import { hexColorsFromPalette, hex_to_LCH } from '@fluent-blocks/colors'
-
-const paletteConfig = {
-  nShades: 16,
-  range: [1.42, 83.57],
-  linearity: 0.77,
-}
-
-const hexColors = hexColorsFromPalette(
-  {
-    keyColor: hex_to_LCH('#6264a7'),
-    darkCp: 2 / 3,
-    lightCp: 1 / 3,
-    hueTorsion: 0,
-  },
-  paletteConfig.nShades,
-  paletteConfig.range,
-  paletteConfig.linearity
-)
-
-console.log('[hex colors]\n', hexColors)
-```
+This package depends only on [`colorjs.io`](https://colorjs.io/).
