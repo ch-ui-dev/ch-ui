@@ -70,18 +70,17 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
       name: '@ch-ui/icons:write',
 
       async transform(src, id, options) {
-        if (!options?.ssr) {
-          // Wait until all other files have been processed, so we can extract
-          // all detected tokens before generating the sprite. This must not be
-          // called during SSR, or it will block the server.
-          await server?.waitForRequestsIdle?.(id);
-        }
+        // if (!options?.ssr) {
+        // // Wait until all other files have been processed, so we can extract
+        // // all detected tokens before generating the sprite. This must not be
+        // // called during SSR, or it will block the server.
+        //   await server?.waitForRequestsIdle?.(id);
+        // }
 
         if (updated) {
           await makeSprite(params, detectedTokens);
           updated = false;
         }
-
         return { code: src };
       },
     },
