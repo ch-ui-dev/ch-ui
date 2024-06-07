@@ -2,15 +2,14 @@
 
 // TODO(thure): why is IDEA finding the type but TSC is not?
 // @ts-ignore
-import { defineCustomElements } from '@ch-ui/elements/loader';
-import { setMode, chConfigProvider } from '@ch-ui/elements';
+import { defineCustomElements } from '@ch-ui/elements';
+import { setMode } from '@ch-ui/elements/config';
 import { Preview } from '@storybook/web-components';
 import './preview.css';
 
 /**
  * Load @ch-ui/elements.
  */
-chConfigProvider.sprites = { default: '/assets/sprite.svg' };
 defineCustomElements();
 setMode(() => 'default');
 

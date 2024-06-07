@@ -168,6 +168,9 @@ importers:
       chromatic:
         specifier: ^10.1.0
         version: 10.9.6
+      rollup-plugin-dotenv:
+        specifier: ^0.5.1
+        version: 0.5.1(rollup@4.13.2)
       storybook:
         specifier: ^8.0.5
         version: 8.0.5(react-dom@18.3.1)(react@18.3.1)
@@ -3505,6 +3508,35 @@ packages:
       '@resvg/resvg-js-win32-x64-msvc': 2.6.2
     dev: false
 
+  /@rollup/plugin-replace@5.0.7(rollup@4.13.2):
+    resolution: {integrity: sha512-PqxSfuorkHz/SPpyngLyg5GCEkOcee9M1bkxiVDr41Pd61mqP1PLOoDPbpl44SB2mQGKwV/In74gqQmGITOhEQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.1.0(rollup@4.13.2)
+      magic-string: 0.30.10
+      rollup: 4.13.2
+    dev: true
+
+  /@rollup/pluginutils@5.1.0(rollup@4.13.2):
+    resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+      rollup: 4.13.2
+    dev: true
+
   /@rollup/rollup-android-arm-eabi@4.13.2:
     resolution: {integrity: sha512-3XFIDKWMFZrMnao1mJhnOT1h2g0169Os848NhhmGweEcfJ4rCi+3yMCOLG4zA61rbJdkcrM/DjVZm9Hg5p5w7g==}
     cpu: [arm]
@@ -5850,7 +5882,7 @@ packages:
   /@vitest/snapshot@1.4.0:
     resolution: {integrity: sha512-saAFnt5pPIA5qDGxOHxJ/XxhMFKkUSBJmVt5VgDsAqPTX6JP326r5C/c9UuCMPoXNzuudTPsYDZCoJ5ilpqG2A==}
     dependencies:
-      magic-string: 0.30.6
+      magic-string: 0.30.10
       pathe: 1.1.2
       pretty-format: 29.7.0
     dev: true
@@ -8040,6 +8072,10 @@ packages:
   /estraverse@5.3.0:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
+    dev: true
+
+  /estree-walker@2.0.2:
+    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: true
 
   /estree-walker@3.0.3:
@@ -11528,6 +11564,17 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rollup-plugin-dotenv@0.5.1(rollup@4.13.2):
+    resolution: {integrity: sha512-ARUPDmeKAw3niZ2Ajv0qKNRryIWFMW796oJSS1hNdop3HF63Vljio/QRmG6ob0aQzzVUrFq6vW1p4jOE6xDQrQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
+    dependencies:
+      '@rollup/plugin-replace': 5.0.7(rollup@4.13.2)
+      dotenv: 16.4.1
+      rollup: 4.13.2
     dev: true
 
   /rollup@4.13.2:

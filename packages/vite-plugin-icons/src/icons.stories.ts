@@ -1,6 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-const SPRITE = './assets/sprite.svg';
+const SPRITE = '/assets/sprite.svg';
 
 type IconName = string;
 type IconVariant = 'bold' | 'duotone' | 'fill' | 'light' | 'regular' | 'thin';

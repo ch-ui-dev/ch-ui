@@ -3,19 +3,12 @@
 import './ch-link.css';
 
 export default {
-  title: 'Elements/ch-button',
+  title: 'Elements/ch-link',
 };
 
-export const Basic = (args) => `<ch-button>${args.children}</ch-button>`;
+export const Basic = (args) =>
+  `<a href="#" class="ch-link">${args.children}</a>`;
 
 Basic.args = {
-  children: `Confirm`,
-};
-
-export const Group = (args) =>
-  `<div role='group' class='ch-button-group'><ch-button>${args.left}</ch-button><ch-button>${args.right}</ch-button></div>`;
-
-Group.args = {
-  left: '←',
-  right: '→',
+  children: `Resources`,
 };

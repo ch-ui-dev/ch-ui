@@ -9,8 +9,8 @@ export const config: Config = {
   globalStyle: './src/ch-default-root.css',
   outputTargets: [
     {
-      type: 'dist',
-      esmLoaderPath: 'loader',
+      type: 'dist-custom-elements',
+      customElementsExportBehavior: 'bundle',
     },
     {
       type: 'www',
