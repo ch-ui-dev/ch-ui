@@ -7,13 +7,6 @@ import Color from 'colorjs';
 // This file contains functions that combine geometry and color math to create
 // and work with palette curves.
 
-/**
- * When distributing output shades along the curve, for each shade’s lightness a
- * logarithmically distributed value is averaged with a linearly distributed
- * value to this degree between zero and one, zero meaning use the logarithmic
- * value, one meaning use the linear value.
- */
-
 function getLinearSpace(min: number, max: number, n: number) {
   const result = [];
   const delta = (max - min) / n;
@@ -35,12 +28,12 @@ function paletteShadesFromCurvePoints(
 
   const paletteShades = [];
 
-  const linearLightness = getLinearSpace(range[0], range[1], nShades);
+  const luminosities = getLinearSpace(range[0], range[1], nShades);
 
   let c = 0;
 
   for (let i = 0; i < nShades; i++) {
-    const l = Math.min(range[1], Math.max(range[0], linearLightness[i]));
+    const l = Math.min(range[1], Math.max(range[0], luminosities[i]));
 
     while (l > curvePoints[c + 1][0]) {
       c++;
