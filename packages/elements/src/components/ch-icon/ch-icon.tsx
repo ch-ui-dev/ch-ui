@@ -20,7 +20,6 @@ export class ChIcon {
    */
   @Prop() sprite: string;
   @Prop() symbol: string;
-  @Prop() size: string = '1em';
 
   private resolveSprite(_symbol?: string) {
     // const identifier = symbol?.split(SPRITE_SEPARATOR)[0];
@@ -39,7 +38,7 @@ export class ChIcon {
       this.sprite ?? this.resolveSprite(this.symbol) ?? '/icons.svg';
     return (
       <Host role="none">
-        <svg style={{ blockSize: this.size, inlineSize: this.size }}>
+        <svg>
           <use href={`${sprite}#${this.symbol}`} />
         </svg>
       </Host>

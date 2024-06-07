@@ -8,7 +8,7 @@ export default {
 };
 
 export const Basic = (args) =>
-  `<ch-icon sprite="/assets/sprite.svg" symbol='${args.symbol}'></ch-icon>`;
+  `<ch-icon sprite="/assets/sprite.svg" symbol='${args.symbol}' style="font-size:32px"></ch-icon>`;
 
 Basic.args = {
   symbol: 'ph--feather--duotone',
