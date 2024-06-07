@@ -57,7 +57,7 @@ export type PhysicalColorTokensConfig = {
   /**
    * Gamuts other than sRGB in which to output colors. sRGB will always be included as a fallback.
    */
-  gamuts?: Exclude<OutputGamut, 'sRGB'>[];
+  gamuts?: Exclude<OutputGamut, 'srgb'>[];
   /**
    * The prefix for the tokens.
    */
