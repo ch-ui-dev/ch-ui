@@ -42,6 +42,7 @@ export type TypographyTokensConfig<T extends ConfigThemes = DefaultThemes> = {
 export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
   themes,
   fonts,
+  namespace = '',
 }: TypographyTokensConfig<T>) => {
   return Object.entries(fonts)
     .map(([fontId, fontThemes]) => {
@@ -56,19 +57,19 @@ export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
                 } else {
                   switch (attribute) {
                     case 'fontFamily':
-                      return `--font-${fontId}: ${values};`;
+                      return `--${namespace}font-${fontId}: ${values};`;
                     case 'weights':
                       const weights = values as LinearSeries;
                       return Object.entries(weights.keys)
                         .map(([name, value]) => {
-                          return `--${fontId}-weight-${name}: ${value};`;
+                          return `--${namespace}${fontId}-weight-${name}: ${value};`;
                         })
                         .join('\n');
                     case 'sizes':
                       const sizes = values as ExponentialSeries;
                       return Object.entries(sizes.keys)
                         .map(([name, value]) => {
-                          return `--${fontId}-size-${name}: ${(
+                          return `--${namespace}${fontId}-size-${name}: ${(
                             sizes.initial * Math.pow(sizes.base, value)
                           ).toFixed(2)}${sizes.unit};`;
                         })
@@ -77,7 +78,7 @@ export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
                       const lineHeights = values as ExponentialSeries;
                       return Object.entries(lineHeights.keys)
                         .map(([name, value]) => {
-                          return `--${fontId}-lineHeight-${name}: ${(
+                          return `--${namespace}${fontId}-lineHeight-${name}: ${(
                             lineHeights.initial *
                             Math.pow(lineHeights.base, value)
                           ).toFixed(2)}${lineHeights.unit};`;
@@ -87,7 +88,7 @@ export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
                       const fontStyles = values as Record<string, string>;
                       return Object.entries(fontStyles)
                         .map(([name, value]) => {
-                          return `--${fontId}-style-${name}: ${value};`;
+                          return `--${namespace}${fontId}-style-${name}: ${value};`;
                         })
                         .join('\n');
                   }
