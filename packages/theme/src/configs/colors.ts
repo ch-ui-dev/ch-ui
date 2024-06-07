@@ -21,6 +21,11 @@ import {
   shadeToValue,
 } from '@ch-ui/colors';
 import { renderBlock } from '../render';
+import { ConfigThemes, Statements } from '../types';
+
+// --------------------------------------------------
+// Physical layer
+// --------------------------------------------------
 
 const dtor = Math.PI / 180;
 
@@ -143,4 +148,142 @@ export const renderPhysicalColorTokens = ({
       ),
     )
     .join('\n\n')}`;
+};
+
+// --------------------------------------------------
+// Semantic layer
+// --------------------------------------------------
+
+/**
+ * Mapping theme ids to the set of nested at-rules-or-selectors
+ */
+
+type DefaultThemes = Record<'light' | 'dark', Statements>;
+
+export type SemanticColorTokensConfig<
+  /**
+   * The physical token config this will draw from
+   */
+  P extends PhysicalColorTokensConfig,
+  /**
+   * The map of theme ids to their wrapping predicates
+   */
+  T extends ConfigThemes = DefaultThemes,
+  /**
+   * Possible values of luminosities from the physical color tokens config.
+   */
+  L extends number = number,
+> = {
+  themes: T;
+  semanticColors: Record<string, Record<keyof T, [keyof P['palettes'], L]>>;
+  namespace?: string;
+};
+
+export const renderSemanticColorTokens = <
+  P extends PhysicalColorTokensConfig,
+  T extends ConfigThemes = DefaultThemes,
+  L extends number = number,
+>({
+  themes,
+  semanticColors,
+  namespace = '',
+}: SemanticColorTokensConfig<P, T, L>): string => {
+  return Object.entries(themes)
+    .map(([themeId, statements]) =>
+      renderBlock(
+        Object.entries(semanticColors)
+          .map(
+            ([
+              tokenName,
+              {
+                [themeId]: [palette, shadeNumber],
+              },
+            ]) =>
+              `--${namespace}${tokenName}: var(--${namespace}${String(
+                palette,
+              )}-${shadeNumber});`,
+          )
+          .join('\n'),
+        0,
+        statements,
+      ),
+    )
+    .join('\n\n');
+};
+
+// --------------------------------------------------
+// Combined colors
+// --------------------------------------------------
+
+export type ColorTokensConfig<
+  P extends PhysicalColorTokensConfig,
+  T extends ConfigThemes = DefaultThemes,
+  L extends number = number,
+> = P & SemanticColorTokensConfig<P, T, L>;
+
+type SemanticLuminosities<
+  Q extends keyof PhysicalColorTokensConfig['palettes'],
+> = Record<Q, Set<number>>;
+
+export const renderColorTokens = <
+  P extends PhysicalColorTokensConfig,
+  T extends ConfigThemes = DefaultThemes,
+  L extends number = number,
+>({
+  shadeNumbering = 'reflective',
+  palettes,
+  gamuts = [],
+  themes,
+  semanticColors,
+  namespace = '',
+}: ColorTokensConfig<P, T, L>): string => {
+  const semanticLuminosities = Object.values(semanticColors).reduce(
+    (acc: SemanticLuminosities<keyof typeof palettes>, sememe) =>
+      Object.values(sememe).reduce(
+        (
+          acc: SemanticLuminosities<keyof typeof palettes>,
+          [paletteId, luminosity],
+        ) => {
+          acc[paletteId as keyof typeof palettes].add(luminosity);
+          return acc;
+        },
+        acc,
+      ),
+    Object.keys(palettes).reduce(
+      (acc: SemanticLuminosities<keyof typeof palettes>, paletteId) => {
+        acc[paletteId] = new Set();
+        return acc;
+      },
+      {},
+    ),
+  );
+
+  return [
+    renderPhysicalColorTokens({
+      palettes: Object.entries(palettes).reduce(
+        (
+          acc: PhysicalColorTokensConfig['palettes'],
+          [paletteId, paletteConfig],
+        ) => {
+          acc[paletteId] = {
+            ...paletteConfig,
+            luminosities: Array.from(
+              new Set(
+                [
+                  ...(paletteConfig.luminosities ?? []),
+                  ...Array.from(semanticLuminosities[paletteId]),
+                ].sort(),
+              ),
+            ),
+          };
+          return acc;
+        },
+        {},
+      ),
+      shadeNumbering,
+      gamuts,
+      namespace,
+    }),
+    renderSemanticColorTokens<P, T, L>({ themes, semanticColors, namespace }),
+  ].join('\n\n');
 };

@@ -37,8 +37,8 @@ const defaultSemanticColors: SemanticColorTokensConfig<
   },
   semanticColors: {
     'ch-bg-input': {
-      light: '--primary-100',
-      dark: '--primary-900',
+      light: ['primary', 100],
+      dark: ['primary', 900],
     },
   },
 };

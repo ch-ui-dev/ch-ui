@@ -7,8 +7,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import {
   type PhysicalColorTokensConfig,
   type SemanticColorTokensConfig,
-  renderPhysicalColorTokens,
-  renderSemanticColorTokens,
+  renderColorTokens,
 } from '../src';
 
 const physicalColorsConfig: PhysicalColorTokensConfig = {
@@ -16,7 +15,6 @@ const physicalColorsConfig: PhysicalColorTokensConfig = {
   shadeNumbering: 'emissive',
   palettes: {
     primary: {
-      luminosities: [100, 300, 700, 900],
       keyColor: [43, 81, 282],
       darkCp: 0.86,
       lightCp: 1,
@@ -34,12 +32,12 @@ const semanticColorsConfig: SemanticColorTokensConfig<
   },
   semanticColors: {
     link: {
-      light: '--primary-300',
-      dark: '--primary-900',
+      light: ['primary', 300],
+      dark: ['primary', 900],
     },
     'link-hover': {
-      light: '--primary-100',
-      dark: '--primary-700',
+      light: ['primary', 100],
+      dark: ['primary', 700],
     },
   },
 };
@@ -47,11 +45,10 @@ const semanticColorsConfig: SemanticColorTokensConfig<
 test('physical and semantic color tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
-  const tokens = `${renderPhysicalColorTokens(
-    physicalColorsConfig,
-  )}\n\n${renderSemanticColorTokens<typeof physicalColorsConfig>(
-    semanticColorsConfig,
-  )}`;
+  const tokens = renderColorTokens({
+    ...physicalColorsConfig,
+    ...semanticColorsConfig,
+  });
   await writeFile(resolve(dir, 'colors.css'), tokens);
   assert.equal(
     tokens.includes(
