@@ -1,6 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import {
+  ColorTokensConfig,
   PhysicalColorTokensConfig,
   SemanticColorTokensConfig,
   TypographyTokensConfig,
@@ -8,8 +9,7 @@ import {
 import { ExponentialSeries, LinearSeries } from './types';
 
 export type ThemeConfig = {
-  physicalColors?: PhysicalColorTokensConfig;
-  semanticColors?: SemanticColorTokensConfig<any>;
+  colors?: ColorTokensConfig<any>;
   typography?: TypographyTokensConfig<any>;
 };
 
@@ -19,7 +19,13 @@ const defaultPhysicalColors: PhysicalColorTokensConfig = {
   gamuts: ['p3', 'rec2020'],
   shadeNumbering: 'emissive',
   palettes: {
-    primary: {
+    neutral: {
+      keyColor: [47, 3.5, 282],
+      darkCp: 0.8,
+      lightCp: 0.88,
+      hueTorsion: 0,
+    },
+    accent: {
       keyColor: [43, 83, 282],
       darkCp: 0.86,
       lightCp: 1,
@@ -36,9 +42,45 @@ const defaultSemanticColors: SemanticColorTokensConfig<
     dark: ['@media (prefers-color-scheme: dark)', ':root'],
   },
   semanticColors: {
-    'ch-bg-input': {
-      light: ['primary', 100],
-      dark: ['primary', 900],
+    'bg-base': {
+      light: ['neutral', 975],
+      dark: ['neutral', 150],
+    },
+    'bg-input': {
+      light: ['neutral', 950],
+      dark: ['neutral', 175],
+    },
+    'bg-hover': {
+      light: ['neutral', 925],
+      dark: ['neutral', 200],
+    },
+    'bg-accent': {
+      light: ['accent', 500],
+      dark: ['accent', 550],
+    },
+    'bg-accent-hover': {
+      light: ['accent', 550],
+      dark: ['accent', 600],
+    },
+    'bg-neutral': {
+      light: ['neutral', 500],
+      dark: ['neutral', 550],
+    },
+    'bg-neutral-hover': {
+      light: ['neutral', 550],
+      dark: ['neutral', 600],
+    },
+    'fg-base': {
+      light: ['neutral', 0],
+      dark: ['neutral', 900],
+    },
+    'fg-separator': {
+      light: ['neutral', 925],
+      dark: ['neutral', 250],
+    },
+    'fg-description': {
+      light: ['neutral', 300],
+      dark: ['neutral', 700],
     },
   },
 };
@@ -105,10 +147,14 @@ const defaultTypography: TypographyTokensConfig<typeof typographyThemes> = {
       },
     },
   },
+  namespace: 'ch-',
 };
 
 export const defaultTheme = {
-  physicalColors: defaultPhysicalColors,
-  semanticColors: defaultSemanticColors,
+  colors: {
+    ...defaultPhysicalColors,
+    ...defaultSemanticColors,
+    namespace: 'ch-',
+  },
   typography: defaultTypography,
 };
