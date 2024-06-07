@@ -13,6 +13,9 @@ export const config: Config = {
       customElementsExportBehavior: 'bundle',
     },
     {
+      type: 'dist-hydrate-script',
+    },
+    {
       type: 'www',
       serviceWorker: null, // disable service workers
     },

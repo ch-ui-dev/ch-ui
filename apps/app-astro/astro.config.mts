@@ -8,13 +8,13 @@ export default defineConfig({
   site: 'https://ch-ui.dev',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en']
+    locales: ['en'],
   },
   vite: {
     plugins: [
       // @ts-ignore
       chThemePlugin({
-        config: () => defaultTheme
+        config: () => defaultTheme,
       }),
       // @ts-ignore
       chIconsPlugin({
@@ -25,8 +25,8 @@ export default defineConfig({
             variant === 'regular' ? '' : `-${variant}`
           }.svg`,
         spritePath: 'public/icons.svg',
-        contentPaths: ['**/src/**/*.{ts,tsx,astro,md}']
-      })
-    ]
-  }
+        contentPaths: ['**/src/**/*.{ts,tsx,astro,md}'],
+      }),
+    ],
+  },
 });
