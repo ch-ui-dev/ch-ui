@@ -1,5 +1,3 @@
 /* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
 
-@layer tokens utilities elements;
-
-@import "./components/ch-button/ch-button.css";
+@import './components/ch-button/ch-button.css';
