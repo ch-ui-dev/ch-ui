@@ -10,10 +10,7 @@
       --ch-textDecorationThickness-link,
       var(--ch-dim-hairline, 1px)
     );
-    text-underline-offset: var(
-      --ch-textUnderlineOffset-link,
-      var(--ch-dim-hairline, 0.16em)
-    );
+    text-underline-offset: var(--ch-textUnderlineOffset-link, 0.16em);
 
     &:hover {
       text-decoration-color: var(--ch-fg-linkHover, var(--ch-fg-accentHover));
