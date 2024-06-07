@@ -1,8 +1,12 @@
 /* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
 
 @layer elements {
-  ch-button {
-    --ch-local-border-radius-button: var(--ch-border-radius-button, var(--ch-border-radius-input, 0.25rem));
+  ch-button,
+  .ch-button {
+    --ch-local-border-radius-button: var(
+      --ch-border-radius-button,
+      var(--ch-border-radius-input, 0.25rem)
+    );
 
     display: var(--ch-display-button, inline-flex);
     align-items: var(--ch-align-items-button, center);

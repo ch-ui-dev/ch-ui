@@ -4,12 +4,12 @@ import elementsDocs from '@ch-ui/elements/docs';
 ---
 <nav>
   <ch-icon symbol="ph--address-book--regular"></ch-icon>
-  <h1><a href="/">ch—ui</a></h1>
+  <h1><a class="ch-link" href="/">ch—ui</a></h1>
   <h2>Elements</h2>
   <ul>
     {elementsDocs.components.map(({ tag }) => {
       return <li>
-        <a href={`/elements/${tag}`}>{tag}</a>
+        <a class="ch-link" href={`/elements/${tag}`}>{tag}</a>
       </li>;
     })}
   </ul>

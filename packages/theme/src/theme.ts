@@ -58,7 +58,15 @@ const defaultSemanticColors: SemanticColorTokensConfig<
       light: ['accent', 500],
       dark: ['accent', 550],
     },
-    'bg-accent-hover': {
+    'bg-accentHover': {
+      light: ['accent', 550],
+      dark: ['accent', 600],
+    },
+    'fg-accent': {
+      light: ['accent', 500],
+      dark: ['accent', 550],
+    },
+    'fg-accentHover': {
       light: ['accent', 550],
       dark: ['accent', 600],
     },
@@ -66,7 +74,7 @@ const defaultSemanticColors: SemanticColorTokensConfig<
       light: ['neutral', 500],
       dark: ['neutral', 550],
     },
-    'bg-neutral-hover': {
+    'bg-neutralHover': {
       light: ['neutral', 550],
       dark: ['neutral', 600],
     },

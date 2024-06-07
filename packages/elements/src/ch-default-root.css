@@ -1,3 +1,5 @@
 /* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
 
 @import './components/ch-button/ch-button.css';
+@import './components/ch-link/ch-link.css';
+@import './components/ch-icon/ch-icon.css';
