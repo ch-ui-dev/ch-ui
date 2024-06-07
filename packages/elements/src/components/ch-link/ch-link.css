@@ -12,7 +12,7 @@
     );
     text-underline-offset: var(
       --ch-textUnderlineOffset-link,
-      var(--ch-dim-hairline, 0.2em)
+      var(--ch-dim-hairline, 0.16em)
     );
 
     &:hover {
