@@ -11,7 +11,7 @@ import {
 } from '../src';
 
 const physicalColorsConfig: PhysicalColorTokensConfig = {
-  gamuts: ['p3', 'rec2020'],
+  gamuts: ['p3', 'rec2020', 'oklch'],
   shadeNumbering: 'emissive',
   palettes: {
     primary: {
@@ -32,12 +32,12 @@ const semanticColorsConfig: SemanticColorTokensConfig<
   },
   semanticColors: {
     link: {
-      light: ['primary', 300],
-      dark: ['primary', 900],
+      light: ['primary', 290],
+      dark: ['primary', 820],
     },
     'link-hover': {
-      light: ['primary', 100],
-      dark: ['primary', 700],
+      light: ['primary', 120],
+      dark: ['primary', 710],
     },
   },
 };
@@ -54,8 +54,8 @@ test('physical and semantic color tokens are generated as expected', async () =>
     tokens.includes(
       '@media (prefers-color-scheme: dark) {\n' +
         '  :root {\n' +
-        '    --link: var(--primary-900);\n' +
-        '    --link-hover: var(--primary-700);',
+        '    --link: var(--primary-820);\n' +
+        '    --link-hover: var(--primary-710);',
     ),
     true,
   );
@@ -63,8 +63,8 @@ test('physical and semantic color tokens are generated as expected', async () =>
     tokens.includes(
       '@media (color-gamut: rec2020) {\n' +
         '  :root {\n' +
-        '    --primary-100: color(rec2020 0.00171 0 0.08266);\n' +
-        '    --primary-300: color(rec2020 0.03024 0.03137 0.50297);',
+        '    --primary-120: color(rec2020 0.00269 0 0.12643);\n' +
+        '    --primary-290: color(rec2020 0.02715 0.02338 0.48511);',
     ),
     true,
   );
