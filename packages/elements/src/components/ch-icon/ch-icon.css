@@ -5,7 +5,8 @@
     display: block;
     block-size: 1em;
     inline-size: 1em;
-    &:defined {
+    &:defined,
+    &.hydrated {
       display: contents;
       & > svg {
         block-size: 1em;
