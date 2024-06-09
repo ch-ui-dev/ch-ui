@@ -25,11 +25,20 @@ async function renderToStaticMarkup(
   slots: Record<string, string>,
 ) {
   // TODO(thure): support slots
+  if (Object.keys(slots).length > 1) {
+    console.warn(
+      '[@ch-ui/astro-stencil]',
+      'Slots are not yet supported. Please help us implement them at https://github.com/ch-ui-dev/ch-ui',
+    );
+  }
   const content = slots.default ?? '';
-  const unrenderedHtml = `<${tag.is} ${Object.entries(props)
-    .map(([key, value]) => `${key}="${value}"`)
-    .join(' ')}>${content}</${tag.is}>`;
-  const { html } = await renderToString(unrenderedHtml);
+  const { html } = await renderToString(
+    `<${tag.is} ${Object.entries(props)
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(' ')}>${content}</${tag.is}>`,
+  );
+  // TODO(thure): Stencil adds attributes like `s-id` and `c-id` to the hydrated HTML, expecting they are
+  //  coordinated across the page, however Astro hydrates one component at a time. Will this be a problem?
   return {
     html: extractNode(html),
   };
