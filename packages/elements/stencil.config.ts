@@ -13,6 +13,9 @@ export const config: Config = {
       customElementsExportBehavior: 'bundle',
     },
     {
+      type: 'dist',
+    },
+    {
       type: 'dist-hydrate-script',
     },
     {
