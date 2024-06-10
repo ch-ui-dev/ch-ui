@@ -4,7 +4,11 @@ import elementsDocs from '@ch-ui/elements/docs';
 import { ChIcon } from '../components/Elements.jsx';
 ---
 <nav>
-  <h2>Elements</h2>
+  <h2><a class="ch-link" href="/theme">Theme</a></h2>
+  <ul>
+    <li><a class="ch-link" href="/theme/colors">Colors</a></li>
+  </ul>
+  <h2><a class="ch-link" href="/elements">Elements</a></h2>
   <ul>
     {elementsDocs.components.map(({ tag }) => {
       return <li>
