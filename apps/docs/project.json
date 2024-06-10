@@ -1,20 +1,20 @@
 {
-  "root": "apps/app-astro",
-  "sourceRoot": "apps/app-astro/src",
+  "root": "apps/docs",
+  "sourceRoot": "apps/docs/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "command": "cd apps/app-astro && ./node_modules/.bin/astro build"
+      "command": "cd apps/docs && ./node_modules/.bin/astro build"
     },
     "serve": {
-      "command": "cd apps/app-astro && ./node_modules/.bin/astro dev",
+      "command": "cd apps/docs && ./node_modules/.bin/astro dev",
       "dependsOn": ["^build", "elements:build-watch"]
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
         "format": "unix",
-        "lintFilePatterns": ["apps/app-astro/**/*.{ts,astro}"],
+        "lintFilePatterns": ["apps/docs/**/*.{ts,astro}"],
         "quiet": true
       },
       "outputs": ["{options.outputFile}"]
