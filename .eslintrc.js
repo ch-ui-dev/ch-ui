@@ -18,12 +18,7 @@ module.exports = {
     'astro',
     'notice',
   ],
-  extends: [
-    'prettier',
-    'plugin:storybook/recommended',
-    'plugin:astro/recommended',
-    'plugin:astro/jsx-a11y-recommended',
-  ],
+  extends: ['prettier', 'plugin:storybook/recommended'],
   rules: {
     'notice/notice': [
       'error',
@@ -44,6 +39,11 @@ module.exports = {
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
+      extends: [
+        'prettier',
+        'plugin:astro/recommended',
+        'plugin:astro/jsx-a11y-recommended',
+      ],
       rules: {
         'notice/notice': [
           'error',
@@ -67,6 +67,11 @@ module.exports = {
       parserOptions: {
         sourceType: 'module',
       },
+      extends: [
+        'prettier',
+        'plugin:astro/recommended',
+        'plugin:astro/jsx-a11y-recommended',
+      ],
       rules: {
         'notice/notice': 'off',
       },

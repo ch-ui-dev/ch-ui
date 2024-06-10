@@ -2,6 +2,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import Head from '../components/Head.astro';
 import Nav from '../components/Nav.astro';
+import Banner from '../components/Banner.astro';
 
 interface Props {
   title: string;
@@ -11,9 +12,45 @@ const { title } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang={Astro.currentLocale ?? 'en'}>
-  <Head title={title}/>
+  <Head title={title}>
+    <style is:global>
+      body {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content min-content 1fr;
+        @media (min-width: 120ch) {
+          grid-template-columns: min-content 1fr;
+          grid-template-rows: min-content 1fr;
+        }
+      }
+      [role="banner"] {
+        @media (min-width: 120ch) {
+          grid-column: span 2;
+        }
+      }
+      [role="nav"], nav {
+        grid-row-start: 2;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+      [role="main"], main {
+        grid-row: 3 / -1;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @media (min-width: 120ch) {
+          grid-row: 2 / -1;
+          grid-column: 2 / -1;
+        }
+      }
+    </style>
+  </Head>
   <body>
-    <Nav/>
-    <slot/>
+    <Banner />
+    <Nav />
+    <main>
+      <slot/>
+    </main>
   </body>
 </html>
