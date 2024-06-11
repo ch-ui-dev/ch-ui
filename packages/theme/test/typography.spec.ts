@@ -9,7 +9,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 test('typography tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
-  const tokens = renderTypographyTokens(defaultTheme.typography);
+  const tokens = renderTypographyTokens(defaultTheme.typography!);
   await writeFile(resolve(dir, 'typography.css'), tokens);
   assert.equal(
     tokens.includes(`  --text-size-s: 0.83rem;

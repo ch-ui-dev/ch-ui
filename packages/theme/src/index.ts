@@ -2,7 +2,7 @@
 
 import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';
-import { renderColorTokens, renderTypographyTokens } from './configs';
+import { renderTypographyTokens, renderColorTokens } from './physical';
 
 export type PluginOptions = {
   config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
@@ -28,7 +28,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 
 creator.postcss = true;
 
-export * from './configs';
+export * from './physical';
 export * from './types';
 export * from './theme';
 

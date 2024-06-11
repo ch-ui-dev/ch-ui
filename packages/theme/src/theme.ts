@@ -2,11 +2,11 @@
 
 import {
   ColorTokensConfig,
-  PhysicalColorTokensConfig,
+  ColorsPhysicalLayer,
   SemanticColorTokensConfig,
   TypographyTokensConfig,
-} from './configs';
-import { ExponentialSeries, LinearSeries } from './types';
+} from './physical';
+import { ExponentialSeries, HelicalArcSeries, LinearSeries } from './types';
 
 export type ThemeConfig = {
   colors?: ColorTokensConfig<any>;
@@ -15,26 +15,43 @@ export type ThemeConfig = {
 
 // DEFAULT THEME VALUES
 
-const defaultPhysicalColors: PhysicalColorTokensConfig = {
-  gamuts: ['p3', 'rec2020'],
-  shadeNumbering: 'emissive',
-  palettes: {
+const neutralArc: HelicalArcSeries = {
+  keyPoint: [47, 3.5, 282],
+  lowerCp: 0.8,
+  upperCp: 0.88,
+  torsion: 0,
+  keys: {},
+};
+
+const accentArc: HelicalArcSeries = {
+  keyPoint: [43, 83, 282],
+  lowerCp: 0.86,
+  upperCp: 1,
+  torsion: -30,
+  keys: {},
+};
+
+export const defaultPhysicalColors: ColorsPhysicalLayer = {
+  conditions: {
+    srgb: [':root'],
+    p3: ['@media (color-gamut: p3)', ':root'],
+    rec2020: ['@media (color-gamut: rec2020)', ':root'],
+  },
+  series: {
     neutral: {
-      keyColor: [47, 3.5, 282],
-      darkCp: 0.8,
-      lightCp: 0.88,
-      hueTorsion: 0,
+      srgb: neutralArc,
+      p3: neutralArc,
+      rec2020: neutralArc,
     },
     accent: {
-      keyColor: [43, 83, 282],
-      darkCp: 0.86,
-      lightCp: 1,
-      hueTorsion: -30,
+      srgb: accentArc,
+      p3: accentArc,
+      rec2020: accentArc,
     },
   },
 };
 
-const defaultSemanticColors: SemanticColorTokensConfig<
+export const defaultSemanticColors: SemanticColorTokensConfig<
   typeof defaultPhysicalColors
 > = {
   themes: {
@@ -43,52 +60,52 @@ const defaultSemanticColors: SemanticColorTokensConfig<
   },
   semanticColors: {
     'bg-base': {
-      light: ['neutral', 975],
-      dark: ['neutral', 150],
+      light: ['neutral', 0.975],
+      dark: ['neutral', 0.15],
     },
     'bg-input': {
-      light: ['neutral', 950],
-      dark: ['neutral', 175],
+      light: ['neutral', 0.95],
+      dark: ['neutral', 0.175],
     },
     'bg-hover': {
-      light: ['neutral', 925],
-      dark: ['neutral', 200],
+      light: ['neutral', 0.925],
+      dark: ['neutral', 0.2],
     },
     'bg-accent': {
-      light: ['accent', 500],
-      dark: ['accent', 550],
+      light: ['accent', 0.5],
+      dark: ['accent', 0.55],
     },
     'bg-accentHover': {
-      light: ['accent', 550],
-      dark: ['accent', 600],
+      light: ['accent', 0.55],
+      dark: ['accent', 0.6],
     },
     'fg-accent': {
-      light: ['accent', 500],
-      dark: ['accent', 550],
+      light: ['accent', 0.5],
+      dark: ['accent', 0.55],
     },
     'fg-accentHover': {
-      light: ['accent', 550],
-      dark: ['accent', 600],
+      light: ['accent', 0.55],
+      dark: ['accent', 0.6],
     },
     'bg-neutral': {
-      light: ['neutral', 500],
-      dark: ['neutral', 550],
+      light: ['neutral', 0.5],
+      dark: ['neutral', 0.55],
     },
     'bg-neutralHover': {
-      light: ['neutral', 550],
-      dark: ['neutral', 600],
+      light: ['neutral', 0.55],
+      dark: ['neutral', 0.6],
     },
     'fg-base': {
       light: ['neutral', 0],
-      dark: ['neutral', 900],
+      dark: ['neutral', 0.9],
     },
     'fg-separator': {
-      light: ['neutral', 925],
-      dark: ['neutral', 250],
+      light: ['neutral', 0.925],
+      dark: ['neutral', 0.25],
     },
     'fg-description': {
-      light: ['neutral', 300],
-      dark: ['neutral', 700],
+      light: ['neutral', 0.3],
+      dark: ['neutral', 0.7],
     },
   },
 };
@@ -158,7 +175,8 @@ const defaultTypography: TypographyTokensConfig<typeof typographyThemes> = {
   namespace: 'ch-',
 };
 
-export const defaultTheme = {
+// @ts-ignore
+export const defaultTheme: ThemeConfig = {
   colors: {
     ...defaultPhysicalColors,
     ...defaultSemanticColors,

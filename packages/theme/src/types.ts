@@ -1,5 +1,21 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+import { type HelicalArcConfig } from '@ch-ui/colors';
+
+export type PhysicalSeries<
+  K extends string = string,
+  S extends Series = Series,
+> = Partial<Record<K, S>>;
+
+export type PhysicalLayer<
+  K extends string = string,
+  S extends Series = Series,
+> = {
+  conditions: Conditions<K>;
+  series: Record<string, PhysicalSeries<K, S>>;
+  namespace?: string;
+};
+
 /**
  * A group of statements within which to recursively nest a declaration block.
  */
@@ -8,16 +24,28 @@ export type Statements = string[] | undefined;
 /**
  * A mapping of names to statement groups.
  */
-export type ConfigThemes = Record<string, Statements>;
+export type Conditions<K extends string = string> = Partial<
+  Record<K, Statements>
+>;
 
-/**
- * A series of values in the theme.
- */
-type Series = {
+type SeriesKeys = {
   /**
-   * Input values of members of the series as a map of { name -> value }
+   * Named input values of members of the series as a map of { name -> value }
    */
   keys: Record<string, number>;
+};
+
+type SeriesValues = {
+  /**
+   * Unnamed input values of members of the series
+   */
+  values: number[];
+};
+
+/**
+ * A series of physical tokens. A series must have a `keys` or `values`, and may have both.
+ */
+export type Series = {
   /**
    * The CSS unit to apply to output numbers. The default applied by theme renderers depends on context.
    */
@@ -28,7 +56,10 @@ type Series = {
   snapTo?: Omit<LinearSeries, 'keys'> & {
     method: 'floor' | 'ceil' | 'round';
   };
-};
+} & (
+  | (SeriesValues & Partial<SeriesKeys>)
+  | (SeriesKeys & Partial<SeriesValues>)
+);
 
 /**
  * A series of values in the theme which are linear in nature, e.g. gaps.
@@ -57,3 +88,5 @@ export type ExponentialSeries = Series & {
    */
   base: number;
 };
+
+export type HelicalArcSeries = Series & HelicalArcConfig;
