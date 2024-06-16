@@ -1,15 +1,16 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+import { ColorsPhysicalLayer } from './physical-layer';
 import {
-  ColorTokensConfig,
-  ColorsPhysicalLayer,
-  SemanticColorTokensConfig,
-  TypographyTokensConfig,
-} from './physical';
-import { ExponentialSeries, HelicalArcSeries, LinearSeries } from './types';
+  ExponentialSeries,
+  HelicalArcSeries,
+  LinearSeries,
+  SemanticLayer,
+} from './types';
+import { TypographyTokensConfig } from './facets';
 
 export type ThemeConfig = {
-  colors?: ColorTokensConfig<any>;
+  colors?: ColorsPhysicalLayer & SemanticLayer;
   typography?: TypographyTokensConfig<any>;
 };
 
@@ -51,14 +52,12 @@ export const defaultPhysicalColors: ColorsPhysicalLayer = {
   },
 };
 
-export const defaultSemanticColors: SemanticColorTokensConfig<
-  typeof defaultPhysicalColors
-> = {
-  themes: {
+export const defaultSemanticColors: SemanticLayer = {
+  conditions: {
     light: [':root'],
     dark: ['@media (prefers-color-scheme: dark)', ':root'],
   },
-  semanticColors: {
+  sememes: {
     'bg-base': {
       light: ['neutral', 0.975],
       dark: ['neutral', 0.15],

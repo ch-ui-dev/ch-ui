@@ -1,3 +1,4 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-export type DimensionsConfig = {};
+export * from './color';
+export * from './fonts';

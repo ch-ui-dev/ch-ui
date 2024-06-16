@@ -16,26 +16,18 @@ function getLinearSpace(min: number, max: number, n: number) {
   return result;
 }
 
-// TODO(thure): Is this necessary given all the other lerping logic in @ch-ui/theme?
-export function interpolateLuminosityAlignedConstellation(
+export const getOklabVectorsFromLuminosities = (
+  luminosities: number[],
   constellation: Vec3[],
-  nShades: number,
-  range = [0, 1],
-): Vec3[] {
-  if (constellation.length <= 2) {
-    return [];
-  }
-
-  const paletteShades = [];
-
-  const luminosities = getLinearSpace(range[0], range[1], nShades);
-
+): Vec3[] => {
   let c = 0;
 
-  for (let i = 0; i < nShades; i++) {
-    const l = Math.min(range[1], Math.max(range[0], luminosities[i]));
+  const result: Vec3[] = [];
 
-    while (l > constellation[c + 1][0]) {
+  for (let i = 0; i < luminosities.length; i++) {
+    const l = luminosities[i];
+
+    while (constellation[c + 1] && l > constellation[c + 1][0]) {
       c++;
     }
 
@@ -44,15 +36,15 @@ export function interpolateLuminosityAlignedConstellation(
 
     const u = (l - l1) / (l2 - l1);
 
-    paletteShades[i] = [
+    result.push([
       l1 + (l2 - l1) * u,
       a1 + (a2 - a1) * u,
       b1 + (b2 - b1) * u,
-    ] as Vec3;
+    ] as Vec3);
   }
 
-  return paletteShades;
-}
+  return result;
+};
 
 export function constellationFromHelicalArc(
   curve: HelicalArc,
@@ -115,13 +107,11 @@ export function cssGradientFromCurve(
   gamut: Gamut = 'srgb',
   curveDepth = 32,
 ) {
-  const values = constellationToValues(
-    interpolateLuminosityAlignedConstellation(
+  return `linear-gradient(to right, ${constellationToValues(
+    getOklabVectorsFromLuminosities(
+      getLinearSpace(range[0], range[1], nShades),
       constellationFromHelicalArc(curve, curveDepth),
-      nShades,
-      range,
     ),
     gamut,
-  );
-  return `linear-gradient(to right, ${values.join(', ')})`;
+  ).join(', ')})`;
 }

@@ -16,6 +16,22 @@ export type PhysicalLayer<
   namespace?: string;
 };
 
+export type SemanticLayer<
+  K extends string = string,
+  S extends string = string,
+  V extends number = number,
+> = {
+  conditions: Conditions<K>;
+  sememes: Record<string, Record<K, [S, V]>>;
+  physicalNamespace?: string;
+  namespace?: string;
+};
+
+export type SemanticValues<
+  S extends string = string,
+  V extends number = number,
+> = Record<S, Set<V>>;
+
 /**
  * A group of statements within which to recursively nest a declaration block.
  */
