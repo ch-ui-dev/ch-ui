@@ -2,6 +2,7 @@
 
 import { ColorsPhysicalLayer } from './physical-layer';
 import {
+  AccompanyingSeries,
   ExponentialSeries,
   HelicalArcSeries,
   LinearSeries,
@@ -16,12 +17,19 @@ export type ThemeConfig = {
 
 // DEFAULT THEME VALUES
 
+const emissiveNaming: AccompanyingSeries = {
+  initial: 0,
+  slope: 1000,
+  method: 'floor',
+};
+
 const neutralArc: HelicalArcSeries = {
   keyPoint: [47, 3.5, 282],
   lowerCp: 0.8,
   upperCp: 0.88,
   torsion: 0,
   keys: {},
+  valueNaming: emissiveNaming,
 };
 
 const accentArc: HelicalArcSeries = {
@@ -30,6 +38,7 @@ const accentArc: HelicalArcSeries = {
   upperCp: 1,
   torsion: -30,
   keys: {},
+  valueNaming: emissiveNaming,
 };
 
 export const defaultPhysicalColors: ColorsPhysicalLayer = {
@@ -107,6 +116,7 @@ export const defaultSemanticColors: SemanticLayer = {
       dark: ['neutral', 0.7],
     },
   },
+  physicalValueNaming: emissiveNaming,
 };
 
 const defaultWeights: LinearSeries = {

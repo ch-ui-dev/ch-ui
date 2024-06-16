@@ -24,6 +24,7 @@ export type SemanticLayer<
   conditions: Conditions<K>;
   sememes: Record<string, Record<K, [S, V]>>;
   physicalNamespace?: string;
+  physicalValueNaming?: AccompanyingSeries;
   namespace?: string;
 };
 
@@ -58,6 +59,10 @@ type SeriesValues = {
   values: number[];
 };
 
+export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
+  method: 'floor' | 'ceil' | 'round';
+};
+
 /**
  * A series of physical tokens. A series must have a `keys` or `values`, and may have both.
  */
@@ -67,11 +72,13 @@ export type Series = {
    */
   unit?: string;
   /**
-   * A linear series to snap this series’s values to (e.g. when line-height should align to a block-axis grid)
+   * A linear series to snap this series values to (e.g. when line-height should align to a block-axis grid)
    */
-  snapTo?: Omit<LinearSeries, 'keys'> & {
-    method: 'floor' | 'ceil' | 'round';
-  };
+  snapTo?: AccompanyingSeries;
+  /**
+   * A linear series to use when naming values from this series.
+   */
+  valueNaming?: AccompanyingSeries;
 } & (
   | (SeriesValues & Partial<SeriesKeys>)
   | (SeriesKeys & Partial<SeriesValues>)

@@ -19,8 +19,8 @@ test('physical and semantic color tokens are generated as expected', async () =>
     tokens.includes(
       '@media (prefers-color-scheme: dark) {\n' +
         '  :root {\n' +
-        '    --link: var(--primary-820);\n' +
-        '    --link-hover: var(--primary-710);',
+        '    --bg-base: var(--neutral-150);\n' +
+        '    --bg-input: var(--neutral-175);',
     ),
     true,
   );
@@ -28,8 +28,9 @@ test('physical and semantic color tokens are generated as expected', async () =>
     tokens.includes(
       '@media (color-gamut: rec2020) {\n' +
         '  :root {\n' +
-        '    --primary-120: color(rec2020 0.00269 0 0.12643);\n' +
-        '    --primary-290: color(rec2020 0.02715 0.02338 0.48511);',
+        '    --neutral-0: color(rec2020 0 0 0);\n' +
+        '    --neutral-150: color(rec2020 0.01484 0.01488 0.01886);\n' +
+        '    --neutral-175: color(rec2020 0.0236 0.02367 0.0295);',
     ),
     true,
   );

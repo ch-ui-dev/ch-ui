@@ -1,7 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { SemanticLayer, Statements } from './types';
-import { renderCondition } from './util';
+import { nameFromValue, renderCondition } from './util';
 
 export const renderSemanticLayer = <
   K extends string = string,
@@ -12,6 +12,7 @@ export const renderSemanticLayer = <
   sememes,
   namespace = '',
   physicalNamespace,
+  physicalValueNaming,
 }: SemanticLayer<K, S, V>): string => {
   return Object.entries(conditions)
     .map(([conditionId, statements]) =>
@@ -26,7 +27,7 @@ export const renderSemanticLayer = <
             ]) =>
               `--${namespace}${sememeName}: var(--${
                 physicalNamespace ?? namespace
-              }${seriesName}-${value * 1000});`,
+              }${seriesName}-${nameFromValue(value, physicalValueNaming)});`,
           )
           .join('\n'),
         0,
