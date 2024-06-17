@@ -8,41 +8,42 @@ import {
   getOklabVectorsFromLuminosities,
 } from '@ch-ui/colors';
 import { HelicalArcSeries, PhysicalLayer, SemanticValues } from '../types';
-import {
-  physicalValueFromValueRelation,
-  seriesValues,
-  valueFromPhysicalRelation,
-} from '../util';
-import { renderPhysicalLayer } from './render-physical-layer';
+import { nameFromValue, physicalValueFromValueRelation } from '../util';
+import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
-export const renderPhysicalColorTokens = (
+export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = ({
+  series,
+  seriesId,
+  conditionId,
+  namespace,
+  values,
+  resolvedNaming,
+}) => {
+  const oklabVectors = getOklabVectorsFromLuminosities(
+    values.map((value) =>
+      physicalValueFromValueRelation(value, series.physicalValueRelation),
+    ),
+    constellationFromPalette(series),
+  );
+  return oklabVectors.map((oklab, index) => {
+    return `--${namespace}${seriesId}-${nameFromValue(
+      values[index],
+      resolvedNaming,
+    )}: ${oklabVectorToValue(oklab, conditionId as Gamut)};`;
+  });
+};
+
+export const renderPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
   semanticValues?: SemanticValues,
-): string => {
-  return renderPhysicalLayer<ColorsPhysicalLayer>(
+): string =>
+  renderPhysicalLayer<ColorsPhysicalLayer, HelicalArcSeries>(
     layer,
-    ({ series, seriesId, conditionId, namespace, semanticValues }) => {
-      const helicalArcSeries = series as HelicalArcSeries;
-      return getOklabVectorsFromLuminosities(
-        seriesValues(series!, semanticValues).map((value) =>
-          physicalValueFromValueRelation(
-            value,
-            helicalArcSeries.physicalValueRelation,
-          ),
-        ),
-        constellationFromPalette(helicalArcSeries),
-      ).map((oklab) => {
-        return `--${namespace}${seriesId}-${valueFromPhysicalRelation(
-          oklab[0],
-          helicalArcSeries.physicalValueRelation,
-        )}: ${oklabVectorToValue(oklab, conditionId as Gamut)};`;
-      });
-    },
+    renderHelicalArcTokens,
     semanticValues,
   );
-};
 
 export const constellationFromPalette = (
   helicalArcConfig: HelicalArcConfig,

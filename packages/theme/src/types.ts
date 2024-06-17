@@ -70,6 +70,8 @@ export type Series = {
   naming?: 'toString' | Record<string, number>;
 };
 
+export type ResolvedNaming = Map<number, string> | 'toString';
+
 /**
  * A series of values in the theme which are linear in nature, e.g. gaps.
  */

@@ -114,16 +114,15 @@ export const defaultSemanticColors: SemanticLayer = {
       dark: ['neutral', 700],
     },
   },
-  physicalValueNaming: emissiveRelation,
 };
 
 const defaultWeights: LinearSeries = {
   initial: 0,
   slope: 1,
-  // keys: {
-  //   regular: 400,
-  //   bold: 700,
-  // },
+  naming: {
+    regular: 400,
+    bold: 700,
+  },
 };
 
 const defaultExponentialKeys = {
@@ -142,14 +141,14 @@ const defaultSizes: ExponentialSeries = {
   initial: 1,
   unit: 'rem',
   base: 1.2,
-  // keys: defaultExponentialKeys,
+  naming: defaultExponentialKeys,
 };
 
 const defaultLineHeights: ExponentialSeries = {
   initial: 1.25,
   unit: 'rem',
   base: 1.16, // <- larger type sizes benefit from less leading
-  // keys: defaultExponentialKeys,
+  naming: defaultExponentialKeys,
   snapTo: {
     method: 'ceil',
     initial: 0,

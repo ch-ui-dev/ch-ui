@@ -2,7 +2,7 @@
 
 import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';
-import { renderPhysicalColorTokens } from './physical-layer';
+import { renderPhysicalColorLayer } from './physical-layer';
 import { renderTypographyTokens } from './facets';
 
 export type PluginOptions = {
@@ -18,7 +18,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
         rule.replaceWith(
           parse(
             `${
-              config.colors ? renderPhysicalColorTokens(config.colors) : ''
+              config.colors ? renderPhysicalColorLayer(config.colors) : ''
             }\n\n${
               config.typography ? renderTypographyTokens(config.typography) : ''
             }`,

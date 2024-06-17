@@ -1,35 +1,44 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { PhysicalLayer, SemanticValues, Series } from '../types';
-import { renderCondition } from '../util';
-import { Gamut } from '@ch-ui/colors/dist/types/src';
+import {
+  PhysicalLayer,
+  ResolvedNaming,
+  SemanticValues,
+  Series,
+} from '../types';
+import { renderCondition, resolveNaming, seriesValues } from '../util';
 
-export type RenderTokens = (renderProps: {
+export type RenderTokens<S extends Series = Series> = (renderProps: {
   seriesId: string;
   conditionId: string;
-  series: Series;
+  series: S;
   namespace?: string;
-  semanticValues?: number[];
+  resolvedNaming: ResolvedNaming;
+  values: number[];
 }) => string[];
 
-// TODO(thure): Type this so consumers don’t need `as` to narrow the Series so often.
-
-export const renderPhysicalLayer = <L extends PhysicalLayer>(
+export const renderPhysicalLayer = <L extends PhysicalLayer, S extends Series>(
   { conditions, series, namespace = '' }: L,
-  renderTokens: RenderTokens,
+  renderTokens: RenderTokens<S>,
   semanticValues?: SemanticValues,
 ) => {
   return `${Object.entries(conditions)
     .map(([conditionId, statements]) =>
       renderCondition(
         Object.entries(series)
-          .map(([seriesId, { [conditionId as Gamut]: series }]) => {
+          .map(([seriesId, { [conditionId]: series }]) => {
+            const resolvedNaming = resolveNaming(series?.naming);
+            const values = seriesValues(
+              series!,
+              Array.from(semanticValues?.[seriesId] ?? []),
+            );
             return renderTokens({
               seriesId,
               conditionId,
-              series: series!,
+              series: series as S,
               namespace,
-              semanticValues: Array.from(semanticValues?.[seriesId] ?? []),
+              resolvedNaming,
+              values,
             }).join('\n');
           })
           .join('\n\n'),

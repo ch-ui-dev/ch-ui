@@ -3,7 +3,7 @@
 import { SemanticLayer, SemanticValues } from '../types';
 import {
   ColorsPhysicalLayer,
-  renderPhysicalColorTokens,
+  renderPhysicalColorLayer,
 } from '../physical-layer';
 import { renderSemanticLayer } from '../semantic-layer';
 
@@ -26,7 +26,7 @@ export const renderColorFacet = ({ physical, semantic }: ColorFacet) => {
     {},
   );
   return [
-    renderPhysicalColorTokens(physical, semanticValues),
+    renderPhysicalColorLayer(physical, semanticValues),
     renderSemanticLayer(semantic),
   ].join('\n\n');
 };
