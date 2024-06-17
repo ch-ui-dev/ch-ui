@@ -8,7 +8,11 @@ import {
   getOklabVectorsFromLuminosities,
 } from '@ch-ui/colors';
 import { HelicalArcSeries, PhysicalLayer, SemanticValues } from '../types';
-import { seriesValues, nameFromValue } from '../util';
+import {
+  physicalValueFromValueRelation,
+  seriesValues,
+  valueFromPhysicalRelation,
+} from '../util';
 import { renderPhysicalLayer } from './render-physical-layer';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
@@ -17,18 +21,25 @@ export const renderPhysicalColorTokens = (
   layer: ColorsPhysicalLayer,
   semanticValues?: SemanticValues,
 ): string => {
-  return renderPhysicalLayer(
+  return renderPhysicalLayer<ColorsPhysicalLayer>(
     layer,
-    ({ series, seriesId, conditionId, namespace, semanticValues }) =>
-      getOklabVectorsFromLuminosities(
-        seriesValues(series!, semanticValues),
-        constellationFromPalette(series as HelicalArcSeries),
+    ({ series, seriesId, conditionId, namespace, semanticValues }) => {
+      const helicalArcSeries = series as HelicalArcSeries;
+      return getOklabVectorsFromLuminosities(
+        seriesValues(series!, semanticValues).map((value) =>
+          physicalValueFromValueRelation(
+            value,
+            helicalArcSeries.physicalValueRelation,
+          ),
+        ),
+        constellationFromPalette(helicalArcSeries),
       ).map((oklab) => {
-        return `--${namespace}${seriesId}-${nameFromValue(
+        return `--${namespace}${seriesId}-${valueFromPhysicalRelation(
           oklab[0],
-          series?.valueNaming,
+          helicalArcSeries.physicalValueRelation,
         )}: ${oklabVectorToValue(oklab, conditionId as Gamut)};`;
-      }),
+      });
+    },
     semanticValues,
   );
 };

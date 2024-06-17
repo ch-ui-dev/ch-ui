@@ -12,6 +12,8 @@ export type RenderTokens = (renderProps: {
   semanticValues?: number[];
 }) => string[];
 
+// TODO(thure): Type this so consumers don’t need `as` to narrow the Series so often.
+
 export const renderPhysicalLayer = <L extends PhysicalLayer>(
   { conditions, series, namespace = '' }: L,
   renderTokens: RenderTokens,
@@ -21,11 +23,11 @@ export const renderPhysicalLayer = <L extends PhysicalLayer>(
     .map(([conditionId, statements]) =>
       renderCondition(
         Object.entries(series)
-          .map(([seriesId, { [conditionId as Gamut]: helicalArcSeries }]) => {
+          .map(([seriesId, { [conditionId as Gamut]: series }]) => {
             return renderTokens({
               seriesId,
               conditionId,
-              series: helicalArcSeries!,
+              series: series!,
               namespace,
               semanticValues: Array.from(semanticValues?.[seriesId] ?? []),
             }).join('\n');

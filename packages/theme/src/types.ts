@@ -24,7 +24,6 @@ export type SemanticLayer<
   conditions: Conditions<K>;
   sememes: Record<string, Record<K, [S, V]>>;
   physicalNamespace?: string;
-  physicalValueNaming?: AccompanyingSeries;
   namespace?: string;
 };
 
@@ -45,20 +44,6 @@ export type Conditions<K extends string = string> = Partial<
   Record<K, Statements>
 >;
 
-type SeriesKeys = {
-  /**
-   * Named input values of members of the series as a map of { name -> value }
-   */
-  keys: Record<string, number>;
-};
-
-type SeriesValues = {
-  /**
-   * Unnamed input values of members of the series
-   */
-  values: number[];
-};
-
 export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
   method: 'floor' | 'ceil' | 'round';
 };
@@ -76,13 +61,14 @@ export type Series = {
    */
   snapTo?: AccompanyingSeries;
   /**
-   * A linear series to use when naming values from this series.
+   * Values of members of the series
    */
-  valueNaming?: AccompanyingSeries;
-} & (
-  | (SeriesValues & Partial<SeriesKeys>)
-  | (SeriesKeys & Partial<SeriesValues>)
-);
+  values?: number[];
+  /**
+   * Whether to convert values to string directly or name them manually
+   */
+  naming?: 'toString' | Record<string, number>;
+};
 
 /**
  * A series of values in the theme which are linear in nature, e.g. gaps.
@@ -112,4 +98,7 @@ export type ExponentialSeries = Series & {
   base: number;
 };
 
-export type HelicalArcSeries = Series & HelicalArcConfig;
+export type HelicalArcSeries = Series &
+  HelicalArcConfig & {
+    physicalValueRelation: AccompanyingSeries;
+  };
