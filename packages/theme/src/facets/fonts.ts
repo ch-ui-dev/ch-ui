@@ -3,10 +3,11 @@
 import {
   ExponentialSeries,
   LinearSeries,
-  ConfigThemes,
+  Conditions,
   Statements,
 } from '../types';
-import { renderBlock } from '../render';
+import { renderCondition, resolveNaming, seriesValues } from '../util';
+import { renderExponentialTokens } from '../physical-layer';
 
 export type FontConfig = {
   /**
@@ -33,13 +34,13 @@ export type FontConfig = {
 
 type DefaultThemes = Record<'root', Statements>;
 
-export type TypographyTokensConfig<T extends ConfigThemes = DefaultThemes> = {
+export type TypographyTokensConfig<T extends Conditions = DefaultThemes> = {
   themes: T;
   fonts: Record<string, Record<keyof T, FontConfig>>;
   namespace?: string;
 };
 
-export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
+export const renderTypographyTokens = <T extends Conditions = DefaultThemes>({
   themes,
   fonts,
   namespace = '',
@@ -47,36 +48,39 @@ export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
   return Object.entries(fonts)
     .map(([fontId, fontThemes]) => {
       return Object.entries(fontThemes)
-        .map(([themeId, fontConfig]) => {
-          const statements = themes[themeId];
-          return renderBlock(
+        .map(([conditionId, fontConfig]) => {
+          const statements = themes[conditionId];
+          return renderCondition(
             Object.entries(fontConfig)
-              .map(([attribute, values]) => {
-                if (!values) {
+              .map(([attribute, series]) => {
+                if (!series) {
                   return;
                 } else {
                   switch (attribute) {
                     case 'fontFamily':
-                      return `--${namespace}font-${fontId}: ${values};`;
+                      return `--${namespace}font-${fontId}: ${series};`;
                     case 'weights':
-                      const weights = values as LinearSeries;
-                      return Object.entries(weights.keys)
+                      const weights = series as LinearSeries;
+                      return Object.entries(weights.naming!)
                         .map(([name, value]) => {
                           return `--${namespace}${fontId}-weight-${name}: ${value};`;
                         })
                         .join('\n');
                     case 'sizes':
-                      const sizes = values as ExponentialSeries;
-                      return Object.entries(sizes.keys)
-                        .map(([name, value]) => {
-                          return `--${namespace}${fontId}-size-${name}: ${(
-                            sizes.initial * Math.pow(sizes.base, value)
-                          ).toFixed(2)}${sizes.unit};`;
-                        })
-                        .join('\n');
+                      const sizes = series as ExponentialSeries;
+                      const values = seriesValues(sizes);
+                      const resolvedNaming = resolveNaming(sizes.naming);
+                      return renderExponentialTokens({
+                        seriesId: `${fontId}-size`,
+                        series: sizes,
+                        conditionId,
+                        values,
+                        resolvedNaming,
+                        namespace,
+                      }).join('\n');
                     case 'lineHeights':
-                      const lineHeights = values as ExponentialSeries;
-                      return Object.entries(lineHeights.keys)
+                      const lineHeights = series as ExponentialSeries;
+                      return Object.entries(lineHeights.naming!)
                         .map(([name, value]) => {
                           return `--${namespace}${fontId}-lineHeight-${name}: ${(
                             lineHeights.initial *
@@ -85,7 +89,7 @@ export const renderTypographyTokens = <T extends ConfigThemes = DefaultThemes>({
                         })
                         .join('\n');
                     case 'fontStyles':
-                      const fontStyles = values as Record<string, string>;
+                      const fontStyles = series as Record<string, string>;
                       return Object.entries(fontStyles)
                         .map(([name, value]) => {
                           return `--${namespace}${fontId}-style-${name}: ${value};`;

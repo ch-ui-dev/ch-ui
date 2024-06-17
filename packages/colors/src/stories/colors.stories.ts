@@ -1,14 +1,12 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { curvePathFromPalette, paletteShadesFromCurve, Vec3 } from '../util';
+import {
+  helicalArcFromConfig,
+  constellationFromHelicalArc,
+  HelicalArcConfig,
+  interpolateLuminosityAlignedConstellation,
+} from '../util';
 import Color from 'colorjs';
-
-type PaletteConfig = {
-  keyColor: Vec3;
-  darkCp: number;
-  lightCp: number;
-  hueTorsion: number;
-};
 
 const shadeNumbers: number[] =
   /* [...Array(19)].map((_, i) => 50 + i * 50); */ [
@@ -20,26 +18,23 @@ const dtor = Math.PI / 180;
 
 type ConfigPalette = 'primary';
 
-const paletteConfigs: Record<ConfigPalette, PaletteConfig> = {
+const paletteConfigs: Record<ConfigPalette, HelicalArcConfig> = {
   primary: {
-    keyColor: [43, 81, 282],
-    darkCp: 0.86,
-    lightCp: 1,
-    hueTorsion: -30 * dtor,
+    keyPoint: [43, 81, 282],
+    lowerCp: 0.86,
+    upperCp: 1,
+    torsion: -30 * dtor,
   },
 };
 
 const physicalColors = Object.keys(paletteConfigs).reduce(
   (acc: Record<string, Record<string, string>>, palette) => {
-    const isBroad = palette === 'neutral' || palette === 'primary';
     const paletteConfig = paletteConfigs[palette as ConfigPalette];
-    const curve = curvePathFromPalette(paletteConfig);
-    const defaultShades = paletteShadesFromCurve(
-      curve,
+    const curve = helicalArcFromConfig(paletteConfig);
+    const defaultShades = interpolateLuminosityAlignedConstellation(
+      constellationFromHelicalArc(curve),
       21,
       [0, 22 / 21],
-      'p3',
-      24,
     ).reverse();
     const renderCssValue = (shadeNumber: number) => {
       if (shadeNumber > 999) {

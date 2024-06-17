@@ -1,5 +1,37 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+import { type HelicalArcConfig } from '@ch-ui/colors';
+
+export type PhysicalSeries<
+  K extends string = string,
+  S extends Series = Series,
+> = Partial<Record<K, S>>;
+
+export type PhysicalLayer<
+  K extends string = string,
+  S extends Series = Series,
+> = {
+  conditions: Conditions<K>;
+  series: Record<string, PhysicalSeries<K, S>>;
+  namespace?: string;
+};
+
+export type SemanticLayer<
+  K extends string = string,
+  S extends string = string,
+  V extends number = number,
+> = {
+  conditions: Conditions<K>;
+  sememes: Record<string, Record<K, [S, V]>>;
+  physicalNamespace?: string;
+  namespace?: string;
+};
+
+export type SemanticValues<
+  S extends string = string,
+  V extends number = number,
+> = Record<S, Set<V>>;
+
 /**
  * A group of statements within which to recursively nest a declaration block.
  */
@@ -8,27 +40,37 @@ export type Statements = string[] | undefined;
 /**
  * A mapping of names to statement groups.
  */
-export type ConfigThemes = Record<string, Statements>;
+export type Conditions<K extends string = string> = Partial<
+  Record<K, Statements>
+>;
+
+export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
+  method: 'floor' | 'ceil' | 'round';
+};
 
 /**
- * A series of values in the theme.
+ * A series of physical tokens. A series must have a `keys` or `values`, and may have both.
  */
-type Series = {
-  /**
-   * Input values of members of the series as a map of { name -> value }
-   */
-  keys: Record<string, number>;
+export type Series = {
   /**
    * The CSS unit to apply to output numbers. The default applied by theme renderers depends on context.
    */
   unit?: string;
   /**
-   * A linear series to snap this series’s values to (e.g. when line-height should align to a block-axis grid)
+   * A linear series to snap this series values to (e.g. when line-height should align to a block-axis grid)
    */
-  snapTo?: Omit<LinearSeries, 'keys'> & {
-    method: 'floor' | 'ceil' | 'round';
-  };
+  snapTo?: AccompanyingSeries;
+  /**
+   * Values of members of the series
+   */
+  values?: number[];
+  /**
+   * Whether to convert values to string directly or name them manually
+   */
+  naming?: 'toString' | Record<string, number>;
 };
+
+export type ResolvedNaming = Map<number, string> | 'toString';
 
 /**
  * A series of values in the theme which are linear in nature, e.g. gaps.
@@ -57,3 +99,8 @@ export type ExponentialSeries = Series & {
    */
   base: number;
 };
+
+export type HelicalArcSeries = Series &
+  HelicalArcConfig & {
+    physicalValueRelation: AccompanyingSeries;
+  };

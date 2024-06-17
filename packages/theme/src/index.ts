@@ -2,7 +2,8 @@
 
 import { PluginCreator, parse, AtRule } from 'postcss';
 import { ThemeConfig } from './theme';
-import { renderColorTokens, renderTypographyTokens } from './configs';
+import { renderPhysicalColorLayer } from './physical-layer';
+import { renderTypographyTokens } from './facets';
 
 export type PluginOptions = {
   config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
@@ -16,7 +17,9 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
         const config = (await opts?.config(rule.params)) ?? {};
         rule.replaceWith(
           parse(
-            `${config.colors ? renderColorTokens(config.colors) : ''}\n\n${
+            `${
+              config.colors ? renderPhysicalColorLayer(config.colors) : ''
+            }\n\n${
               config.typography ? renderTypographyTokens(config.typography) : ''
             }`,
           ),
@@ -28,7 +31,9 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 
 creator.postcss = true;
 
-export * from './configs';
+export * from './facets';
+export * from './physical-layer';
+export * from './semantic-layer';
 export * from './types';
 export * from './theme';
 

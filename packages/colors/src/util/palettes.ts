@@ -1,7 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { getPointsOnCurvePath } from './geometry';
-import { CurvedHelixPath, OutputGamut, Palette, Vec3 } from './types';
+import { arcToConstellation } from './geometry';
+import { HelicalArc, Gamut, HelicalArcConfig, Vec3 } from './types';
 import Color from 'colorjs';
 
 // This file contains functions that combine geometry and color math to create
@@ -16,81 +16,57 @@ function getLinearSpace(min: number, max: number, n: number) {
   return result;
 }
 
-function paletteShadesFromCurvePoints(
-  curvePoints: Vec3[],
-  nShades: number,
-  range = [0, 1],
-  _gamut: OutputGamut = 'srgb',
-): Vec3[] {
-  if (curvePoints.length <= 2) {
-    return [];
-  }
-
-  const paletteShades = [];
-
-  const luminosities = getLinearSpace(range[0], range[1], nShades);
-
+export const getOklabVectorsFromLuminosities = (
+  luminosities: number[],
+  constellation: Vec3[],
+): Vec3[] => {
   let c = 0;
 
-  for (let i = 0; i < nShades; i++) {
-    const l = Math.min(range[1], Math.max(range[0], luminosities[i]));
+  const result: Vec3[] = [];
 
-    while (l > curvePoints[c + 1][0]) {
+  for (let i = 0; i < luminosities.length; i++) {
+    const l = luminosities[i];
+
+    while (constellation[c + 1] && l > constellation[c + 1][0]) {
       c++;
     }
 
-    const [l1, a1, b1] = curvePoints[c];
-    const [l2, a2, b2] = curvePoints[c + 1];
+    const [l1, a1, b1] = constellation[c];
+    const [l2, a2, b2] = constellation[c + 1];
 
     const u = (l - l1) / (l2 - l1);
 
-    paletteShades[i] = [
+    result.push([
       l1 + (l2 - l1) * u,
       a1 + (a2 - a1) * u,
       b1 + (b2 - b1) * u,
-    ] as Vec3;
+    ] as Vec3);
   }
 
-  // does this need to be snapped into the gamut?
-  return paletteShades;
-}
+  return result;
+};
 
-export function paletteShadesFromCurve(
-  curve: CurvedHelixPath,
-  nShades = 16,
-  range = [0, 1],
-  gamut: OutputGamut = 'srgb',
-  curveDepth = 24,
+export function constellationFromHelicalArc(
+  curve: HelicalArc,
+  curveDepth = 32,
 ): Vec3[] {
-  return paletteShadesFromCurvePoints(
-    getPointsOnCurvePath(
-      curve,
-      Math.ceil((curveDepth * (1 + Math.abs(curve.torsion || 1))) / 2),
-    ).map((curvePoint: Vec3) =>
-      getPointOnHelix(curvePoint, curve.torsion, curve.torsionT0),
-    ),
-    nShades,
-    range,
-    gamut,
+  return arcToConstellation(
+    curve,
+    Math.ceil((curveDepth * (1 + Math.abs(curve.torsion || 1))) / 2),
+  ).map((curvePoint: Vec3) =>
+    applyTorsion(curvePoint, curve.torsion, curve.torsionT0),
   );
 }
 
-export function shadeToValue(Lab: Vec3, gamut: OutputGamut): string {
+export function oklabVectorToValue(Lab: Vec3, gamut: Gamut): string {
   return new Color('oklab', Lab).to(gamut).toString({ inGamut: true });
 }
 
-function paletteShadesToValues(
-  paletteShades: Vec3[],
-  gamut: OutputGamut,
-): string[] {
-  return paletteShades.map((shade) => shadeToValue(shade, gamut));
+function constellationToValues(constellation: Vec3[], gamut: Gamut): string[] {
+  return constellation.map((shade) => oklabVectorToValue(shade, gamut));
 }
 
-function getPointOnHelix(
-  pointOnCurve: Vec3,
-  torsion = 0,
-  torsionT0 = 50,
-): Vec3 {
+function applyTorsion(pointOnCurve: Vec3, torsion = 0, torsionT0 = 0.5): Vec3 {
   const t = pointOnCurve[0];
   const [l, c, h] = new Color('oklab', pointOnCurve).to('oklch').oklch;
   const hueOffset = torsion * (t - torsionT0);
@@ -99,41 +75,43 @@ function getPointOnHelix(
   ) as Vec3;
 }
 
-export function curvePathFromPalette({
-  keyColor: keyColorCoords,
-  darkCp,
-  lightCp,
-  hueTorsion,
-}: Palette): CurvedHelixPath {
+export function helicalArcFromConfig({
+  keyPoint,
+  lowerCp,
+  upperCp,
+  torsion,
+}: HelicalArcConfig): HelicalArc {
   const blackPosition = [0, 0, 0];
   const whitePosition = [1, 0, 0];
-  const keyColor = new Color('lch', keyColorCoords);
+  const keyColor = new Color('lch', keyPoint);
   const [l, a, b] = keyColor.to('oklab').oklab;
 
   const keyColorPosition = [l, a, b];
-  const darkControlPosition = [l * (1 - darkCp), a, b];
-  const lightControlPosition = [l + (1 - l) * lightCp, a, b];
+  const darkControlPosition = [l * (1 - lowerCp), a, b];
+  const lightControlPosition = [l + (1 - l) * upperCp, a, b];
 
   return {
     curves: [
       { points: [blackPosition, darkControlPosition, keyColorPosition] },
       { points: [keyColorPosition, lightControlPosition, whitePosition] },
     ],
-    torsion: hueTorsion,
+    torsion: torsion,
     torsionT0: l,
-  } as CurvedHelixPath;
+  } as HelicalArc;
 }
 
 export function cssGradientFromCurve(
-  curve: CurvedHelixPath,
-  nShades = 16,
+  curve: HelicalArc,
+  nShades = 21,
   range = [0, 1],
-  gamut: OutputGamut = 'srgb',
-  curveDepth = 24,
+  gamut: Gamut = 'srgb',
+  curveDepth = 32,
 ) {
-  const values = paletteShadesToValues(
-    paletteShadesFromCurve(curve, nShades, range, gamut, curveDepth),
+  return `linear-gradient(to right, ${constellationToValues(
+    getOklabVectorsFromLuminosities(
+      getLinearSpace(range[0], range[1], nShades),
+      constellationFromHelicalArc(curve, curveDepth),
+    ),
     gamut,
-  );
-  return `linear-gradient(to right, ${values.join(', ')})`;
+  ).join(', ')})`;
 }

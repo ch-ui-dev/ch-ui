@@ -1,6 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { Curve, CurvePath, Vec3 } from './types';
+import { BezierCurve, Arc, Vec3 } from './types';
 
 const curveResolution = 128;
 
@@ -49,7 +49,7 @@ function QuadraticBezier(
   );
 }
 
-function getPointOnCurve(curve: Curve, t: number) {
+function getPointOnCurve(curve: BezierCurve, t: number) {
   const [v0, v1, v2] = curve.points;
   return [
     QuadraticBezier(t, v0[0], v1[0], v2[0]),
@@ -58,7 +58,7 @@ function getPointOnCurve(curve: Curve, t: number) {
   ] as Vec3;
 }
 
-function getPointsOnCurve(curve: Curve, divisions: number): Vec3[] {
+function getPointsOnCurve(curve: BezierCurve, divisions: number): Vec3[] {
   const points = [];
   for (let d = 0; d <= divisions; d++) {
     points.push(getPointOnCurve(curve, d / divisions));
@@ -66,12 +66,12 @@ function getPointsOnCurve(curve: Curve, divisions: number): Vec3[] {
   return points;
 }
 
-function getCurvePathLength(curvePath: CurvePath) {
+function getCurvePathLength(curvePath: Arc) {
   const lengths = getCurvePathLengths(curvePath);
   return lengths[lengths.length - 1];
 }
 
-function getCurvePathLengths(curvePath: CurvePath) {
+function getCurvePathLengths(curvePath: Arc) {
   if (
     curvePath.cacheLengths &&
     curvePath.cacheLengths.length === curvePath.curves.length
@@ -90,12 +90,12 @@ function getCurvePathLengths(curvePath: CurvePath) {
   return lengths;
 }
 
-function getCurveLength(curve: Curve) {
+function getCurveLength(curve: BezierCurve) {
   const lengths = getCurveLengths(curve);
   return lengths[lengths.length - 1];
 }
 
-function getCurveLengths(curve: Curve, divisions = curveResolution) {
+function getCurveLengths(curve: BezierCurve, divisions = curveResolution) {
   if (curve.cacheArcLengths && curve.cacheArcLengths.length === divisions + 1) {
     return curve.cacheArcLengths;
   }
@@ -119,7 +119,7 @@ function getCurveLengths(curve: Curve, divisions = curveResolution) {
   return cache; // { sums: cache, sum: sum }; Sum is in the last element.
 }
 
-function getCurveUtoTMapping(curve: Curve, u: number, distance?: number) {
+function getCurveUtoTMapping(curve: BezierCurve, u: number, distance?: number) {
   const arcLengths = getCurveLengths(curve);
   let i = 0;
   const il = arcLengths.length;
@@ -172,35 +172,8 @@ function getCurveUtoTMapping(curve: Curve, u: number, distance?: number) {
   return t;
 }
 
-function getPointOnCurveAt(curve: Curve, u: number) {
-  return getPointOnCurve(curve, getCurveUtoTMapping(curve, u));
-}
-
-export function getPointOnCurvePath(
-  curvePath: CurvePath,
-  t: number,
-): Vec3 | null {
-  const d = t * getCurvePathLength(curvePath);
-  const curveLengths = getCurvePathLengths(curvePath);
-  let i = 0;
-
-  while (i < curveLengths.length) {
-    if (curveLengths[i] >= d) {
-      const diff = curveLengths[i] - d;
-      const curve = curvePath.curves[i];
-
-      const segmentLength = getCurveLength(curve);
-      const u = segmentLength === 0 ? 0 : 1 - diff / segmentLength;
-
-      return getPointOnCurveAt(curve, u);
-    }
-    i++;
-  }
-  return null;
-}
-
-export function getPointsOnCurvePath(
-  curvePath: CurvePath,
+export function arcToConstellation(
+  curvePath: Arc,
   divisions = curveResolution,
 ): Vec3[] {
   const points = [];
