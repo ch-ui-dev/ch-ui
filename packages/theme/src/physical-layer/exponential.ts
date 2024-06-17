@@ -15,9 +15,22 @@ export const renderExponentialTokens: RenderTokens<ExponentialSeries> = ({
   values,
   resolvedNaming,
 }) => {
-  const { initial, base, unit = '' } = series;
+  const { initial, base, unit = '', snapTo } = series;
   return values
-    .map((value) => initial * Math.pow(base, value))
+    .map((value) => {
+      const preSnappedValue = initial * Math.pow(base, value);
+      if (snapTo) {
+        return (
+          snapTo.initial +
+          snapTo.slope *
+            Math[snapTo.method](
+              (preSnappedValue - snapTo.initial) / snapTo.slope,
+            )
+        );
+      } else {
+        return preSnappedValue;
+      }
+    })
     .map((physicalValue, index) => {
       return `--${namespace}${seriesId}-${nameFromValue(
         values[index],

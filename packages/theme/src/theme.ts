@@ -147,16 +147,26 @@ const defaultSizes: ExponentialSeries = {
   naming: defaultExponentialKeys,
 };
 
+const lineHeightSnapTo = {
+  method: 'ceil',
+  initial: 0,
+  slope: 0.25,
+} satisfies ExponentialSeries['snapTo'];
+
 const defaultLineHeights: ExponentialSeries = {
   initial: 1.25,
   unit: 'rem',
-  base: 1.16, // <- larger type sizes benefit from less leading
+  base: defaultSizes.base - 0.05, // <- larger type sizes benefit from less leading
   naming: defaultExponentialKeys,
-  snapTo: {
-    method: 'ceil',
-    initial: 0,
-    slope: 0.25,
-  },
+  snapTo: lineHeightSnapTo,
+};
+
+const proseLineHeights: ExponentialSeries = {
+  initial: 1.33,
+  unit: 'rem',
+  base: defaultSizes.base - 0.03,
+  naming: defaultExponentialKeys,
+  snapTo: lineHeightSnapTo,
 };
 
 const typographyConditions = {
@@ -174,6 +184,16 @@ export const defaultTheme: ThemeConfig = {
       conditions: typographyConditions,
       series: {
         'text-size': { base: defaultSizes },
+      },
+      namespace: 'ch-',
+    },
+  },
+  lineHeights: {
+    physical: {
+      conditions: typographyConditions,
+      series: {
+        'system-leading': { base: defaultLineHeights },
+        'prose-leading': { base: proseLineHeights },
       },
       namespace: 'ch-',
     },

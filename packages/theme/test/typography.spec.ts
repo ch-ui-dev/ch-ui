@@ -11,6 +11,7 @@ test('typography tokens are generated as expected', async () => {
   await mkdir(resolve(dir), { recursive: true });
   const tokens = [
     renderExponentialLayer(defaultTheme.fontSizes!.physical),
+    renderExponentialLayer(defaultTheme.lineHeights!.physical),
   ].join('\n\n');
   await writeFile(resolve(dir, 'typography.css'), tokens);
   assert.equal(
@@ -18,6 +19,14 @@ test('typography tokens are generated as expected', async () => {
       '  --ch-text-size-base: 1.000rem;\n' +
         '  --ch-text-size-lg: 1.200rem;\n' +
         '  --ch-text-size-xl: 1.440rem;',
+    ),
+    true,
+  );
+  assert.equal(
+    tokens.includes(
+      '  --ch-system-leading-base: 1.250rem;\n' +
+        '  --ch-system-leading-lg: 1.500rem;\n' +
+        '  --ch-system-leading-xl: 1.750rem;',
     ),
     true,
   );
