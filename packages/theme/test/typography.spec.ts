@@ -2,14 +2,16 @@
 
 import assert from 'node:assert';
 import test from 'node:test';
-import { defaultTheme, renderTypographyTokens } from '../src';
+import { defaultTheme, renderExponentialLayer } from '../src';
 import { resolve } from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
 
 test('typography tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
-  const tokens = renderTypographyTokens(defaultTheme.typography!);
+  const tokens = [
+    renderExponentialLayer(defaultTheme.fontSizes!.physical),
+  ].join('\n\n');
   await writeFile(resolve(dir, 'typography.css'), tokens);
   assert.equal(
     tokens.includes(

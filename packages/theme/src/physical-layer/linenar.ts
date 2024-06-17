@@ -1,23 +1,23 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { ExponentialSeries, PhysicalLayer, SemanticValues } from '../types';
+import { LinearSeries, PhysicalLayer, SemanticValues } from '../types';
 import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
 import { nameFromValue } from '../util';
 
-export type ExponentialPhysicalLayer<S extends string = string> =
+export type LinearPhysicalLayer<S extends string = string> =
   //
-  PhysicalLayer<S, ExponentialSeries>;
+  PhysicalLayer<S, LinearSeries>;
 
-export const renderExponentialTokens: RenderTokens<ExponentialSeries> = ({
+export const renderLinearTokens: RenderTokens<LinearSeries> = ({
   series,
   seriesId,
   namespace,
   values,
   resolvedNaming,
 }) => {
-  const { initial, base, unit = '' } = series;
+  const { initial, slope, unit = '' } = series;
   return values
-    .map((value) => initial * Math.pow(base, value))
+    .map((value) => initial + slope * value)
     .map((physicalValue, index) => {
       return `--${namespace}${seriesId}-${nameFromValue(
         values[index],
@@ -26,12 +26,12 @@ export const renderExponentialTokens: RenderTokens<ExponentialSeries> = ({
     });
 };
 
-export const renderExponentialLayer = (
-  layer: ExponentialPhysicalLayer,
+export const renderLinearLayer = (
+  layer: LinearPhysicalLayer,
   semanticValues?: SemanticValues,
 ): string =>
-  renderPhysicalLayer<ExponentialPhysicalLayer, ExponentialSeries>(
+  renderPhysicalLayer<LinearPhysicalLayer, LinearSeries>(
     layer,
-    renderExponentialTokens,
+    renderLinearTokens,
     semanticValues,
   );

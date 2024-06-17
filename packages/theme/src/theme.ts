@@ -8,11 +8,12 @@ import {
   LinearSeries,
   SemanticLayer,
 } from './types';
-import { TypographyTokensConfig } from './facets';
+import { ColorFacet, FontSizeFacet, LineHeightFacet } from './facets';
 
 export type ThemeConfig = {
-  colors?: ColorsPhysicalLayer & SemanticLayer;
-  typography?: TypographyTokensConfig<any>;
+  colors?: ColorFacet;
+  fontSizes?: FontSizeFacet;
+  lineHeights?: LineHeightFacet;
 };
 
 // DEFAULT THEME VALUES
@@ -57,6 +58,7 @@ export const defaultPhysicalColors: ColorsPhysicalLayer = {
       rec2020: accentArc,
     },
   },
+  namespace: 'ch-',
 };
 
 export const defaultSemanticColors: SemanticLayer = {
@@ -114,6 +116,7 @@ export const defaultSemanticColors: SemanticLayer = {
       dark: ['neutral', 700],
     },
   },
+  namespace: 'ch-',
 };
 
 const defaultWeights: LinearSeries = {
@@ -156,37 +159,23 @@ const defaultLineHeights: ExponentialSeries = {
   },
 };
 
-const defaultFontStyles: Record<string, string> = {
-  normal: 'normal',
-  italic: 'italic',
-};
-
-const typographyThemes = {
-  mobile: [':root'],
-};
-
-const defaultTypography: TypographyTokensConfig<typeof typographyThemes> = {
-  themes: typographyThemes,
-  fonts: {
-    text: {
-      mobile: {
-        fontFamily: 'sans-serif',
-        sizes: defaultSizes,
-        lineHeights: defaultLineHeights,
-        weights: defaultWeights,
-        fontStyles: defaultFontStyles,
-      },
-    },
-  },
-  namespace: 'ch-',
+const typographyConditions = {
+  base: [':root'],
 };
 
 // @ts-ignore
 export const defaultTheme: ThemeConfig = {
   colors: {
-    ...defaultPhysicalColors,
-    ...defaultSemanticColors,
-    namespace: 'ch-',
+    physical: defaultPhysicalColors,
+    semantic: defaultSemanticColors,
   },
-  typography: defaultTypography,
+  fontSizes: {
+    physical: {
+      conditions: typographyConditions,
+      series: {
+        'text-size': { base: defaultSizes },
+      },
+      namespace: 'ch-',
+    },
+  },
 };

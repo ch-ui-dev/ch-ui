@@ -2,3 +2,4 @@
 
 export * from './helical-arc';
 export * from './exponential';
+export * from './linenar';
