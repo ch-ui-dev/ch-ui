@@ -8,12 +8,12 @@ import {
   LinearSeries,
   SemanticLayer,
 } from './types';
-import { ColorFacet, FontSizeFacet, LineHeightFacet } from './facets';
+import { ColorFacet, TypographicFacet } from './facets';
 
 export type ThemeConfig = {
   colors?: ColorFacet;
-  fontSizes?: FontSizeFacet;
-  lineHeights?: LineHeightFacet;
+  fontSizes?: TypographicFacet;
+  lineHeights?: TypographicFacet;
 };
 
 // DEFAULT THEME VALUES

@@ -1,6 +1,12 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { AccompanyingSeries, ResolvedNaming, Series } from '../types';
+import {
+  AccompanyingSeries,
+  ResolvedNaming,
+  SemanticLayer,
+  SemanticValues,
+  Series,
+} from '../types';
 
 /**
  * Produces all unique values of a series
@@ -16,6 +22,30 @@ export const seriesValues = (
       ...semanticValues,
     ]),
   ).sort();
+
+export const facetSemanticValues = <
+  K extends string = string,
+  S extends string = string,
+  V extends number = number,
+>(
+  semanticLayer?: SemanticLayer<K, S, V>,
+): SemanticValues => {
+  return semanticLayer
+    ? Object.values(semanticLayer.sememes).reduce(
+        (acc: SemanticValues, sememe) => {
+          Object.values(sememe).forEach((sememe) => {
+            const [seriesId, value] = sememe as [S, V];
+            if (!acc[seriesId]) {
+              acc[seriesId] = new Set<V>();
+            }
+            acc[seriesId].add(value);
+          });
+          return acc;
+        },
+        {},
+      )
+    : {};
+};
 
 const defaultRelation: AccompanyingSeries = {
   initial: 0,

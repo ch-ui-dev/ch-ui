@@ -4,7 +4,8 @@ import {
   helicalArcFromConfig,
   constellationFromHelicalArc,
   HelicalArcConfig,
-  interpolateLuminosityAlignedConstellation,
+  getOklabVectorsFromLuminosities,
+  getLinearSpace,
 } from '../util';
 import Color from 'colorjs';
 
@@ -31,10 +32,9 @@ const physicalColors = Object.keys(paletteConfigs).reduce(
   (acc: Record<string, Record<string, string>>, palette) => {
     const paletteConfig = paletteConfigs[palette as ConfigPalette];
     const curve = helicalArcFromConfig(paletteConfig);
-    const defaultShades = interpolateLuminosityAlignedConstellation(
+    const defaultShades = getOklabVectorsFromLuminosities(
+      getLinearSpace(0, 1, 21),
       constellationFromHelicalArc(curve),
-      21,
-      [0, 22 / 21],
     ).reverse();
     const renderCssValue = (shadeNumber: number) => {
       if (shadeNumber > 999) {

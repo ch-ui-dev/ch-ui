@@ -4,6 +4,8 @@ import { defineConfig } from 'astro/config';
 import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-theme';
 import chIconsPlugin from '@ch-ui/vite-plugin-icons';
 import { elementsAstro } from '@ch-ui/astro-stencil';
+// Appease TS2742:
+import _astro from 'astro';
 
 export default defineConfig({
   site: 'https://ch-ui.dev',

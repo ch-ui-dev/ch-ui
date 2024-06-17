@@ -6,8 +6,6 @@ import nesting from 'postcss-nesting';
 import chTheme, { type PluginOptions } from '@ch-ui/theme';
 
 export {
-  type SemanticColorTokensConfig,
-  type PhysicalColorTokensConfig,
   type ThemeConfig,
   type PluginOptions,
   defaultTheme,

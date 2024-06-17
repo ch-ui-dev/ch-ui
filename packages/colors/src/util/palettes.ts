@@ -4,17 +4,18 @@ import { arcToConstellation } from './geometry';
 import { HelicalArc, Gamut, HelicalArcConfig, Vec3 } from './types';
 import Color from 'colorjs';
 
-// This file contains functions that combine geometry and color math to create
-// and work with palette curves.
-
-function getLinearSpace(min: number, max: number, n: number) {
+export const getLinearSpace = (
+  min: number,
+  max: number,
+  n: number,
+): number[] => {
   const result = [];
   const delta = (max - min) / n;
   for (let i = 0; i < n; i++) {
     result[i] = min + delta * i;
   }
   return result;
-}
+};
 
 export const getOklabVectorsFromLuminosities = (
   luminosities: number[],

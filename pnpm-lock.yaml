@@ -204,7 +204,7 @@ importers:
     devDependencies:
       '@stencil/core':
         specifier: ^4.7.0
-        version: 4.18.3
+        version: link:../../../stencil
       '@types/jest':
         specifier: ^29.5.6
         version: 29.5.12
@@ -3580,12 +3580,6 @@ packages:
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-    dev: true
-
-  /@stencil/core@4.18.3:
-    resolution: {integrity: sha512-8yoG5AFQYEPocVtuoc5kvRS0Hku0MoDWDUpADRaXPVHsOFLmxR16LJENj25ucCz5GEfeTGQ/tCE8JAypPmr/fQ==}
-    engines: {node: '>=16.0.0', npm: '>=7.10.0'}
-    hasBin: true
     dev: true
 
   /@storybook/addon-actions@8.0.5:

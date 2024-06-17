@@ -1,11 +1,12 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { SemanticLayer, SemanticValues } from '../types';
+import { SemanticLayer } from '../types';
 import {
   ColorsPhysicalLayer,
   renderPhysicalColorLayer,
 } from '../physical-layer';
 import { renderSemanticLayer } from '../semantic-layer';
+import { facetSemanticValues } from '../util';
 
 export type ColorFacet = {
   physical: ColorsPhysicalLayer;
@@ -13,17 +14,7 @@ export type ColorFacet = {
 };
 
 export const renderColorFacet = ({ physical, semantic }: ColorFacet) => {
-  const semanticValues = semantic
-    ? Object.values(semantic.sememes).reduce((acc: SemanticValues, sememe) => {
-        Object.values(sememe).forEach(([seriesId, value]) => {
-          if (!acc[seriesId]) {
-            acc[seriesId] = new Set<number>();
-          }
-          acc[seriesId].add(value);
-        });
-        return acc;
-      }, {})
-    : {};
+  const semanticValues = facetSemanticValues(semantic);
   return [
     renderPhysicalColorLayer(physical, semanticValues),
     ...(semantic ? [renderSemanticLayer(semantic)] : []),
