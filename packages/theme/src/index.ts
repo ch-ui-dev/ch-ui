@@ -1,8 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { PluginCreator, parse, AtRule } from 'postcss';
-import { ThemeConfig } from './theme';
-import { renderColorFacet, renderTypographicFacet } from './facets';
+import { ThemeConfig, renderTheme } from './theme';
 
 export type PluginOptions = {
   config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
@@ -14,19 +13,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
     AtRule: {
       async chui(rule) {
         const config = (await opts?.config(rule.params)) ?? {};
-        rule.replaceWith(
-          parse(
-            [
-              ...(config.colors ? [renderColorFacet(config.colors)] : []),
-              ...(config.fontSizes
-                ? [renderTypographicFacet(config.fontSizes)]
-                : []),
-              ...(config.lineHeights
-                ? [renderTypographicFacet(config.lineHeights)]
-                : []),
-            ].join('\n\n'),
-          ),
-        );
+        rule.replaceWith(parse(renderTheme(config)));
       },
     },
   };
@@ -34,7 +21,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 
 creator.postcss = true;
 
-export * from './facets';
+export * from './facet';
 export * from './physical-layer';
 export * from './semantic-layer';
 export * from './types';

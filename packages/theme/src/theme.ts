@@ -8,13 +8,9 @@ import {
   LinearSeries,
   SemanticLayer,
 } from './types';
-import { ColorFacet, TypographicFacet } from './facets';
+import { Facet, renderFacet } from './facet';
 
-export type ThemeConfig = {
-  colors?: ColorFacet;
-  fontSizes?: TypographicFacet;
-  lineHeights?: TypographicFacet;
-};
+export type ThemeConfig = Record<string, Facet>;
 
 // DEFAULT THEME VALUES
 
@@ -198,4 +194,10 @@ export const defaultTheme: ThemeConfig = {
       namespace: 'ch-',
     },
   },
+};
+
+export const renderTheme = (theme: ThemeConfig) => {
+  return Object.values(theme)
+    .map((facet) => renderFacet(facet))
+    .join('\n\n');
 };

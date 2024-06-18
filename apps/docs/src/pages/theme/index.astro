@@ -1,0 +1,9 @@
+---
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { Markdown } from '@astropub/md';
+const [content] = await Astro.glob<{title: string}>('./_theme.md')
+---
+<DocsLayout title={content.frontmatter.title}>
+  <Markdown of={content.rawContent()} />
+</DocsLayout>
