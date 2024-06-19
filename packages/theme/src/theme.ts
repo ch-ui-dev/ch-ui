@@ -3,6 +3,7 @@
 import { ColorsPhysicalLayer } from './physical-layer';
 import {
   AccompanyingSeries,
+  Conditions,
   ExponentialSeries,
   HelicalArcSeries,
   LinearSeries,
@@ -14,29 +15,29 @@ export type ThemeConfig = Record<string, Facet>;
 
 // DEFAULT THEME VALUES
 
-const emissiveRelation: AccompanyingSeries = {
+const emissiveRelation = {
   initial: 0,
   slope: 1000,
   method: 'floor',
-};
+} satisfies AccompanyingSeries;
 
-const neutralArc: HelicalArcSeries = {
+const neutralArc = {
   keyPoint: [47, 3.5, 282],
   lowerCp: 0.8,
   upperCp: 0.88,
   torsion: 0,
   physicalValueRelation: emissiveRelation,
-};
+} satisfies HelicalArcSeries;
 
-const accentArc: HelicalArcSeries = {
+const accentArc = {
   keyPoint: [43, 83, 282],
   lowerCp: 0.86,
   upperCp: 1,
   torsion: -30,
   physicalValueRelation: emissiveRelation,
-};
+} satisfies HelicalArcSeries;
 
-export const defaultPhysicalColors: ColorsPhysicalLayer = {
+export const defaultPhysicalColors = {
   conditions: {
     srgb: [':root'],
     p3: ['@media (color-gamut: p3)', ':root'],
@@ -55,9 +56,9 @@ export const defaultPhysicalColors: ColorsPhysicalLayer = {
     },
   },
   namespace: 'ch-',
-};
+} satisfies ColorsPhysicalLayer;
 
-export const defaultSemanticColors: SemanticLayer = {
+export const defaultSemanticColors = {
   conditions: {
     light: [':root'],
     dark: ['@media (prefers-color-scheme: dark)', ':root'],
@@ -113,16 +114,16 @@ export const defaultSemanticColors: SemanticLayer = {
     },
   },
   namespace: 'ch-',
-};
+} satisfies SemanticLayer;
 
-const defaultWeights: LinearSeries = {
+const defaultWeights = {
   initial: 0,
   slope: 1,
   naming: {
     regular: 400,
     bold: 700,
   },
-};
+} satisfies LinearSeries;
 
 const defaultExponentialKeys = {
   '2xs': -3,
@@ -136,12 +137,12 @@ const defaultExponentialKeys = {
   '4xl': 5,
 } satisfies ExponentialSeries['naming'];
 
-const defaultSizes: ExponentialSeries = {
+const defaultSizes = {
   initial: 1,
   unit: 'rem',
   base: 1.2,
   naming: defaultExponentialKeys,
-};
+} satisfies ExponentialSeries;
 
 const lineHeightSnapTo = {
   method: 'ceil',
@@ -149,28 +150,28 @@ const lineHeightSnapTo = {
   slope: 0.25,
 } satisfies ExponentialSeries['snapTo'];
 
-const defaultLineHeights: ExponentialSeries = {
+const defaultLineHeights = {
   initial: 1.25,
   unit: 'rem',
   base: defaultSizes.base - 0.05, // <- larger type sizes benefit from less leading
   naming: defaultExponentialKeys,
   snapTo: lineHeightSnapTo,
-};
+} satisfies ExponentialSeries;
 
-const proseLineHeights: ExponentialSeries = {
+const proseLineHeights = {
   initial: 1.33,
   unit: 'rem',
   base: defaultSizes.base - 0.03,
   naming: defaultExponentialKeys,
   snapTo: lineHeightSnapTo,
-};
+} satisfies ExponentialSeries;
 
 const typographyConditions = {
   base: [':root'],
-};
+} satisfies Conditions;
 
 // @ts-ignore
-export const defaultTheme: ThemeConfig = {
+export const defaultTheme = {
   colors: {
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
@@ -194,7 +195,7 @@ export const defaultTheme: ThemeConfig = {
       namespace: 'ch-',
     },
   },
-};
+} satisfies ThemeConfig;
 
 export const renderTheme = (theme: ThemeConfig) => {
   return Object.values(theme)
