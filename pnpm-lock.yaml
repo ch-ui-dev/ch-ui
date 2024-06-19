@@ -101,15 +101,24 @@ importers:
       '@ch-ui/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@ch-ui/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
       '@ch-ui/vite-plugin-icons':
         specifier: workspace:*
         version: link:../../packages/vite-plugin-icons
       '@ch-ui/vite-plugin-theme':
         specifier: workspace:*
         version: link:../../packages/vite-plugin-theme
+      '@nanostores/persistent':
+        specifier: ^0.10.1
+        version: 0.10.1(nanostores@0.10.3)
       astro:
         specifier: ^4.8.7
         version: 4.8.7(@types/node@20.14.2)(typescript@5.3.3)
+      nanostores:
+        specifier: ^0.10.3
+        version: 0.10.3
     devDependencies:
       '@astrojs/ts-plugin':
         specifier: ^1.8.0
@@ -2703,6 +2712,15 @@ packages:
       '@types/react': 18.2.52
       react: 18.2.0
     dev: true
+
+  /@nanostores/persistent@0.10.1(nanostores@0.10.3):
+    resolution: {integrity: sha512-BMYj47ONmkrPkHfomimtBAwtDNNjO57lw0uk7jB35GHVwixmqWtlK6DVAAbioqwJn9WEaWSB/9Ss5ukBG0NHlQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      nanostores: ^0.9.0 || ^0.10.0
+    dependencies:
+      nanostores: 0.10.3
+    dev: false
 
   /@ndelangen/get-tarball@3.0.9:
     resolution: {integrity: sha512-9JKTEik4vq+yGosHYhZ1tiH/3WpUS0Nh0kej4Agndhox8pAdWhEx5knFVRcb/ya9knCRCs1rPxNrSXTDdfVqpA==}
@@ -10188,6 +10206,11 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanostores@0.10.3:
+    resolution: {integrity: sha512-Nii8O1XqmawqSCf9o2aWqVxhKRN01+iue9/VEd1TiJCr9VT5XxgPFbF1Edl1XN6pwJcZRsl8Ki+z01yb/T/C2g==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    dev: false
 
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
