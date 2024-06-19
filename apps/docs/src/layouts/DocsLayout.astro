@@ -53,22 +53,4 @@ const { title } = Astro.props;
       <slot/>
     </main>
   </body>
-  <script>
-    import { persistentAtom } from '@nanostores/persistent'
-    import { defaultTheme, renderTheme } from '@ch-ui/theme';
-
-    const userTokens = persistentAtom(
-      'userTokens',
-      `@layer user-tokens {${renderTheme(defaultTheme)}}`
-    );
-
-    const userTokensNode = document.createElement('style');
-    userTokensNode.id = 'user-tokens';
-    userTokensNode.textContent = userTokens.get();
-    document.head.appendChild(userTokensNode);
-
-    userTokens.subscribe((value)=>{
-      userTokensNode.textContent = value;
-    });
-  </script>
 </html>

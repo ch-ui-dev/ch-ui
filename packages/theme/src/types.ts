@@ -2,6 +2,8 @@
 
 import { type HelicalArcConfig } from '@ch-ui/colors';
 
+export { type Gamut } from '@ch-ui/colors';
+
 export type PhysicalSeries<
   K extends string = string,
   S extends Series = Series,
