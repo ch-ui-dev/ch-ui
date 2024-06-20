@@ -2,6 +2,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import { persistentAtom } from '@nanostores/persistent'
 import { defaultTheme} from '@ch-ui/theme';
+import { ChOklchPicker } from '../components/Elements.jsx';
 import get from 'lodash.get';
 const userThemeConfigString = persistentAtom(
   'ch-theme-config',
@@ -12,7 +13,7 @@ const userThemeConfig = JSON.parse(userThemeConfigString.get());
 const accentKeyPoint = [100, .2, .2];
 ---
 <style id="user-tokens"/>
-<ch-oklch-picker hue={accentKeyPoint[0]} chroma={accentKeyPoint[1]} lightness={accentKeyPoint[2]}/>
+<ChOklchPicker hue={accentKeyPoint[0]} chroma={accentKeyPoint[1]} lightness={accentKeyPoint[2]}/>
 <script>
   import { persistentAtom } from '@nanostores/persistent'
   import { defaultTheme, renderPhysicalColorLayer, type Gamut, type ThemeConfig } from '@ch-ui/theme';

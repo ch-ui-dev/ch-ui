@@ -19,6 +19,13 @@ export const elementsAstro = (): AstroIntegration => {
         });
         updateConfig({
           vite: {
+            resolve: {
+              alias: {
+                // TODO(thure): Remove this when ionic-team/stencil##5792 is merged and @stencil/core is no longer linked.
+                '@stencil/core/internal/app-data':
+                  '/Users/willdx/Projects/stencil/internal/app-data/index.js',
+              },
+            },
             optimizeDeps: {
               include: ['@ch-ui/elements/hydrate', ...chDeps],
               exclude: ['@ch-ui/astro-stencil/server.js'],

@@ -39,7 +39,8 @@
       "types": "./dist/components/ch-link.d.ts"
     },
     "./hydrate": {
-      "import": "./dist/hydrate/index.js",
+      "import": "./dist/hydrate/index.mjs",
+      "require": "./dist/hydrate/index.js",
       "types": "./dist/hydrate/index.d.ts"
     },
     "./config": {
@@ -62,7 +63,7 @@
     "src"
   ],
   "devDependencies": {
-    "@stencil/core": "^4.7.0",
+    "@stencil/core": "nightly",
     "@types/jest": "^29.5.6",
     "@types/node": "^20.12.3"
   },
