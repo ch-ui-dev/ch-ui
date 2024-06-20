@@ -2,46 +2,10 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import { Markdown } from '@astropub/md';
+import ThemeEditor from '../../components/ThemeEditor.astro';
 const [content] = await Astro.glob<{title: string}>('./_theme.md')
-
 ---
 <DocsLayout title={content.frontmatter.title}>
-  <input id="accent-hue" type="range" min="0" max="359" step="1" />
+  <ThemeEditor />
   <Markdown of={content.rawContent()} />
-  <style id="user-tokens"/>
-  <script>
-    import { persistentAtom } from '@nanostores/persistent'
-    import { defaultTheme, renderTheme, type Gamut, type ThemeConfig } from '@ch-ui/theme';
-    import get from 'lodash.get';
-    import set from 'lodash.set';
-    import { yieldOrContinue } from 'main-thread-scheduling';
-
-    const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
-
-    const accentHue = persistentAtom(
-      'colors.physical.series.accent.{gamut}.keyPoint[2]',
-      get(defaultTheme, 'colors.physical.series.accent.srgb.keyPoint[2]').toString()
-    );
-
-    const $userTokens = document.createElement('style');
-    $userTokens.id = 'user-tokens';
-    document.head.appendChild($userTokens);
-
-    const $accentHueInput = document.getElementById('accent-hue')
-
-    accentHue.subscribe(async (value)=>{
-      const valueNumber = Math.round(parseFloat(value));
-      gamuts.forEach((gamut)=>{
-        set(defaultTheme, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
-      })
-      await yieldOrContinue('interactive');
-      $userTokens.textContent = renderTheme(defaultTheme as ThemeConfig);
-    });
-
-    ($accentHueInput as HTMLInputElement).value = accentHue.get();
-
-    $accentHueInput.onchange = (event) => {
-      accentHue.set((event.target as HTMLInputElement).value);
-    }
-  </script>
 </DocsLayout>

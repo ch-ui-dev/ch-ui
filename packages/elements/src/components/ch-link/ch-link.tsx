@@ -10,7 +10,7 @@ import { Component, Host, h, Prop } from '@stencil/core';
 @Component({
   tag: 'ch-link',
   shadow: false,
-  styleUrls: { default: ['./ch-link.css'] },
+  // styleUrls: { default: ['./ch-link.css'] },
 })
 export class ChLink {
   /**

@@ -32,5 +32,7 @@ export default defineConfig({
       }),
     ],
   },
-  integrations: [elementsAstro()],
+  integrations: [
+    // elementsAstro()
+  ],
 });

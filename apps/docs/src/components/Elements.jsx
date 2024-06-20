@@ -12,4 +12,7 @@ ChButton.is = 'ch-button';
 const ChLink = (props) => <ch-icon {...props} />;
 ChLink.is = 'ch-link';
 
-export { ChIcon, ChButton, ChLink };
+const ChOklchPicker = (props) => <ch-oklch-picker {...props} />;
+ChOklchPicker.is = 'ch-oklch-picker';
+
+export { ChIcon, ChButton, ChLink, ChOklchPicker };

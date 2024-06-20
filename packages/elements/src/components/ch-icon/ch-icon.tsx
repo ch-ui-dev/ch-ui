@@ -10,7 +10,7 @@ import { Component, h, Prop, Host } from '@stencil/core';
 @Component({
   tag: 'ch-icon',
   shadow: false,
-  styleUrls: { default: ['./ch-icon.css'] },
+  // styleUrls: { default: ['./ch-icon.css'] },
 })
 export class ChIcon {
   /**

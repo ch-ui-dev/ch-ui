@@ -1,0 +1,44 @@
+---
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import { persistentAtom } from '@nanostores/persistent'
+import { defaultTheme} from '@ch-ui/theme';
+import get from 'lodash.get';
+const userThemeConfigString = persistentAtom(
+  'ch-theme-config',
+  JSON.stringify(defaultTheme)
+);
+const userThemeConfig = JSON.parse(userThemeConfigString.get());
+// const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint')
+const accentKeyPoint = [100, .2, .2];
+---
+<style id="user-tokens"/>
+<ch-oklch-picker hue={accentKeyPoint[0]} chroma={accentKeyPoint[1]} lightness={accentKeyPoint[2]}/>
+<script>
+  import { persistentAtom } from '@nanostores/persistent'
+  import { defaultTheme, renderPhysicalColorLayer, type Gamut, type ThemeConfig } from '@ch-ui/theme';
+  import get from 'lodash.get';
+  import set from 'lodash.set';
+  import { yieldOrContinue } from 'main-thread-scheduling';
+
+  const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
+
+  const themeConfigString = persistentAtom('ch-theme-config',
+    JSON.stringify(defaultTheme)
+  );
+
+  let themeConfig = JSON.parse(themeConfigString.get());
+
+  const $userTokens = document.createElement('style');
+  $userTokens.id = 'user-tokens';
+  document.head.appendChild($userTokens);
+
+  const $accentKeyPointInput = document.querySelector('ch-oklch-picker');
+
+  // gamuts.forEach((gamut)=>{
+  //   set(defaultTheme, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
+  // })
+
+  $accentKeyPointInput!.addEventListener('oklchChange', async (event) => {
+    console.log('[oklchChange]', event);
+  });
+</script>

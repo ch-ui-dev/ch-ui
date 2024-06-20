@@ -9,7 +9,7 @@ import { Component, Host, h, Prop } from '@stencil/core';
 @Component({
   tag: 'ch-button',
   shadow: false,
-  styleUrls: { default: ['./ch-button.css'] },
+  // styleUrls: { default: ['./ch-button.css'] },
 })
 export class ChButton {
   /**

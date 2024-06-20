@@ -24,7 +24,7 @@ export type Oklch = {
 @Component({
   tag: 'ch-oklch-picker',
   shadow: false,
-  styleUrls: { default: ['./ch-oklch-picker.css'] },
+  // styleUrls: { default: ['./ch-oklch-picker.css'] },
 })
 export class ChOklchPicker {
   /**
@@ -64,7 +64,6 @@ export class ChOklchPicker {
   componentDidRender() {
     // NOTE(thure): This appears to be necessary because stencil doesn’t programmatically
     //   update `value` on range inputs like it does for number inputs.
-    console.log('[component did render]');
     this.hueNumberInput.value = `${this.hueState}`;
     this.hueRangeInput.value = `${this.hueState}`;
     this.chromaNumberInput.value = `${this.chromaState}`;
