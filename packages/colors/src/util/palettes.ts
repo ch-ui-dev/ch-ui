@@ -84,7 +84,7 @@ export function helicalArcFromConfig({
 }: HelicalArcConfig): HelicalArc {
   const blackPosition = [0, 0, 0];
   const whitePosition = [1, 0, 0];
-  const keyColor = new Color('lch', keyPoint);
+  const keyColor = new Color('oklch', keyPoint);
   const [l, a, b] = keyColor.to('oklab').oklab;
 
   const keyColorPosition = [l, a, b];

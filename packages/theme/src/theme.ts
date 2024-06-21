@@ -22,7 +22,7 @@ const emissiveRelation = {
 } satisfies AccompanyingSeries;
 
 const neutralArc = {
-  keyPoint: [47, 3.5, 282],
+  keyPoint: [0.47, 0.014, 256],
   lowerCp: 0.8,
   upperCp: 0.88,
   torsion: 0,
@@ -30,10 +30,10 @@ const neutralArc = {
 } satisfies HelicalArcSeries;
 
 const accentArc = {
-  keyPoint: [43, 83, 282],
-  lowerCp: 0.86,
+  keyPoint: [0.43, 0.4, 256],
+  lowerCp: 1,
   upperCp: 1,
-  torsion: -30,
+  torsion: -12,
   physicalValueRelation: emissiveRelation,
 } satisfies HelicalArcSeries;
 

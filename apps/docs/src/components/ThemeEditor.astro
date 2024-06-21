@@ -9,17 +9,16 @@ const userThemeConfigString = persistentAtom(
   JSON.stringify(defaultTheme)
 );
 const userThemeConfig = JSON.parse(userThemeConfigString.get());
-// const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint')
-const accentKeyPoint = [100, .2, .2];
+const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint')
 ---
 <style id="user-tokens"/>
-<ChOklchPicker hue={accentKeyPoint[0]} chroma={accentKeyPoint[1]} lightness={accentKeyPoint[2]}/>
+<ChOklchPicker lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
 <script>
   import { persistentAtom } from '@nanostores/persistent'
-  import { defaultTheme, renderPhysicalColorLayer, type Gamut, type ThemeConfig } from '@ch-ui/theme';
-  import get from 'lodash.get';
+  import { defaultTheme, type Gamut, renderFacet } from '@ch-ui/theme';
   import set from 'lodash.set';
   import { yieldOrContinue } from 'main-thread-scheduling';
+  import { ChOklchPickerCustomEvent, Oklch } from '@ch-ui/elements';
 
   const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
 
@@ -29,9 +28,9 @@ const accentKeyPoint = [100, .2, .2];
 
   let themeConfig = JSON.parse(themeConfigString.get());
 
-  const $userTokens = document.createElement('style');
-  $userTokens.id = 'user-tokens';
-  document.head.appendChild($userTokens);
+  const $colorsPhysicalLayer = document.createElement('style');
+  $colorsPhysicalLayer.id = 'colors.physical';
+  document.head.appendChild($colorsPhysicalLayer);
 
   const $accentKeyPointInput = document.querySelector('ch-oklch-picker');
 
@@ -39,7 +38,14 @@ const accentKeyPoint = [100, .2, .2];
   //   set(defaultTheme, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
   // })
 
-  $accentKeyPointInput!.addEventListener('oklchChange', async (event) => {
-    console.log('[oklchChange]', event);
+  $accentKeyPointInput!.addEventListener('oklchChange', async ({ detail: {lightness, chroma, hue} }: ChOklchPickerCustomEvent<Oklch>) => {
+    gamuts.map(gamut=>{
+      console.log('[themeConfig]', themeConfig.colors.physical.series.accent);
+      set(themeConfig, `colors.physical.series.accent.${gamut}.keyPoint`, [lightness, chroma, hue]);
+    });
+    await yieldOrContinue('interactive');
+    $colorsPhysicalLayer.textContent = `@layer user-tokens { ${
+      renderFacet(themeConfig.colors)
+    } }`;
   });
 </script>

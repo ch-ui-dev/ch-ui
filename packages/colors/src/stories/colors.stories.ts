@@ -15,16 +15,14 @@ const shadeNumbers: number[] =
     800, 850, 900, 950,
   ];
 
-const dtor = Math.PI / 180;
-
 type ConfigPalette = 'primary';
 
 const paletteConfigs: Record<ConfigPalette, HelicalArcConfig> = {
   primary: {
-    keyPoint: [43, 81, 282],
-    lowerCp: 0.86,
+    keyPoint: [0.43, 0.4, 256],
+    lowerCp: 1,
     upperCp: 1,
-    torsion: -30 * dtor,
+    torsion: -12,
   },
 };
 
