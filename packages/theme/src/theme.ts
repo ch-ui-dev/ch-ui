@@ -166,9 +166,25 @@ const proseLineHeights = {
   snapTo: lineHeightSnapTo,
 } satisfies ExponentialSeries;
 
-const typographyConditions = {
+const baseCondition = {
   base: [':root'],
 } satisfies Conditions;
+
+const defaultGaps = {
+  initial: 0.25,
+  unit: 'rem',
+  base: 2,
+  naming: {
+    hairline: -2,
+    half: -1,
+    '1': 0,
+    '2': 1,
+    '3': 2,
+    '4': 3,
+    '5': 4,
+    '6': 5,
+  },
+} satisfies ExponentialSeries;
 
 // @ts-ignore
 export const defaultTheme = {
@@ -178,7 +194,7 @@ export const defaultTheme = {
   },
   fontSizes: {
     physical: {
-      conditions: typographyConditions,
+      conditions: baseCondition,
       series: {
         'text-size': { base: defaultSizes },
       },
@@ -187,10 +203,19 @@ export const defaultTheme = {
   },
   lineHeights: {
     physical: {
-      conditions: typographyConditions,
+      conditions: baseCondition,
       series: {
         'system-leading': { base: defaultLineHeights },
         'prose-leading': { base: proseLineHeights },
+      },
+      namespace: 'ch-',
+    },
+  },
+  lengths: {
+    physical: {
+      conditions: baseCondition,
+      series: {
+        gap: { base: defaultGaps },
       },
       namespace: 'ch-',
     },
