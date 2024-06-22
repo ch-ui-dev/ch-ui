@@ -1,15 +1,15 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-import { persistentAtom } from '@nanostores/persistent'
+import { persistentAtom } from '@nanostores/persistent';
 import { defaultTheme} from '@ch-ui/theme';
 import { ChOklchPicker } from '../components/Elements.jsx';
 import get from 'lodash.get';
 const userThemeConfigString = persistentAtom(
   'ch-theme-config',
-  JSON.stringify(defaultTheme)
+  JSON.stringify(defaultTheme),
 );
 const userThemeConfig = JSON.parse(userThemeConfigString.get());
-const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint')
+const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint');
 ---
 <style id="user-tokens"/>
 <ChOklchPicker lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
