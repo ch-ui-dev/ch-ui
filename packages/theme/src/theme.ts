@@ -183,10 +183,11 @@ const defaultGaps = {
     '4': 3,
     '5': 4,
     '6': 5,
+    '7': 6,
+    '8': 7,
   },
 } satisfies ExponentialSeries;
 
-// @ts-ignore
 export const defaultTheme = {
   colors: {
     physical: defaultPhysicalColors,

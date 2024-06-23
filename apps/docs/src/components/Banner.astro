@@ -1,6 +1,13 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 ---
-<header>
-  <h1><a class="ch-link" href="/">ch—ui</a></h1>
+<style>
+  header {
+    background: color(from var(--ch-bg-base) xyz-d65 x y z / .33);
+    backdrop-filter: blur(var(--ch-gap-3));
+    border-block-end: var(--ch-gap-hairline) solid var(--ch-fg-separator);
+  }
+</style>
+<header aria-labelledby="banner-label">
+  <a class="ch-link" href="/" id="banner-label">ch—ui</a>
 </header>

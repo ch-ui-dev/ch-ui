@@ -15,43 +15,36 @@ const { title } = Astro.props;
   <Head title={title}>
     <style is:global>
       body {
-        position: fixed;
-        inset: 0;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: min-content min-content 1fr;
-        @media (min-width: 120ch) {
-          grid-template-columns: min-content 1fr;
-          grid-template-rows: min-content 1fr;
-        }
+        padding-block-start: var(--ch-gap-5);
         & > header {
+          position: fixed;
+          z-index: 1;
+          inset-block-start: 0;
+          inset-inline: 0;
+          block-size: var(--ch-gap-5);
           padding: var(--ch-gap-1);
-          @media (min-width: 120ch) {
-            grid-column: span 2;
-          }
         }
         & > nav {
           padding: var(--ch-gap-2);
-          grid-row-start: 2;
-          overflow-x: hidden;
-          overflow-y: auto;
+          @media (min-width: 120ch) {
+            position: fixed;
+            z-index: 1;
+            inset-block-start: var(--ch-gap-5);
+            inset-inline-start: 0;
+            inline-size: var(--ch-gap-7);
+            block-size: 100%;
+          }
         }
         & > main {
           padding: var(--ch-gap-2);
-          grid-row: 3 / -1;
-          overflow-x: hidden;
           overflow-y: auto;
           @media (min-width: 120ch) {
-            padding: var(--ch-gap-3);
-            grid-row: 2 / -1;
-            grid-column: 2 / -1;
+            padding-block-end: var(--ch-gap-3);
+            padding-inline-end: var(--ch-gap-3);
+            padding-block-start: 0;
+            padding-inline-start: var(--ch-gap-7);
           }
         }
-      }
-      .prose {
-        max-inline-size: 100ch;
-        margin-inline-start: auto;
-        margin-inline-end: auto;
       }
     </style>
   </Head>

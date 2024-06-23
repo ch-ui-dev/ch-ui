@@ -7,13 +7,74 @@
 }
 
 :root {
-  font-size: 16px;
+  font-size: 17px;
   font-family: sans-serif;
   background: var(--ch-bg-base);
   color: var(--ch-fg-base);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
   font-size: var(--ch-text-size-base);
   line-height: var(--ch-system-leading-base);
+}
+
+h1 {
+  font-size: var(--ch-text-size-3xl);
+  line-height: var(--ch-prose-leading-3xl);
+  margin-block-start: var(--ch-gap-4);
+  margin-block-end: var(--ch-gap-3);
+}
+
+h2 {
+  font-size: var(--ch-text-size-2xl);
+  line-height: var(--ch-prose-leading-2xl);
+  margin-block-start: var(--ch-gap-3);
+  margin-block-end: var(--ch-gap-2);
+}
+
+h3 {
+  font-size: var(--ch-text-size-xl);
+  line-height: var(--ch-prose-leading-xl);
+  margin-block-start: var(--ch-gap-2);
+  margin-block-end: var(--ch-gap-1);
+}
+
+h4 {
+  font-size: var(--ch-text-size-lg);
+  line-height: var(--ch-prose-leading-lg);
+  margin-block-start: var(--ch-gap-1);
+  margin-block-end: var(--ch-gap-half);
+}
+
+code {
+  font-size: 0.9em;
+  padding: 0.15em 0.3em;
+  background: var(--ch-bg-hover);
+  border-radius: var(--ch-gap-1);
+}
+
+pre {
+  padding: var(--ch-gap-3);
+  border-radius: var(--ch-gap-1);
+
+  & > code {
+    padding: 0;
+    background: transparent;
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.prose {
+  max-inline-size: 90ch;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  line-height: var(--ch-prose-leading-base);
 }
