@@ -4,10 +4,10 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "command": "cd apps/docs && ./node_modules/.bin/astro build"
+      "command": "cd apps/docs && pnpm run astro:build"
     },
     "serve": {
-      "command": "cd apps/docs && ./node_modules/.bin/astro dev",
+      "command": "cd apps/docs && pnpm run astro:serve",
       "dependsOn": ["^build", "elements:build-watch"]
     },
     "lint": {

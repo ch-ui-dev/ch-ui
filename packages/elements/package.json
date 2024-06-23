@@ -69,5 +69,10 @@
   },
   "dependencies": {
     "alea": "^1.0.1"
+  },
+  "scripts": {
+    "stencil:build": "stencil build",
+    "stencil:serve": "stencil build --serve --watch --dev",
+    "stencil:build-watch": "stencil build --watch"
   }
 }
