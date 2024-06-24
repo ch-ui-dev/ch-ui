@@ -4,6 +4,14 @@ The theme package renders sets of CSS custom properties, a.k.a. CSS variables, t
 
 This package generates tokens using a principled approach that aims to make it easier for platform developers, app developers, and end-users alike to maintain and apply adjustments to an app’s design system tokens.
 
+## Getting started
+
+```shell
+pnpm add @ch-ui/theme
+```
+
+Then, use any of the render functions as you like. If you’re using Vite, there’s already <a href="./vite-plugin-theme" class="ch-link">`@ch-ui/vite-plugin-theme`</a> if you like.
+
 ## Background
 
 Design systems often maintain an intentionally limited set of design tokens, such as:

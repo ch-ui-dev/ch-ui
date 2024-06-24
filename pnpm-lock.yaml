@@ -98,6 +98,9 @@ importers:
       '@ch-ui/astro-stencil':
         specifier: workspace:*
         version: link:../../packages/astro-stencil
+      '@ch-ui/colors':
+        specifier: workspace:*
+        version: link:../../packages/colors
       '@ch-ui/elements':
         specifier: workspace:*
         version: link:../../packages/elements
