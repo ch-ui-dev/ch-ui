@@ -25,8 +25,8 @@ const { title } = Astro.props;
           padding: var(--ch-gap-1);
         }
         & > nav {
-          padding: var(--ch-gap-2);
-          @media (min-width: 120ch) {
+          padding: var(--ch-gap-3);
+          @media (min-width: 100ch) {
             position: fixed;
             z-index: 1;
             inset-block-start: var(--ch-gap-5);
@@ -36,13 +36,17 @@ const { title } = Astro.props;
           }
         }
         & > main {
-          padding: var(--ch-gap-2);
+          padding-inline: var(--ch-gap-3);
+          padding-block-start: var(--ch-gap-2);
+          padding-block-end: var(--ch-gap-6);
           overflow-y: auto;
-          @media (min-width: 120ch) {
-            padding-block-end: var(--ch-gap-3);
-            padding-inline-end: var(--ch-gap-3);
-            padding-block-start: 0;
+          @media (min-width: 80ch) {
+            padding-inline: var(--ch-gap-4);
+          }
+          @media (min-width: 100ch) {
             padding-inline-start: var(--ch-gap-7);
+            padding-block-end: var(--ch-gap-6);
+            padding-block-start: 0;
           }
         }
       }

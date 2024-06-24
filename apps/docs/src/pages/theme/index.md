@@ -4,6 +4,12 @@ layout: '../../layouts/DocsLayout.astro'
 ---
 # `@ch-ui/theme`
 
+The theme package renders sets of CSS custom properties a.k.a. CSS variables, that you can put upstream of a utility system like Tailwind or a web component library like `@ch-ui/elements` (or use on their own of course).
+
+This package generates tokens using a principled approach that aims to make it easier for platform developers, app developers, and end-users alike to maintain and apply adjustments to an app’s design system tokens.
+
+## Background
+
 Design systems often maintain an intentionally limited set of design tokens, such as:
 
 - specific colors arranged in “palettes”,
