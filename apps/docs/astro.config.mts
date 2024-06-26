@@ -4,8 +4,44 @@ import { defineConfig } from 'astro/config';
 import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-theme';
 import chIconsPlugin from '@ch-ui/vite-plugin-icons';
 import { elementsAstro } from '@ch-ui/astro-stencil';
+import merge from 'lodash.merge';
 // Appease TS2742:
 import _astro from 'astro';
+import { SemanticLayer } from '@ch-ui/theme';
+
+// TODO(thure): Keep in-sync with theme.ts, which this doesn’t like to import…
+const docsTheme = merge({}, defaultTheme, {
+  colors: {
+    semantic: {
+      sememes: {
+        'illustration-1': {
+          light: ['accent', 900],
+          dark: ['accent', 900],
+        },
+        'illustration-2': {
+          light: ['accent', 700],
+          dark: ['accent', 700],
+        },
+        'illustration-3': {
+          light: ['accent', 600],
+          dark: ['accent', 600],
+        },
+        'illustration-4': {
+          light: ['accent', 500],
+          dark: ['accent', 500],
+        },
+        'illustration-5': {
+          light: ['accent', 400],
+          dark: ['accent', 400],
+        },
+        'illustration-6': {
+          light: ['accent', 200],
+          dark: ['accent', 200],
+        },
+      } satisfies SemanticLayer['sememes'],
+    },
+  },
+});
 
 export default defineConfig({
   site: 'https://ch-ui.dev',
@@ -17,7 +53,7 @@ export default defineConfig({
     plugins: [
       // @ts-ignore
       chThemePlugin({
-        config: () => defaultTheme,
+        config: () => docsTheme,
       }),
       // @ts-ignore
       chIconsPlugin({
