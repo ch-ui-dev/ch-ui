@@ -2,7 +2,7 @@
 
 // TODO(thure): This should be provided by the consumer somehow.
 // @ts-ignore
-import { renderToString } from '@ch-ui/elements/hydrate';
+import { renderToString } from '@ch-ui/elements-hydrate-temp';
 
 type StencilTag = {
   is: string;

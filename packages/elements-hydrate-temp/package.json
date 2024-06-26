@@ -1,0 +1,14 @@
+{
+  "name": "@ch-ui/elements-hydrate-temp",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Hydrate app output for @stencil/core at babe807, the most recent revision which worked.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs"
+    }
+  }
+}

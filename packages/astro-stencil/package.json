@@ -30,7 +30,7 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/elements": "workspace:*"
+    "@ch-ui/elements-hydrate-temp": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.12.3",

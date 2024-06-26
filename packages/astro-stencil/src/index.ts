@@ -27,7 +27,7 @@ export const elementsAstro = (): AstroIntegration => {
               },
             },
             optimizeDeps: {
-              include: ['@ch-ui/elements/hydrate', ...chDeps],
+              include: ['@ch-ui/elements-hydrate-temp', ...chDeps],
               exclude: ['@ch-ui/astro-stencil/server.js'],
             },
             ssr: {
