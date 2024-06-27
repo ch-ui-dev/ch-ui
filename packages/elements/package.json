@@ -38,6 +38,10 @@
       "import": "./dist/components/ch-link.js",
       "types": "./dist/components/ch-link.d.ts"
     },
+    "./ch-oklch-picker": {
+      "import": "./dist/components/ch-oklch-picker.js",
+      "types": "./dist/components/ch-oklch-picker.d.ts"
+    },
     "./hydrate": {
       "import": "./dist/hydrate/index.mjs",
       "require": "./dist/hydrate/index.js",
