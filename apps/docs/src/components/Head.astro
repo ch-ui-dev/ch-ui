@@ -12,8 +12,7 @@ const { title } = Astro.props;
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,interactive-widget=resizes-content,viewport-fit=cover" />
   <script is:inline>
-    const { defineCustomElements } = await import('/ch-ui-elements/loader/index.js');
-    defineCustomElements();
+    import('/ch-ui-elements/loader/index.js').then(({defineCustomElements})=>defineCustomElements());
   </script>
   <slot/>
 </head>
