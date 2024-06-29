@@ -68,6 +68,11 @@ pre {
   }
 }
 
+img,
+svg {
+  display: block;
+}
+
 .nowrap {
   white-space: nowrap;
 }
@@ -77,4 +82,16 @@ pre {
   margin-inline-start: auto;
   margin-inline-end: auto;
   line-height: var(--ch-prose-leading-base);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
