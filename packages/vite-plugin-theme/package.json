@@ -16,6 +16,9 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs",
       "types": "./types/src/index.d.ts"
+    },
+    "./README.md": {
+      "import": "./README.md"
     }
   },
   "files": [

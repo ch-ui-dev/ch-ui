@@ -11,8 +11,13 @@ const userThemeConfigString = persistentAtom(
 const userThemeConfig = JSON.parse(userThemeConfigString.get());
 const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint');
 ---
-<style id="user-tokens"/>
-<ChOklchPicker lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
+<style>
+  #theme-editor-label {
+    margin-block-start: 0;
+  }
+</style>
+<p id="theme-editor-label">Theme settings</p>
+<ChOklchPicker aria-labelledby="theme-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
 <script>
   import { persistentAtom } from '@nanostores/persistent'
   import { type Gamut, renderFacet } from '@ch-ui/theme';
