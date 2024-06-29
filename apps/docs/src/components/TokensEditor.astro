@@ -2,37 +2,37 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import { persistentAtom } from '@nanostores/persistent';
 import { ChOklchPicker } from '../components/Elements.jsx';
-import { docsTokens } from '../theme.ts';
+import { docsTokens } from '../tokens.ts';
 import get from 'lodash.get';
-const userThemeConfigString = persistentAtom(
-  'ch-theme-config',
+const userTokensConfigString = persistentAtom(
+  'ch-tokens-config',
   JSON.stringify(docsTokens),
 );
-const userThemeConfig = JSON.parse(userThemeConfigString.get());
-const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint');
+const userTokensConfig = JSON.parse(userTokensConfigString.get());
+const accentKeyPoint = get(userTokensConfig, 'colors.physical.series.accent.srgb.keyPoint');
 ---
 <style>
-  #theme-editor-label {
+  #tokens-editor-label {
     margin-block-start: 0;
   }
 </style>
-<p id="theme-editor-label">Theme settings</p>
-<ChOklchPicker aria-labelledby="theme-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
+<p id="tokens-editor-label">Base token set configuration</p>
+<ChOklchPicker aria-labelledby="tokens-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
 <script>
   import { persistentAtom } from '@nanostores/persistent'
   import { type Gamut, renderFacet } from '@ch-ui/tokens';
-  import { docsTokens } from '../theme.ts';
+  import { docsTokens } from '../tokens.ts';
   import set from 'lodash.set';
   import { yieldOrContinue } from 'main-thread-scheduling';
   import { ChOklchPickerCustomEvent, Oklch } from '@ch-ui/elements';
 
   const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
 
-  const themeConfigString = persistentAtom('ch-theme-config',
+  const tokensConfigString = persistentAtom('ch-tokens-config',
     JSON.stringify(docsTokens)
   );
 
-  let themeConfig = JSON.parse(themeConfigString.get());
+  let tokensConfig = JSON.parse(tokensConfigString.get());
 
   const $colorsPhysicalLayer = document.createElement('style');
   $colorsPhysicalLayer.id = 'colors.physical';
@@ -41,17 +41,17 @@ const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.
   const $accentKeyPointInput = document.querySelector('ch-oklch-picker');
 
   // gamuts.forEach((gamut)=>{
-  //   set(defaultTheme, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
+  //   set(defaultTokenSet, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
   // })
 
   $accentKeyPointInput!.addEventListener('oklchChange', async ({ detail: {lightness, chroma, hue} }: ChOklchPickerCustomEvent<Oklch>) => {
     gamuts.map(gamut=>{
-      console.log('[themeConfig]', themeConfig.colors.physical.series.accent);
-      set(themeConfig, `colors.physical.series.accent.${gamut}.keyPoint`, [lightness, chroma, hue]);
+      console.log('[tokensConfig]', tokensConfig.colors.physical.series.accent);
+      set(tokensConfig, `colors.physical.series.accent.${gamut}.keyPoint`, [lightness, chroma, hue]);
     });
     await yieldOrContinue('interactive');
     $colorsPhysicalLayer.textContent = `@layer user-tokens { ${
-      renderFacet(themeConfig.colors)
+      renderFacet(tokensConfig.colors)
     } }`;
   });
 </script>
