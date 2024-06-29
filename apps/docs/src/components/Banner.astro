@@ -30,6 +30,12 @@ import { ChIcon } from '../components/Elements.jsx';
       block-size: 100%;
       display: grid;
       place-items: center;
+      border-radius: var(--ch-gap-1);
+      transition-property: color, background-color;
+      transition-duration: 200ms;
+      &:hover, &:focus {
+        background-color: var(--ch-bg-hover);
+      }
       & svg {
         block-size: 1.25rem;
         inline-size: 1.25rem;

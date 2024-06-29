@@ -53,7 +53,7 @@ export default defineConfig({
       }),
       // @ts-ignore
       chIconsPlugin({
-        tokenPattern:
+        symbolPattern:
           'ph--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
         assetPath: (name, variant) =>
           `../../packages/icons/node_modules/@phosphor-icons/core/assets/${variant}/${name}${
