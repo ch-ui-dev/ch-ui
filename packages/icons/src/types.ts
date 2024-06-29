@@ -3,7 +3,7 @@
 import { Config } from 'svg-sprite';
 
 export type BundleParams = {
-  tokenPattern: string;
+  symbolPattern: string;
   assetPath: (...matches: string[]) => string;
   spritePath: string;
   contentPaths: string[];

@@ -3,14 +3,14 @@
 import { BundleParams } from './types';
 
 export const scanString = ({
-  tokenPattern,
+  symbolPattern,
   contentString,
-}: Pick<BundleParams, 'tokenPattern'> & {
+}: Pick<BundleParams, 'symbolPattern'> & {
   contentString: string;
 }): Set<string> => {
-  const tokenExp = new RegExp(tokenPattern, 'gm');
+  const symbolExp = new RegExp(symbolPattern, 'gm');
 
-  const matchResult = contentString.match(tokenExp);
+  const matchResult = contentString.match(symbolExp);
 
   if (matchResult) {
     return new Set<string>(matchResult);

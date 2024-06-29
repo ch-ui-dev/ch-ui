@@ -6,21 +6,21 @@ type IconName = string;
 type IconVariant = 'bold' | 'duotone' | 'fill' | 'light' | 'regular' | 'thin';
 
 type IconProps = {
-  token: `ph--${IconName}--${IconVariant}`;
+  symbol: `ph--${IconName}--${IconVariant}`;
 };
 
-const Icon = ({ token }: IconProps) =>
+const Icon = ({ symbol }: IconProps) =>
   `<svg viewBox="0 0 256 256">
-    <use href="${SPRITE}#${token}" />
+    <use href="${SPRITE}#${symbol}" />
   </svg>`;
 
 export default { title: 'Icons' };
 
 export const Icons = () => `
   <style>svg{ inline-size: 4rem; block-size: 4rem; display: inline-block; margin:.25rem; color: blue }</style>
-  ${Icon({ token: 'ph--address-book--regular' })}
-  ${Icon({ token: 'ph--planet--thin' })}
-  ${Icon({ token: 'ph--anchor--bold' })}
-  ${Icon({ token: 'ph--cards-three--light' })}
-  ${Icon({ token: 'ph--map-pin-simple-area--duotone' })}
+  ${Icon({ symbol: 'ph--address-book--regular' })}
+  ${Icon({ symbol: 'ph--planet--thin' })}
+  ${Icon({ symbol: 'ph--anchor--bold' })}
+  ${Icon({ symbol: 'ph--cards-three--light' })}
+  ${Icon({ symbol: 'ph--map-pin-simple-area--duotone' })}
 `;
