@@ -4,7 +4,7 @@ The colors package exports functions that help generate color systems by drawing
 
 ## Getting started
 
-You might prefer to use this package via `@ch-ui/theme`, which surfaces a more use-case oriented API.
+You might prefer to use this package via `@ch-ui/tokens`, which surfaces a more use-case oriented API.
 
 ```shell
 pnpm add @ch-ui/colors

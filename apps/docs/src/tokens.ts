@@ -1,9 +1,9 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import merge from 'lodash.merge';
-import { defaultTheme, SemanticLayer } from '@ch-ui/theme';
+import { defaultTokenSet, SemanticLayer } from '@ch-ui/tokens';
 
-export const docsTheme = merge({}, defaultTheme, {
+export const docsTokens = merge({}, defaultTokenSet, {
   colors: {
     semantic: {
       sememes: {

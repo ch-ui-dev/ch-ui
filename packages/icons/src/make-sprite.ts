@@ -11,8 +11,8 @@ type Resource = {
 };
 
 export const makeSprite = async (
-  { assetPath, tokenPattern, spritePath, config = {} }: BundleParams,
-  tokens: Set<string>,
+  { assetPath, symbolPattern, spritePath, config = {} }: BundleParams,
+  symbols: Set<string>,
 ) => {
   const resolvedSpritePath = resolve(spritePath);
 
@@ -25,17 +25,17 @@ export const makeSprite = async (
     ...config,
   });
 
-  const tokenExp = new RegExp(tokenPattern);
+  const symbolExp = new RegExp(symbolPattern);
 
   await Promise.all(
-    Array.from(tokens)
-      .map((token) => {
-        const match = token.match(tokenExp);
+    Array.from(symbols)
+      .map((symbol) => {
+        const match = symbol.match(symbolExp);
         if (match && match[1] && match[2]) {
           const [_, ...matches] = match;
           const svgPath = resolve(assetPath(...matches));
           return readFile(svgPath, 'utf-8').then((svg) =>
-            sprite.add(token, token, svg),
+            sprite.add(symbol, symbol, svg),
           );
         } else {
           return null;

@@ -7,18 +7,18 @@ import { BundleParams } from './types';
 const split = /[\s\n"]+/m;
 
 const scanFile = ({
-  tokenPattern,
+  symbolPattern,
   contentPath,
-}: Pick<BundleParams, 'tokenPattern'> & {
+}: Pick<BundleParams, 'symbolPattern'> & {
   contentPath: BundleParams['contentPaths'][number];
 }): Promise<Set<string>> => {
   return new Promise((res, rej) => {
-    const tokens = new Set<string>();
+    const symbols = new Set<string>();
     let error = '';
 
     const grep = spawn('grep', [
       '-Eroh',
-      `"${tokenPattern}"`,
+      `"${symbolPattern}"`,
       resolve(__dirname, contentPath),
     ]);
 
@@ -26,7 +26,7 @@ const scanFile = ({
       data
         .toString()
         .split(split)
-        .map((token: string) => token && tokens.add(token));
+        .map((symbol: string) => symbol && symbols.add(symbol));
     });
 
     grep.stderr.on('data', (data) => {
@@ -37,23 +37,23 @@ const scanFile = ({
       if (error) {
         rej(error);
       } else {
-        res(tokens);
+        res(symbols);
       }
     });
   });
 };
 
 export const scanFiles = ({
-  tokenPattern,
+  symbolPattern,
   contentPaths,
-}: Pick<BundleParams, 'tokenPattern' | 'contentPaths'> & {
+}: Pick<BundleParams, 'symbolPattern' | 'contentPaths'> & {
   extension?: string;
 }): Promise<Set<string>> =>
   Promise.all(
-    contentPaths.map((contentPath) => scanFile({ tokenPattern, contentPath })),
-  ).then((tokenSets) => {
-    return tokenSets.reduce((acc, tokenSet) => {
-      Array.from(tokenSet).forEach((token) => acc.add(token));
+    contentPaths.map((contentPath) => scanFile({ symbolPattern, contentPath })),
+  ).then((symbolSets) => {
+    return symbolSets.reduce((acc, symbolSet) => {
+      Array.from(symbolSet).forEach((symbol) => acc.add(symbol));
       return acc;
     }, new Set<string>());
   });

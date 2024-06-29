@@ -1,21 +1,20 @@
 # `ch-ui`
 
-Someone asked for this design system toolchain. Was it you?
+Tools for malleable design systems! Deliver quality, accessible, consistent experiences while adapting to all manner of device conditions and user preferences.
 
 ## Benefits
 
-- Dependency-free procedurally generated color palettes in sRGB or P3 ([`@ch-ui/colors`](https://www.npmjs.com/package/@ch-ui/colors))
+- Profoundly configurable design system token generation ([`@ch-ui/tokens`](https://ch-ui.dev/tokens))
+- Procedurally generated color palettes in any gamut ([`@ch-ui/colors`](https://ch-ui.dev/tokens/colors))
+- Tailwind-style SVG icon spriting ([`@ch-ui/vite-plugin-icons`](https://ch-ui.dev/vite-plugin-icons))
 
 ## Drawbacks
 
-- Not much here just yet.
+- Not tested in production yet!
 
 ## To do
 
-- [x] [`@ch-ui/colors`](https://www.npmjs.com/package/@ch-ui/colors): procedural color palette tooling
-- [x] `@ch-ui/icons`: icon sprite tooling
 - [ ] `@ch-ui/elements`: lower-level accessible[¹](#footnotes) elements
-- [ ] `@ch-ui/theme`: a theme for the elements that is reasonably barebones
 
 See the issues for other items.
 

@@ -9,7 +9,7 @@ import { scanFiles, scanString, makeSprite, type BundleParams } from '../src';
 import { readFile } from 'node:fs/promises';
 
 const phosphorConfig: BundleParams = {
-  tokenPattern:
+  symbolPattern:
     'ph-icon--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
   assetPath: (name, style) =>
     `./node_modules/@phosphor-icons/core/assets/${style}/${name}${
@@ -19,7 +19,7 @@ const phosphorConfig: BundleParams = {
   contentPaths: [resolve(__dirname, './example.html')],
 };
 
-const positiveTokens = [
+const positiveSymbols = [
   'ph-icon--address-book--regular',
   'ph-icon--beach-ball--bold',
 ];
@@ -27,7 +27,7 @@ const positiveTokens = [
 test('scan file returns all positive and no negative results', async () => {
   const results = await scanFiles(phosphorConfig);
   assert.equal(
-    new Set([...positiveTokens].filter((token) => !results.has(token))).size,
+    new Set([...positiveSymbols].filter((symbol) => !results.has(symbol))).size,
     0,
   );
 });
@@ -41,7 +41,7 @@ test('scan string returns all positive and no negative results', async () => {
     contentString,
   });
   assert.equal(
-    new Set([...positiveTokens].filter((token) => !results.has(token))).size,
+    new Set([...positiveSymbols].filter((symbol) => !results.has(symbol))).size,
     0,
   );
 });

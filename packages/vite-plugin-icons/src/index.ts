@@ -6,7 +6,7 @@ import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
 import pm from 'picomatch';
 
 export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
-  const { tokenPattern, contentPaths } = params;
+  const { symbolPattern, contentPaths } = params;
 
   const pms = contentPaths.map((contentPath) => pm(contentPath));
   const isContent = (id: string) => !!pms.find((pm) => pm(id));
@@ -16,7 +16,7 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
   }
 
   let server: ViteDevServer | null = null;
-  let detectedTokens = new Set<string>();
+  let detectedSymbols = new Set<string>();
   let updated = true;
   // In serve mode this is treated as a set — the content doesn't matter.
   // In build mode, we store file contents to use them in renderChunk.
@@ -32,20 +32,20 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
     let updated = false;
     const nextCandidates = scanString({
       contentString: src,
-      tokenPattern,
+      symbolPattern,
     });
     Array.from(nextCandidates).forEach((candidate) => {
-      if (!detectedTokens.has(candidate)) {
+      if (!detectedSymbols.has(candidate)) {
         updated = true;
       }
-      detectedTokens.add(candidate);
+      detectedSymbols.add(candidate);
     });
     return updated;
   }
 
   return [
     {
-      // Step 1: Scan source files for detectedTokens
+      // Step 1: Scan source files for detectedSymbols
       name: '@ch-ui/icons:scan',
       enforce: 'pre',
 
@@ -72,13 +72,13 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
       async transform(src, id, options) {
         // if (!options?.ssr) {
         // // Wait until all other files have been processed, so we can extract
-        // // all detected tokens before generating the sprite. This must not be
+        // // all detected symbols before generating the sprite. This must not be
         // // called during SSR, or it will block the server.
         //   await server?.waitForRequestsIdle?.(id);
         // }
 
         if (updated) {
-          await makeSprite(params, detectedTokens);
+          await makeSprite(params, detectedSymbols);
           updated = false;
         }
         return { code: src };

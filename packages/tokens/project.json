@@ -1,14 +1,14 @@
 {
-  "root": "packages/theme",
-  "sourceRoot": "packages/theme/src",
+  "root": "packages/tokens",
+  "sourceRoot": "packages/tokens/src",
   "projectType": "library",
     "targets": {
       "compile": {
         "executor": "@nx/js:tsc",
         "options": {
-          "main": "packages/theme/src/index.ts",
-          "outputPath": "packages/theme/dist/types",
-          "tsConfig": "packages/theme/tsconfig.json"
+          "main": "packages/tokens/src/index.ts",
+          "outputPath": "packages/tokens/dist/types",
+          "tsConfig": "packages/tokens/tsconfig.json"
         },
         "outputs": [
           "{options.outputPath}"
@@ -17,9 +17,9 @@
       "build-esm": {
         "executor": "@nx/esbuild:esbuild",
         "options": {
-          "main": "packages/theme/src/index.ts",
-          "outputPath": "packages/theme/dist/esm",
-          "tsConfig": "packages/theme/tsconfig-esbuild.json",
+          "main": "packages/tokens/src/index.ts",
+          "outputPath": "packages/tokens/dist/esm",
+          "tsConfig": "packages/tokens/tsconfig-esbuild.json",
           "format": [
             "esm"
           ]
@@ -35,9 +35,9 @@
       "build": {
         "executor": "@nx/esbuild:esbuild",
         "options": {
-          "main": "packages/theme/src/index.ts",
-          "outputPath": "packages/theme/dist/cjs",
-          "tsConfig": "packages/theme/tsconfig-esbuild.json",
+          "main": "packages/tokens/src/index.ts",
+          "outputPath": "packages/tokens/dist/cjs",
+          "tsConfig": "packages/tokens/tsconfig-esbuild.json",
           "format": [
             "cjs"
           ]
@@ -56,7 +56,7 @@
         "options": {
           "format": "unix",
           "lintFilePatterns": [
-            "packages/theme/src/**/*.{js,jsx,ts,tsx}"
+            "packages/tokens/src/**/*.{js,jsx,ts,tsx}"
           ],
           "quiet": true
         },
@@ -65,7 +65,7 @@
         ]
       },
       "test": {
-        "command": "cd packages/theme && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
+        "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
       }
   }
 }

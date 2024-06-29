@@ -1,24 +1,24 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import elementsDocs from '@ch-ui/elements/docs';
-import ThemeEditor from './ThemeEditor.astro';
+import TokensEditor from './TokensEditor.astro';
 ---
 <nav>
-  <h2><a class="ch-link" href="/theme">Theme</a></h2>
+  <h2><a class="ch-link" href="/tokens">Tokens</a></h2>
   <ul>
-    <li><a class="ch-link" href="/theme/colors">Colors</a></li>
-    <li><a class="ch-link" href="/theme/vite-plugin-theme">Vite plugin</a></li>
+    <li><a class="ch-link" href="/tokens/colors">Colors</a></li>
+    <li><a class="ch-link" href="/tokens/vite-plugin-tokens">Vite plugin</a></li>
   </ul>
-  <h2><a class="ch-link" href="/elements">Elements</a></h2>
-  <ul>
-    {elementsDocs.components.map(({ tag }) => {
+  <!--<h2><a class="ch-link" href="/elements">Elements</a></h2>-->
+  <!--<ul>-->
+    {/*elementsDocs.components.map(({ tag }) => {
       return <li>
         <a class="ch-link" href={`/elements/${tag}`}>{tag}</a>
       </li>;
-    })}
-  </ul>
+    })*/}
+  <!--</ul>-->
   <h2><a class="ch-link" href="/vite-plugin-icons">Icons</a></h2>
   <div role="none" style="margin-block-start:var(--ch-gap-4);padding:var(--ch-gap-2);background:var(--ch-bg-input);border-radius:var(--ch-gap-1)">
-    <ThemeEditor/>
+    <TokensEditor/>
   </div>
 </nav>
