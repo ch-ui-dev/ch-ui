@@ -1,22 +1,38 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-import Logo from './Logo.astro';
+import { ChIcon } from '../components/Elements.jsx';
 ---
-<style>
+<style is:global>
   header {
     padding: var(--ch-gap-1);
+    padding-inline-end: var(--ch-gap-3);
     background: color(from var(--ch-bg-base) xyz-d65 x y z / .33);
     backdrop-filter: blur(var(--ch-gap-3));
     border-block-end: var(--ch-gap-hairline) solid var(--ch-fg-separator);
-    & > a {
+    display: flex;
+    align-items: center;
+    svg {
+      inline-size: 100%;
+      block-size: auto;
+    }
+    [role=separator]{
+      flex-grow: 1;
+    }
+    & > a.logo {
       display: inline-block;
       aspect-ratio: 700 / 300;
-      height: 100%;
-      width: auto;
+      block-size: 100%;
+      inline-size: auto;
       padding: var(--ch-gap-2);
-      & > svg {
-        width: 100%;
-        height: auto;
+    }
+    & > a.icon-link {
+      padding-inline: var(--ch-gap-2);
+      block-size: 100%;
+      display: grid;
+      place-items: center;
+      & svg {
+        block-size: var(--ch-gap-4);
+        inline-size: var(--ch-gap-4);
       }
     }
   }
@@ -47,5 +63,10 @@ import Logo from './Logo.astro';
         d="M412.405 176.824C412.374 175.077 413.257 173.442 414.733 172.509L477.547 132.825C480.843 130.742 485.149 133.066 485.217 136.964L486.111 187.853C486.141 189.6 485.258 191.235 483.782 192.168L420.968 231.852C417.672 233.935 413.367 231.611 413.298 227.713L412.405 176.824Z"
         style="fill:var(--ch-illustration-3,#a56375)" />
     </svg>
+  </a>
+  <div role='separator'/>
+  <a class="ch-link icon-link" href="https://github.com/ch-ui-dev/ch-ui">
+    <span class="sr-only">ch-ui repository on Github</span>
+    <ChIcon symbol="ph--github-logo--bold"/>
   </a>
 </header>
