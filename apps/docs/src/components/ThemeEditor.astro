@@ -2,11 +2,11 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import { persistentAtom } from '@nanostores/persistent';
 import { ChOklchPicker } from '../components/Elements.jsx';
-import { docsTheme } from '../theme.ts';
+import { docsTokens } from '../theme.ts';
 import get from 'lodash.get';
 const userThemeConfigString = persistentAtom(
   'ch-theme-config',
-  JSON.stringify(docsTheme),
+  JSON.stringify(docsTokens),
 );
 const userThemeConfig = JSON.parse(userThemeConfigString.get());
 const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint');
@@ -21,7 +21,7 @@ const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.
 <script>
   import { persistentAtom } from '@nanostores/persistent'
   import { type Gamut, renderFacet } from '@ch-ui/tokens';
-  import { docsTheme } from '../theme.ts';
+  import { docsTokens } from '../theme.ts';
   import set from 'lodash.set';
   import { yieldOrContinue } from 'main-thread-scheduling';
   import { ChOklchPickerCustomEvent, Oklch } from '@ch-ui/elements';
@@ -29,7 +29,7 @@ const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.
   const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
 
   const themeConfigString = persistentAtom('ch-theme-config',
-    JSON.stringify(docsTheme)
+    JSON.stringify(docsTokens)
   );
 
   let themeConfig = JSON.parse(themeConfigString.get());

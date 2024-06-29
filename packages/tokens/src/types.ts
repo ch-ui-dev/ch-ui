@@ -55,7 +55,7 @@ export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
  */
 export type Series = {
   /**
-   * The CSS unit to apply to output numbers. The default applied by theme renderers depends on context.
+   * The CSS unit to apply to output numbers.
    */
   unit?: string;
   /**
@@ -75,7 +75,7 @@ export type Series = {
 export type ResolvedNaming = Map<number, string> | 'toString';
 
 /**
- * A series of values in the theme which are linear in nature, e.g. gaps.
+ * A series of values in the layer which are linear in nature, e.g. gaps.
  */
 export type LinearSeries = Series & {
   /**
@@ -89,7 +89,7 @@ export type LinearSeries = Series & {
 };
 
 /**
- * A series of values in the theme which are exponential in nature, e.g. type sizes.
+ * A series of values in the layer which are exponential in nature, e.g. type sizes.
  */
 export type ExponentialSeries = Series & {
   /**

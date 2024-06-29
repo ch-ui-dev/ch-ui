@@ -2,7 +2,7 @@
 
 import assert from 'node:assert';
 import test from 'node:test';
-import { defaultTheme, renderFacet } from '../src';
+import { defaultTokenSet, renderFacet } from '../src';
 import { resolve } from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
 
@@ -10,8 +10,8 @@ test('typography tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
   const tokens = [
-    renderFacet(defaultTheme.fontSizes!),
-    renderFacet(defaultTheme.lineHeights!),
+    renderFacet(defaultTokenSet.fontSizes!),
+    renderFacet(defaultTokenSet.lineHeights!),
   ].join('\n\n');
   await writeFile(resolve(dir, 'typography.css'), tokens);
   assert.equal(

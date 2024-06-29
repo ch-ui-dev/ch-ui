@@ -11,9 +11,9 @@ import {
 } from './types';
 import { Facet, renderFacet } from './facet';
 
-export type ThemeConfig = Record<string, Facet>;
+export type TokenSet = Record<string, Facet>;
 
-// DEFAULT THEME VALUES
+// Default token set values
 
 const emissiveRelation = {
   initial: 0,
@@ -188,7 +188,7 @@ const defaultGaps = {
   },
 } satisfies ExponentialSeries;
 
-export const defaultTheme = {
+export const defaultTokenSet = {
   colors: {
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
@@ -221,10 +221,10 @@ export const defaultTheme = {
       namespace: 'ch-',
     },
   },
-} satisfies ThemeConfig;
+} satisfies TokenSet;
 
-export const renderTheme = (theme: ThemeConfig) => {
-  return Object.values(theme)
+export const renderTokenSet = (tokenSet: TokenSet) => {
+  return Object.values(tokenSet)
     .map((facet) => renderFacet(facet))
     .join('\n\n');
 };

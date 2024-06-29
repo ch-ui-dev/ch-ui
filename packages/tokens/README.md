@@ -1,6 +1,6 @@
 # `@ch-ui/tokens`
 
-The theme package renders sets of CSS custom properties, a.k.a. CSS variables, that you can put upstream of a utility system like Tailwind or a web component library like `@ch-ui/elements` (or use on their own of course).
+The tokens package renders sets of CSS custom properties, a.k.a. CSS variables, that you can put upstream of a utility system like Tailwind or a web component library like `@ch-ui/elements` (or use on their own of course).
 
 This package generates tokens using a principled approach that aims to make it easier for platform developers, app developers, and end-users alike to maintain and apply adjustments to an app’s design system tokens.
 
@@ -10,7 +10,7 @@ This package generates tokens using a principled approach that aims to make it e
 pnpm add @ch-ui/tokens
 ```
 
-Then, use any of the render functions as you like. If you’re using Vite, there’s already <a href="./vite-plugin-theme" class="ch-link">`@ch-ui/vite-plugin-tokens`</a> if you like.
+Then, use any of the render functions as you like. If you’re using Vite, there’s already <a href="./vite-plugin-tokens" class="ch-link">`@ch-ui/vite-plugin-tokens`</a> if you like.
 
 ## Background
 
@@ -126,6 +126,6 @@ For better ergonomics, physical and semantic layers can be combined into a *face
 
 ## Render all tokens
 
-All tokens can be rendered using `renderTheme(themeConfig: ThemeConfig)`.
+All tokens can be rendered using `renderTokenSet(tokenSet: TokenSet)`.
 
-A `ThemeConfig` is just a `Record<string, Facet>` containing all the facets you’d like to render, keyed by ids you provide.
+A `TokenSet` is just a `Record<string, Facet>` containing all the facets you’d like to render, keyed by ids you provide.

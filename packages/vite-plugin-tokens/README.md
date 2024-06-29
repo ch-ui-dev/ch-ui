@@ -13,16 +13,16 @@ pnpm add -D @ch-ui/vite-plugin-tokens
 Then add to your app’s Vite config.
 
 ```ts
-import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-tokens';
+import chTokensPlugin, { defaultTokenSet } from '@ch-ui/vite-plugin-tokens';
 // ...
   plugins: [
     // ...
-    chThemePlugin({
+    chTokensPlugin({
       config: (tokenSetName: string) => {
         switch(tokenSetName){
-          case 'my-theme':
+          case 'my-tokens':
           default:
-            return defaultTheme;
+            return defaultTokenSet;
         }
       },
     })
@@ -33,6 +33,6 @@ Then use the `@chui` at-rule to invoke the plugin.
 
 ```css
 @layer tokens {
-  @chui my-theme;
+  @chui my-tokens;
 }
 ```
