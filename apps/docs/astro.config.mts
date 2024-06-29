@@ -9,7 +9,7 @@ import merge from 'lodash.merge';
 import _astro from 'astro';
 import { SemanticLayer } from '@ch-ui/tokens';
 
-// TODO(thure): Keep in-sync with theme.ts, which this doesn’t like to import…
+// TODO(thure): Keep in-sync with tokens.ts, which this doesn’t like to import…
 const docsTokens = merge({}, defaultTokenSet, {
   colors: {
     semantic: {
