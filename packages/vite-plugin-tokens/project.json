@@ -1,14 +1,14 @@
 {
-  "root": "packages/vite-plugin-theme",
-  "sourceRoot": "packages/vite-plugin-theme/src",
+  "root": "packages/vite-plugin-tokens",
+  "sourceRoot": "packages/vite-plugin-tokens/src",
   "projectType": "library",
   "targets": {
     "compile": {
       "executor": "@nx/js:tsc",
       "options": {
-        "main": "packages/vite-plugin-theme/src/index.ts",
-        "outputPath": "packages/vite-plugin-theme/dist/types",
-        "tsConfig": "packages/vite-plugin-theme/tsconfig.json"
+        "main": "packages/vite-plugin-tokens/src/index.ts",
+        "outputPath": "packages/vite-plugin-tokens/dist/types",
+        "tsConfig": "packages/vite-plugin-tokens/tsconfig.json"
       },
       "outputs": [
         "{options.outputPath}"
@@ -17,9 +17,9 @@
     "build-esm": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "main": "packages/vite-plugin-theme/src/index.ts",
-        "outputPath": "packages/vite-plugin-theme/dist/esm",
-        "tsConfig": "packages/vite-plugin-theme/tsconfig-esbuild.json",
+        "main": "packages/vite-plugin-tokens/src/index.ts",
+        "outputPath": "packages/vite-plugin-tokens/dist/esm",
+        "tsConfig": "packages/vite-plugin-tokens/tsconfig-esbuild.json",
         "format": [
           "esm"
         ]
@@ -35,9 +35,9 @@
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "main": "packages/vite-plugin-theme/src/index.ts",
-        "outputPath": "packages/vite-plugin-theme/dist/cjs",
-        "tsConfig": "packages/vite-plugin-theme/tsconfig-esbuild.json",
+        "main": "packages/vite-plugin-tokens/src/index.ts",
+        "outputPath": "packages/vite-plugin-tokens/dist/cjs",
+        "tsConfig": "packages/vite-plugin-tokens/tsconfig-esbuild.json",
         "format": [
           "cjs"
         ]
@@ -56,7 +56,7 @@
       "options": {
         "format": "unix",
         "lintFilePatterns": [
-          "packages/vite-plugin-theme/src/**/*.{js,jsx,ts,tsx}"
+          "packages/vite-plugin-tokens/src/**/*.{js,jsx,ts,tsx}"
         ],
         "quiet": true
       },

@@ -1,19 +1,19 @@
-# `@ch-ui/vite-plugin-theme`
+# `@ch-ui/vite-plugin-tokens`
 
-A Vite plugin which uses `@ch-ui/theme` to configure & build a set of CSS tokens.
+A Vite plugin which uses `@ch-ui/tokens` to configure & build a set of CSS tokens.
 
 ## Getting started
 
 Add to your app’s dev dependencies.
 
 ```shell
-pnpm add -D @ch-ui/vite-plugin-theme
+pnpm add -D @ch-ui/vite-plugin-tokens
 ```
 
 Then add to your app’s Vite config.
 
 ```ts
-import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-theme';
+import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-tokens';
 // ...
   plugins: [
     // ...

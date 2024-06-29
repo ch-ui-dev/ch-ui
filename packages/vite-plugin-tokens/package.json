@@ -1,7 +1,7 @@
 {
-  "name": "@ch-ui/theme",
+  "name": "@ch-ui/vite-plugin-tokens",
   "version": "0.5.0",
-  "description": "A theme system for @ch-ui/elements",
+  "description": "A Vite plugin which configures & builds a theme system compatible with @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -15,7 +15,7 @@
     ".": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/src/index.d.ts"
+      "types": "./types/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"
@@ -26,11 +26,17 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/colors": "workspace:*",
-    "postcss": "^8.4.38"
+    "@ch-ui/tokens": "workspace:*",
+    "autoprefixer": "^10.4.19",
+    "postcss-nesting": "^12.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.3",
-    "ts-node": "^10.9.2"
+    "postcss": "^8.4.38",
+    "vite": "^5.2.8"
+  },
+  "peerDependencies": {
+    "postcss": "^8.4.38",
+    "vite": "^5.2.8"
   }
 }

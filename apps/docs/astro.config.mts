@@ -1,13 +1,13 @@
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { defineConfig } from 'astro/config';
-import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-theme';
+import chThemePlugin, { defaultTheme } from '@ch-ui/vite-plugin-tokens';
 import chIconsPlugin from '@ch-ui/vite-plugin-icons';
 import { elementsAstro } from '@ch-ui/astro-stencil';
 import merge from 'lodash.merge';
 // Appease TS2742:
 import _astro from 'astro';
-import { SemanticLayer } from '@ch-ui/theme';
+import { SemanticLayer } from '@ch-ui/tokens';
 
 // TODO(thure): Keep in-sync with theme.ts, which this doesn’t like to import…
 const docsTheme = merge({}, defaultTheme, {

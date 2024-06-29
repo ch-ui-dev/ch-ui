@@ -9,7 +9,7 @@ export type PluginOptions = {
 
 const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
   return {
-    postcssPlugin: '@ch-ui/theme',
+    postcssPlugin: '@ch-ui/tokens',
     AtRule: {
       async chui(rule) {
         const config = (await opts?.config(rule.params)) ?? {};
