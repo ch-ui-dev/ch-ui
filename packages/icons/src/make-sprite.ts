@@ -2,7 +2,7 @@
 
 import { BundleParams } from './types';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, basename } from 'node:path';
 import SVGSpriter from 'svg-sprite';
 
 type Resource = {
@@ -18,7 +18,10 @@ export const makeSprite = async (
 
   const sprite = new SVGSpriter({
     dest: dirname(resolvedSpritePath),
-    mode: { symbol: { dest: '.', sprite: 'sprite.svg' }, ...config.mode },
+    mode: {
+      symbol: { dest: '.', sprite: basename(resolvedSpritePath) },
+      ...config.mode,
+    },
     ...config,
   });
 
@@ -41,10 +44,13 @@ export const makeSprite = async (
       .filter(Boolean),
   );
   const { result } = await sprite.compileAsync();
-  for (const mode of Object.values(result)) {
-    for (const resource of Object.values(mode as Record<string, Resource>)) {
-      await mkdir(dirname(resource.path), { recursive: true });
-      await writeFile(resource.path, resource.contents);
-    }
-  }
+  return Promise.all(
+    Object.values(result).flatMap((mode) =>
+      Object.values(mode as Record<string, Resource>).map((resource) =>
+        mkdir(dirname(resource.path), { recursive: true }).then(() =>
+          writeFile(resource.path, resource.contents),
+        ),
+      ),
+    ),
+  );
 };

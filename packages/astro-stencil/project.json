@@ -1,0 +1,25 @@
+{
+  "root": "packages/astro-stencil",
+  "sourceRoot": "packages/astro-stencil/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/astro-stencil/src/index.ts",
+        "outputPath": "packages/astro-stencil/dist",
+        "tsConfig": "packages/astro-stencil/tsconfig.json"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": ["packages/astro-stencil/src/**/*.{js,jsx,ts,tsx}"],
+        "quiet": true
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

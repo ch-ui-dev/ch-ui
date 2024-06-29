@@ -1,0 +1,36 @@
+{
+  "root": "apps/stories",
+  "sourceRoot": "apps/stories/src",
+  "projectType": "library",
+  "targets": {
+    "storybook": {
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      },
+      "dependsOn": [
+        "^build",
+        "elements:build-watch"
+      ],
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "configDir": "apps/stories/all-stories"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "apps/stories/**/*.{ts,mts}",
+          "apps/stories/.storybook-shared/*.ts"
+        ],
+        "quiet": true
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}

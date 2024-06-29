@@ -65,7 +65,7 @@
         ]
       },
       "test": {
-        "command": "cd packages/theme && ts-node ./test/*.spec.ts"
+        "command": "cd packages/theme && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
       }
   }
 }

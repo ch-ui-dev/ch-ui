@@ -1,0 +1,57 @@
+---
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import { persistentAtom } from '@nanostores/persistent';
+import { ChOklchPicker } from '../components/Elements.jsx';
+import { docsTheme } from '../theme.ts';
+import get from 'lodash.get';
+const userThemeConfigString = persistentAtom(
+  'ch-theme-config',
+  JSON.stringify(docsTheme),
+);
+const userThemeConfig = JSON.parse(userThemeConfigString.get());
+const accentKeyPoint = get(userThemeConfig, 'colors.physical.series.accent.srgb.keyPoint');
+---
+<style>
+  #theme-editor-label {
+    margin-block-start: 0;
+  }
+</style>
+<p id="theme-editor-label">Theme settings</p>
+<ChOklchPicker aria-labelledby="theme-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
+<script>
+  import { persistentAtom } from '@nanostores/persistent'
+  import { type Gamut, renderFacet } from '@ch-ui/theme';
+  import { docsTheme } from '../theme.ts';
+  import set from 'lodash.set';
+  import { yieldOrContinue } from 'main-thread-scheduling';
+  import { ChOklchPickerCustomEvent, Oklch } from '@ch-ui/elements';
+
+  const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
+
+  const themeConfigString = persistentAtom('ch-theme-config',
+    JSON.stringify(docsTheme)
+  );
+
+  let themeConfig = JSON.parse(themeConfigString.get());
+
+  const $colorsPhysicalLayer = document.createElement('style');
+  $colorsPhysicalLayer.id = 'colors.physical';
+  document.head.appendChild($colorsPhysicalLayer);
+
+  const $accentKeyPointInput = document.querySelector('ch-oklch-picker');
+
+  // gamuts.forEach((gamut)=>{
+  //   set(defaultTheme, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
+  // })
+
+  $accentKeyPointInput!.addEventListener('oklchChange', async ({ detail: {lightness, chroma, hue} }: ChOklchPickerCustomEvent<Oklch>) => {
+    gamuts.map(gamut=>{
+      console.log('[themeConfig]', themeConfig.colors.physical.series.accent);
+      set(themeConfig, `colors.physical.series.accent.${gamut}.keyPoint`, [lightness, chroma, hue]);
+    });
+    await yieldOrContinue('interactive');
+    $colorsPhysicalLayer.textContent = `@layer user-tokens { ${
+      renderFacet(themeConfig.colors)
+    } }`;
+  });
+</script>

@@ -1,3 +1,5 @@
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+
 // Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import assert from 'node:assert';
@@ -14,7 +16,7 @@ const phosphorConfig: BundleParams = {
       style === 'regular' ? '' : `-${style}`
     }.svg`,
   spritePath: '../dist/assets/sprite.svg',
-  contentPath: resolve(__dirname, './example.html'),
+  contentPaths: [resolve(__dirname, './example.html')],
 };
 
 const positiveTokens = [
@@ -31,7 +33,9 @@ test('scan file returns all positive and no negative results', async () => {
 });
 
 test('scan string returns all positive and no negative results', async () => {
-  const contentString = (await readFile(phosphorConfig.contentPath)).toString();
+  const contentString = (
+    await readFile(phosphorConfig.contentPaths[0])
+  ).toString();
   const results = scanString({
     ...phosphorConfig,
     contentString,

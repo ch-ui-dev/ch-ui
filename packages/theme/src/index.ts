@@ -1,9 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { PluginCreator, parse, AtRule } from 'postcss';
-import { ThemeConfig } from './theme';
-import { renderPhysicalColorTokens } from './physicalColors';
-import { renderSemanticColorTokens } from './semanticColors';
+import { ThemeConfig, renderTheme } from './theme';
 
 export type PluginOptions = {
   config: (params: AtRule['params']) => Promise<ThemeConfig> | ThemeConfig;
@@ -15,19 +13,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
     AtRule: {
       async chui(rule) {
         const config = (await opts?.config(rule.params)) ?? {};
-        rule.replaceWith(
-          parse(
-            `${
-              config.physicalColors
-                ? renderPhysicalColorTokens(config.physicalColors)
-                : ''
-            }\n\n${
-              config.semanticColors
-                ? renderSemanticColorTokens(config.semanticColors)
-                : ''
-            }`,
-          ),
-        );
+        rule.replaceWith(parse(renderTheme(config)));
       },
     },
   };
@@ -35,8 +21,10 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
 
 creator.postcss = true;
 
-export * from './physicalColors';
-export * from './semanticColors';
+export * from './facet';
+export * from './physical-layer';
+export * from './semantic-layer';
+export * from './types';
 export * from './theme';
 
 export default creator;

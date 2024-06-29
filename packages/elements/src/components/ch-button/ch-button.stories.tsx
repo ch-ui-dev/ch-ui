@@ -3,14 +3,19 @@
 import './ch-button.css';
 
 export default {
-  // this creates a ‘Components’ folder and a ‘MyComponent’ subfolder
   title: 'Elements/ch-button',
 };
 
-const Template = (args) => `<ch-button>${args.children}</ch-button>`;
+export const Basic = (args) => `<ch-button>${args.children}</ch-button>`;
 
-export const Example = Template.bind({});
-
-Example.args = {
+Basic.args = {
   children: `Confirm`,
+};
+
+export const Group = (args) =>
+  `<div role='group' class='ch-button-group'><ch-button>${args.left}</ch-button><ch-button>${args.right}</ch-button></div>`;
+
+Group.args = {
+  left: '←',
+  right: '→',
 };

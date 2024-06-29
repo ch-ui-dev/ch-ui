@@ -1,0 +1,65 @@
+---
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import Head from '../components/Head.astro';
+import Nav from '../components/Nav.astro';
+import Banner from '../components/Banner.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={Astro.currentLocale ?? 'en'}>
+  <Head title={title}>
+    <style is:global>
+      body {
+        padding-block-start: var(--ch-gap-5);
+        & > header {
+          position: fixed;
+          z-index: 1;
+          inset-block-start: 0;
+          inset-inline: 0;
+          block-size: var(--ch-gap-5);
+        }
+        & > nav {
+          padding: var(--ch-gap-3);
+          @media (min-width: 100ch) {
+            position: fixed;
+            z-index: 1;
+            inset-block-start: var(--ch-gap-5);
+            inset-inline-start: 0;
+            inline-size: var(--ch-gap-7);
+            inset-block-end: 0;
+            overflow-y: auto;
+            padding-inline-end: var(--ch-gap-4);
+          }
+        }
+        & > main {
+          padding-inline: var(--ch-gap-3);
+          padding-block-start: var(--ch-gap-2);
+          padding-block-end: var(--ch-gap-6);
+          overflow-y: auto;
+          @media (min-width: 80ch) {
+            padding-inline: var(--ch-gap-4);
+          }
+          @media (min-width: 100ch) {
+            padding-inline-start: var(--ch-gap-7);
+            padding-block-end: var(--ch-gap-6);
+            padding-block-start: 0;
+          }
+        }
+      }
+    </style>
+  </Head>
+  <body>
+    <Banner />
+    <Nav />
+    <main>
+      <div role="none" class="prose">
+        <slot/>
+      </div>
+    </main>
+  </body>
+</html>

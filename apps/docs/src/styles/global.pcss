@@ -1,0 +1,97 @@
+/* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+
+@layer tokens, user-tokens, utilities, elements;
+
+@layer tokens {
+  @chui app-astro;
+}
+
+:root {
+  font-size: 17px;
+  font-family: sans-serif;
+  background: var(--ch-bg-base);
+  color: var(--ch-fg-base);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-size: var(--ch-text-size-base);
+  line-height: var(--ch-system-leading-base);
+}
+
+h1 {
+  font-size: var(--ch-text-size-3xl);
+  line-height: var(--ch-prose-leading-3xl);
+  margin-block-start: var(--ch-gap-4);
+  margin-block-end: var(--ch-gap-3);
+}
+
+h2 {
+  font-size: var(--ch-text-size-2xl);
+  line-height: var(--ch-prose-leading-2xl);
+  margin-block-start: var(--ch-gap-4);
+  margin-block-end: var(--ch-gap-2);
+}
+
+h3 {
+  font-size: var(--ch-text-size-xl);
+  line-height: var(--ch-prose-leading-xl);
+  margin-block-start: var(--ch-gap-2);
+  margin-block-end: var(--ch-gap-1);
+}
+
+h4 {
+  font-size: var(--ch-text-size-lg);
+  line-height: var(--ch-prose-leading-lg);
+  margin-block-start: var(--ch-gap-1);
+  margin-block-end: var(--ch-gap-half);
+}
+
+code {
+  font-size: 0.9em;
+  padding: 0.15em 0.3em;
+  background: var(--ch-bg-hover);
+  border-radius: var(--ch-gap-1);
+}
+
+pre {
+  padding: var(--ch-gap-3);
+  border-radius: var(--ch-gap-1);
+
+  & > code {
+    padding: 0;
+    background: transparent;
+  }
+}
+
+img,
+svg {
+  display: block;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.prose {
+  max-inline-size: 90ch;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  line-height: var(--ch-prose-leading-base);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,19 @@
+---
+// Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
+import '../styles/global.pcss';
+import '@ch-ui/elements/ch-default-root.css';
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<head>
+  <title>{title}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,interactive-widget=resizes-content,viewport-fit=cover" />
+  <script is:inline>
+    import('/ch-ui-elements/loader/index.js').then(({defineCustomElements})=>defineCustomElements());
+  </script>
+  <link rel="preload" href="/icons.svg" as="image" />
+  <slot/>
+</head>

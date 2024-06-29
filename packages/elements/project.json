@@ -4,15 +4,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "command": "cd packages/elements && ./node_modules/.bin/stencil build"
+      "command": "cd packages/elements && pnpm run stencil:build"
     },
     "serve": {
-      "command": "cd packages/elements && ./node_modules/.bin/stencil build --serve --watch --dev"
+      "command": "cd packages/elements && pnpm run stencil build:serve"
     },
     "build-watch": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd packages/elements && ./node_modules/.bin/stencil build --watch",
+        "command": "cd packages/elements && pnpm run stencil:build-watch",
         "parallel": true,
         "readyWhen": "build finished"
       }

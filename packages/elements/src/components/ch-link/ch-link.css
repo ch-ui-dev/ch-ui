@@ -1,0 +1,19 @@
+/* Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com> */
+
+@layer elements {
+  ch-link,
+  .ch-link {
+    color: inherit;
+
+    text-decoration-color: var(--ch-fg-link, var(--ch-fg-accent));
+    text-decoration-thickness: var(
+      --ch-textDecorationThickness-link,
+      var(--ch-dim-hairline, 1px)
+    );
+    text-underline-offset: var(--ch-textUnderlineOffset-link, 0.16em);
+
+    &:hover {
+      text-decoration-color: var(--ch-fg-linkHover, var(--ch-fg-accentHover));
+    }
+  }
+}

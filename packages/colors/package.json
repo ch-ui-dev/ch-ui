@@ -11,13 +11,21 @@
     "node": ">=20.0.0"
   },
   "main": "src/index.ts",
-  "publishConfig": {
-    "main": "dist/cjs/index.cjs",
-    "module": "dist/esm/index.js",
-    "types": "dist/types/src/index.d.ts"
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/src/index.d.ts"
+    },
+    "./README.md": {
+      "import": "./README.md"
+    }
   },
   "files": [
     "src",
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "colorjs": "npm:colorjs.io@^0.5.0"
+  }
 }

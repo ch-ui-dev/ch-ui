@@ -1,0 +1,42 @@
+{
+  "name": "@ch-ui/docs",
+  "version": "0.5.0",
+  "private": true,
+  "description": "An Astro webpage for ch-ui",
+  "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
+  "authors": [
+    "Will Shown <w@willshown.com> (https://willshown.com/)"
+  ],
+  "license": "Ch Public License",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@astropub/md": "^0.4.0",
+    "@ch-ui/astro-stencil": "workspace:*",
+    "@ch-ui/colors": "workspace:*",
+    "@ch-ui/elements": "workspace:*",
+    "@ch-ui/theme": "workspace:*",
+    "@ch-ui/vite-plugin-icons": "workspace:*",
+    "@ch-ui/vite-plugin-theme": "workspace:*",
+    "@nanostores/persistent": "^0.10.1",
+    "astro": "^4.8.7",
+    "lodash.get": "^4.4.2",
+    "lodash.merge": "^4.6.2",
+    "lodash.set": "^4.3.2",
+    "main-thread-scheduling": "^14.2.0",
+    "nanostores": "^0.10.3"
+  },
+  "devDependencies": {
+    "@astrojs/ts-plugin": "^1.8.0",
+    "@types/lodash.get": "^4.4.9",
+    "@types/lodash.merge": "^4.6.9",
+    "@types/lodash.set": "^4.3.9",
+    "@types/node": "^20.12.3",
+    "vite": "^5.1.5"
+  },
+  "scripts": {
+    "astro:build": "astro build",
+    "astro:serve": "astro dev"
+  }
+}

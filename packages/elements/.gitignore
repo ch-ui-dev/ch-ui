@@ -1,3 +1,5 @@
 www
 .stencil
 src/components.d.ts
+src/components/**/readme.md
+hydrate

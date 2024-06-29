@@ -25,7 +25,7 @@ import IconsPlugin from '@ch-ui/vite-plugin-icons';
       // Tell the plugin where to put the sprite.
       spritePath: resolve(__dirname, '../dist/assets/sprite.svg'),
       // Tell the plugin in which files to look for icon tokens.
-      contentPath: '**/*.stories.tsx',
+      contentPaths: ['**/*.stories.tsx'],
     }),
     // ...
   ]
