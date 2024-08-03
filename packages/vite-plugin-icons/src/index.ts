@@ -81,7 +81,7 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
           await makeSprite(params, detectedSymbols);
           updated = false;
         }
-        return { code: src };
+        return { code: src, map: null };
       },
     },
   ] satisfies Plugin[];
