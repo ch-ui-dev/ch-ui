@@ -1,0 +1,52 @@
+{
+  "root": "packages/tailwind-tokens",
+  "sourceRoot": "packages/tailwind-tokens/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/tailwind-tokens/src/index.ts",
+        "outputPath": "packages/tailwind-tokens/dist/types",
+        "tsConfig": "packages/tailwind-tokens/tsconfig.json"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "build-esm": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/tailwind-tokens/src/index.ts",
+        "outputPath": "packages/tailwind-tokens/dist/esm",
+        "tsConfig": "packages/tailwind-tokens/tsconfig-esbuild.json",
+        "format": ["esm"]
+      },
+      "dependsOn": ["^build", "compile"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/tailwind-tokens/src/index.ts",
+        "outputPath": "packages/tailwind-tokens/dist/cjs",
+        "tsConfig": "packages/tailwind-tokens/tsconfig-esbuild.json",
+        "format": ["cjs"]
+      },
+      "dependsOn": ["^build", "compile", "build-esm"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/tailwind-tokens/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "command": "echo 'To implement.'"
+    }
+  }
+}
