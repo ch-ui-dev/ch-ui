@@ -8,7 +8,7 @@ import {
   getOklabVectorsFromLuminosities,
 } from '@ch-ui/colors';
 import { HelicalArcSeries, PhysicalLayer, SemanticValues } from '../types';
-import { nameFromValue, physicalValueFromValueRelation } from '../util';
+import { variableNameFromValue, physicalValueFromValueRelation } from '../util';
 import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
@@ -28,9 +28,11 @@ export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = ({
     constellationFromPalette(series),
   );
   return oklabVectors.map((oklab, index) => {
-    return `--${namespace}${seriesId}-${nameFromValue(
+    return `${variableNameFromValue(
       values[index],
       resolvedNaming,
+      seriesId,
+      namespace,
     )}: ${oklabVectorToValue(oklab, conditionId as Gamut)};`;
   });
 };
