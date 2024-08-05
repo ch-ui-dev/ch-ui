@@ -68,7 +68,7 @@ export const resolveNaming = (
         return acc;
       }, new Map());
 
-const nameFromValue = (
+export const nameFromValue = (
   value: number,
   resolvedNaming: ResolvedNaming,
 ): string => {
