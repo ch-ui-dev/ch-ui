@@ -26,5 +26,6 @@ export * from './physical-layer';
 export * from './semantic-layer';
 export * from './types';
 export * from './token-set';
+export * from './util';
 
 export default creator;
