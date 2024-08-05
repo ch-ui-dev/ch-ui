@@ -46,7 +46,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "command": "echo 'To implement.'"
+      "command": "cd packages/tailwind-tokens && ts-node ./test/sanity.spec.ts"
     }
   }
 }
