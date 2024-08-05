@@ -1,7 +1,7 @@
 {
-  "name": "@ch-ui/tokens",
+  "name": "@ch-ui/tailwind-tokens",
   "version": "0.5.0",
-  "description": "A tokens system for a more malleable web.",
+  "description": "A tokens system for @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -26,10 +26,13 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/colors": "workspace:*",
-    "postcss": "^8.4.38"
+    "@ch-ui/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "tailwindcss": "3.x.x"
   },
   "devDependencies": {
+    "tailwindcss": "^3.4.7",
     "@types/node": "^20.12.3",
     "ts-node": "^10.9.2"
   }

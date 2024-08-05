@@ -82,3 +82,11 @@ export const nameFromValue = (
     return (resolvedNaming as Map<number, string>).get(value)!;
   }
 };
+
+export const variableNameFromValue = (
+  value: number,
+  resolvedNaming: ResolvedNaming,
+  seriesId: string,
+  namespace: string = '',
+): string =>
+  `--${namespace}${seriesId}-${nameFromValue(value, resolvedNaming)}`;

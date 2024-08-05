@@ -32,8 +32,8 @@ test('physical and semantic color tokens are generated as expected', async () =>
       '@media (color-gamut: rec2020) {\n' +
         '  :root {\n' +
         '    --ch-neutral-0: color(rec2020 0 0 0);\n' +
-        '    --ch-neutral-150: color(rec2020 0.01484 0.01488 0.01886);\n' +
-        '    --ch-neutral-175: color(rec2020 0.0236 0.02367 0.0295);',
+        '    --ch-neutral-150: color(rec2020 0.01335 0.0154 0.02147);\n' +
+        '    --ch-neutral-175: color(rec2020 0.02142 0.02444 0.03325);',
     ),
     true,
   );

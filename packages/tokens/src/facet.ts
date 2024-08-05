@@ -45,7 +45,7 @@ export const isLinearLayer = (
   return 'slope' in firstSeriesInLayer;
 };
 
-const getFirstSeriesInPhysicalLayer = (layer: PhysicalLayer): Series => {
+export const getFirstSeriesInPhysicalLayer = (layer: PhysicalLayer): Series => {
   const seriesIds = Object.keys(layer.series);
   const conditionIds = Object.keys(layer.series[seriesIds[0]]);
   return layer.series[seriesIds[0]][conditionIds[0]]!;

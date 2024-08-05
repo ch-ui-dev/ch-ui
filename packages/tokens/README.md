@@ -7,7 +7,7 @@ This package generates tokens using a principled approach that aims to make it e
 ## Getting started
 
 ```shell
-pnpm add @ch-ui/tokens
+pnpm add -D @ch-ui/tokens
 ```
 
 Then, use any of the render functions as you like. If you’re using Vite, there’s already <a href="./vite-plugin-tokens" class="ch-link">`@ch-ui/vite-plugin-tokens`</a> if you like.

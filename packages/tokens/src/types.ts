@@ -102,6 +102,9 @@ export type ExponentialSeries = Series & {
   base: number;
 };
 
+/**
+ * A series of values in the layer which lay on a helical arc, the shape of a color palette.
+ */
 export type HelicalArcSeries = Series &
   HelicalArcConfig & {
     physicalValueRelation: AccompanyingSeries;

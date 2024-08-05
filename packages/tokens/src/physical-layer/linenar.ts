@@ -2,7 +2,7 @@
 
 import { LinearSeries, PhysicalLayer, SemanticValues } from '../types';
 import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
-import { nameFromValue } from '../util';
+import { variableNameFromValue } from '../util';
 
 export type LinearPhysicalLayer<S extends string = string> =
   //
@@ -19,9 +19,11 @@ export const renderLinearTokens: RenderTokens<LinearSeries> = ({
   return values
     .map((value) => initial + slope * value)
     .map((physicalValue, index) => {
-      return `--${namespace}${seriesId}-${nameFromValue(
+      return `${variableNameFromValue(
         values[index],
         resolvedNaming,
+        seriesId,
+        namespace,
       )}: ${physicalValue.toFixed(3)}${unit};`;
     });
 };

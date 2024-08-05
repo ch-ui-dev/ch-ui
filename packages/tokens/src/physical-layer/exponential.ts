@@ -2,7 +2,7 @@
 
 import { ExponentialSeries, PhysicalLayer, SemanticValues } from '../types';
 import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
-import { nameFromValue } from '../util';
+import { variableNameFromValue } from '../util';
 
 export type ExponentialPhysicalLayer<S extends string = string> =
   //
@@ -32,9 +32,11 @@ export const renderExponentialTokens: RenderTokens<ExponentialSeries> = ({
       }
     })
     .map((physicalValue, index) => {
-      return `--${namespace}${seriesId}-${nameFromValue(
+      return `${variableNameFromValue(
         values[index],
         resolvedNaming,
+        seriesId,
+        namespace,
       )}: ${physicalValue.toFixed(3)}${unit};`;
     });
 };
