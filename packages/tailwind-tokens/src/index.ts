@@ -81,6 +81,7 @@ const renderSemanticMappings = (semantic?: SemanticLayer): Mapping => {
 
 const renderTailwindFacet = ({ physical, semantic }: Facet): Mapping => {
   const semanticValues = facetSemanticValues(semantic);
+  // TODO(thure): Need case(s) for Tailwind’s `fontSize`.
   return {
     ...renderPhysicalMappings(physical, semanticValues),
     ...renderSemanticMappings(semantic),
