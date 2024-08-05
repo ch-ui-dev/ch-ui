@@ -24,6 +24,7 @@ export const renderSemanticLayer = <
                 [conditionId as K]: [seriesName, value],
               },
             ]) =>
+              // TODO(thure): This should almost certainly use `variableNameFromValue`.
               `--${namespace}${sememeName}: var(--${
                 physicalNamespace ?? namespace
               }${seriesName}-${value});`,
