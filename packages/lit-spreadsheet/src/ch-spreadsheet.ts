@@ -23,13 +23,23 @@ export class ChSpreadsheet extends LitElement {
   viewportRef: Ref<HTMLDivElement> = createRef();
 
   override render() {
-    return html`<div
-      role="none"
-      class="ch-spreadsheet"
-      ${ref(this.viewportRef)}
-    >
-      Size: ${this.size.inlineSize}, ${this.size.blockSize}
-    </div> `;
+    return html`<div role="none" class="ch-spreadsheet">
+      <div role="none" class="ch-spreadsheet__corner"></div>
+      <div role="none" class="ch-spreadsheet__fixed-row">Column headings</div>
+      <div role="none" class="ch-spreadsheet__corner"></div>
+      <div role="none" class="ch-spreadsheet__fixed-column">123</div>
+      <div
+        role="none"
+        class="ch-spreadsheet__viewport"
+        ${ref(this.viewportRef)}
+      >
+        Size: ${this.size.inlineSize}, ${this.size.blockSize}
+      </div>
+      <div role="none" class="ch-spreadsheet__scrollbar--vertical">X</div>
+      <div role="none" class="ch-spreadsheet__corner"></div>
+      <div role="none" class="ch-spreadsheet__scrollbar--horizontal">X</div>
+      <div role="none" class="ch-spreadsheet__corner"></div>
+    </div>`;
   }
 
   override firstUpdated() {

@@ -5,6 +5,12 @@ ch-spreadsheet {
 .ch-spreadsheet {
   position: fixed;
   inset: 0;
+  display: grid;
+  grid-template-columns: min-content 1fr min-content;
+  grid-template-rows: min-content 1fr min-content;
+}
+
+.ch-spreadsheet__viewport {
   align-content: center;
   text-align: center;
 }
