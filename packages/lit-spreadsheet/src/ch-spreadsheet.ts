@@ -40,7 +40,8 @@ export class ChSpreadsheet extends LitElement {
   viewportRef: Ref<HTMLDivElement> = createRef();
 
   handleWheel = ({ deltaX, deltaY }: WheelEvent) => {
-    console.log('[wheel]', deltaX, deltaY);
+    this.posInline = Math.max(0, this.posInline + deltaX);
+    this.posBlock = Math.max(0, this.posBlock + deltaY);
   };
 
   override render() {
@@ -50,7 +51,11 @@ export class ChSpreadsheet extends LitElement {
     const visibleRows = Math.ceil((this.sizeBlock + this.posBlock) / rowheight);
     return html`<div role="none" class="ch-spreadsheet">
       <div role="none" class="ch-spreadsheet__corner"></div>
-      <div role="none" class="ch-spreadsheet__columnheader">
+      <div
+        role="none"
+        class="ch-spreadsheet__columnheader"
+        style="transform:translate3d(-${this.posInline}px,0,0)"
+      >
         ${[...Array(visibleCols)].map((_, i) => {
           return html`<div
             role="gridcell"
@@ -61,7 +66,11 @@ export class ChSpreadsheet extends LitElement {
         })}
       </div>
       <div role="none" class="ch-spreadsheet__corner"></div>
-      <div role="none" class="ch-spreadsheet__rowheader">
+      <div
+        role="none"
+        class="ch-spreadsheet__rowheader"
+        style="transform:translate3d(0,-${this.posBlock}px,0)"
+      >
         ${[...Array(visibleRows)].map((_, j) => {
           return html`<div role="gridcell" style="block-size:${rowheight}px;">
             ${toRowName(j)}
@@ -74,7 +83,12 @@ export class ChSpreadsheet extends LitElement {
         @wheel="${this.handleWheel}"
         ${ref(this.viewportRef)}
       >
-        <div role="grid" class="ch-spreadsheet__content">
+        <div
+          role="grid"
+          class="ch-spreadsheet__content"
+          style="transform:translate3d(-${this.posInline}px,-${this
+            .posBlock}px,0)"
+        >
           ${[...Array(visibleCols)].map((_, i) => {
             return [...Array(visibleRows)].map((_, j) => {
               return html`<div
