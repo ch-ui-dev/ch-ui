@@ -25,10 +25,10 @@ export const rowToA1Notation = (row: number): string => {
 };
 
 export const posToA1Notation = (column: number, row: number): string => {
-  if (column < MAX_COLUMNS) {
+  if (column > MAX_COLUMNS) {
     throw Error(`Invalid column: ${column}`);
   }
-  if (row < MAX_ROWS) {
+  if (row > MAX_ROWS) {
     throw Error(`Invalid row: ${row}`);
   }
   const columnA1 = colToA1Notation(column);

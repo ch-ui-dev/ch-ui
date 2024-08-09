@@ -9,8 +9,11 @@ export default {
   title: 'Elements/ch-spreadsheet',
 };
 
-export const Basic = () => html`<ch-spreadsheet></ch-spreadsheet>`;
+export const Basic = ({ values }: { values: string }) =>
+  html`<ch-spreadsheet values="${values}"></ch-spreadsheet>`;
 
 Basic.args = {
-  children: `Confirm`,
+  values: JSON.stringify({
+    B2: 'Weekly sales report',
+  }),
 };

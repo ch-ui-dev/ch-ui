@@ -1,9 +1,9 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
 import { ref, createRef, Ref } from 'lit/directives/ref.js';
-import { colToA1Notation, rowToA1Notation } from './position';
+import { colToA1Notation, posToA1Notation, rowToA1Notation } from './position';
 
 const colSize = 64;
 
@@ -13,6 +13,9 @@ const gap = 0;
 
 @customElement('ch-spreadsheet')
 export class ChSpreadsheet extends LitElement {
+  @property({ type: Object })
+  values: Record<string, string> = {};
+
   @state()
   posInline = 0;
   @state()
@@ -104,11 +107,14 @@ export class ChSpreadsheet extends LitElement {
         >
           ${[...Array(visibleCols)].map((_, i) => {
             return [...Array(visibleRows)].map((_, j) => {
+              const value = this.values[posToA1Notation(i, j)];
               return html`<div
                 role="gridcell"
                 style="inline-size:${colSize}px;block-size:${rowSize}px;grid-column:${i +
                 1}/${i + 2};grid-row:${j + 1}/${j + 2}"
-              ></div>`;
+              >
+                ${value}
+              </div>`;
             });
           })}
         </div>
