@@ -3,17 +3,13 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ref, createRef, Ref } from 'lit/directives/ref.js';
+import { colToA1Notation, rowToA1Notation } from './position';
 
-const colwidth = 64;
+const colSize = 64;
 
-const rowheight = 20;
+const rowSize = 20;
 
-function toColName(n: number): string {
-  return `C${n}`;
-}
-function toRowName(n: number): string {
-  return `${n}`;
-}
+const gap = 0;
 
 @customElement('ch-spreadsheet')
 export class ChSpreadsheet extends LitElement {
@@ -45,37 +41,55 @@ export class ChSpreadsheet extends LitElement {
   };
 
   override render() {
-    const visibleCols = Math.ceil(
-      (this.sizeInline + this.posInline) / colwidth,
+    const colMin = Math.floor(this.posInline / (colSize + gap));
+    const colMax = Math.ceil(
+      (this.sizeInline + this.posInline) / (colSize + gap),
     );
-    const visibleRows = Math.ceil((this.sizeBlock + this.posBlock) / rowheight);
+    const visibleCols = colMax - colMin;
+    const offsetInline = colMin * colSize - this.posInline;
+
+    const rowMin = Math.floor(this.posBlock / (rowSize + gap));
+    const rowMax = Math.ceil(
+      (this.sizeBlock + this.posBlock) / (rowSize + gap),
+    );
+    const visibleRows = rowMax - rowMin;
+    const offsetBlock = rowMin * rowSize - this.posBlock;
+
     return html`<div role="none" class="ch-spreadsheet">
       <div role="none" class="ch-spreadsheet__corner"></div>
-      <div
-        role="none"
-        class="ch-spreadsheet__columnheader"
-        style="transform:translate3d(-${this.posInline}px,0,0)"
-      >
-        ${[...Array(visibleCols)].map((_, i) => {
-          return html`<div
-            role="gridcell"
-            style="inline-size:${colwidth}px;block-size:${rowheight}px;"
-          >
-            ${toColName(i)}
-          </div>`;
-        })}
+      <div role="none" class="ch-spreadsheet__columnheader">
+        <div
+          role="none"
+          class="ch-spreadsheet__columnheader__content"
+          style="transform:translate3d(${offsetInline}px,0,0);grid-template-columns:repeat(${visibleCols},${colSize}px);"
+        >
+          ${[...Array(visibleCols)].map((_, i) => {
+            return html`<div
+              role="gridcell"
+              style="inline-size:${colSize}px;block-size:${rowSize}px;grid-column:${i +
+              1}/${i + 2};"
+            >
+              ${colToA1Notation(colMin + i)}
+            </div>`;
+          })}
+        </div>
       </div>
       <div role="none" class="ch-spreadsheet__corner"></div>
-      <div
-        role="none"
-        class="ch-spreadsheet__rowheader"
-        style="transform:translate3d(0,-${this.posBlock}px,0)"
-      >
-        ${[...Array(visibleRows)].map((_, j) => {
-          return html`<div role="gridcell" style="block-size:${rowheight}px;">
-            ${toRowName(j)}
-          </div>`;
-        })}
+      <div role="none" class="ch-spreadsheet__rowheader">
+        <div
+          role="none"
+          class="ch-spreadsheet__rowheader__content"
+          style="transform:translate3d(0,${offsetBlock}px,0);"
+        >
+          ${[...Array(visibleRows)].map((_, j) => {
+            return html`<div
+              role="gridcell"
+              style="block-size:${rowSize}px;grid-row:${j + 1}/${j + 2}"
+            >
+              ${rowToA1Notation(rowMin + j)}
+            </div>`;
+          })}
+        </div>
       </div>
       <div
         role="none"
@@ -86,14 +100,13 @@ export class ChSpreadsheet extends LitElement {
         <div
           role="grid"
           class="ch-spreadsheet__content"
-          style="transform:translate3d(-${this.posInline}px,-${this
-            .posBlock}px,0)"
+          style="transform:translate3d(${offsetInline}px,${offsetBlock}px,0);grid-template-columns:repeat(${visibleCols},${colSize}px);grid-template-rows:repeat(${visibleRows},${rowSize}px);"
         >
           ${[...Array(visibleCols)].map((_, i) => {
             return [...Array(visibleRows)].map((_, j) => {
               return html`<div
                 role="gridcell"
-                style="inline-size:${colwidth}px;block-size:${rowheight}px;grid-column:${i +
+                style="inline-size:${colSize}px;block-size:${rowSize}px;grid-column:${i +
                 1}/${i + 2};grid-row:${j + 1}/${j + 2}"
               ></div>`;
             });

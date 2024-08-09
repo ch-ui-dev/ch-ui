@@ -21,12 +21,14 @@ ch-spreadsheet {
   background: var(--ch-spreadsheet-corner, var(--ch-bg-hover));
 }
 
-.ch-spreadsheet__columnheader,
-.ch-spreadsheet__rowheader,
+.ch-spreadsheet__columnheader__content,
+.ch-spreadsheet__rowheader__content,
 .ch-spreadsheet__content {
   display: grid;
   gap: 1px;
   background: var(--ch-bg-neutral);
+  inline-size: min-content;
+  block-size: min-content;
 }
 
 .ch-spreadsheet__columnheader,
@@ -35,12 +37,12 @@ ch-spreadsheet {
   overflow: hidden;
 }
 
-.ch-spreadsheet__columnheader {
+.ch-spreadsheet__columnheader__content {
   padding-inline: 1px;
   grid-template-columns: repeat(99, 64px);
 }
 
-.ch-spreadsheet__rowheader {
+.ch-spreadsheet__rowheader__content {
   padding-block: 1px;
   grid-template-columns: min-content;
   text-align: end;
