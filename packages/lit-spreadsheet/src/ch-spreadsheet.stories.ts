@@ -14,6 +14,10 @@ export const Basic = ({ values }: { values: string }) =>
 
 Basic.args = {
   values: JSON.stringify({
-    B2: 'Weekly sales report',
+    ':g1': {
+      pos: '1,1',
+      end: '8,1',
+      value: 'Weekly sales report',
+    },
   }),
 };

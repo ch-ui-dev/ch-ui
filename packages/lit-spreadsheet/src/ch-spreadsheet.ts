@@ -1,9 +1,13 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { LitElement, html } from 'lit';
+import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import { ref, createRef, Ref } from 'lit/directives/ref.js';
-import { colToA1Notation, posToA1Notation, rowToA1Notation } from './position';
+import {
+  colToA1Notation,
+  posFromNumericNotation,
+  rowToA1Notation,
+} from './position';
 
 const colSize = 64;
 
@@ -11,10 +15,29 @@ const rowSize = 20;
 
 const gap = 0;
 
+export type CellValue = {
+  /**
+   * The position (or topleft-most of the range) in numeric notation
+   */
+  pos: string;
+  /**
+   * The content value
+   */
+  value: string;
+  /**
+   * If this is a merged cell, the bottomright-most of the range in numeric notation, otherwise undefined.
+   */
+  end?: string;
+  /**
+   * CSS inline styles to apply to the gridcell element
+   */
+  style?: string;
+};
+
 @customElement('ch-spreadsheet')
 export class ChSpreadsheet extends LitElement {
   @property({ type: Object })
-  values: Record<string, string> = {};
+  values: Record<string, CellValue> = {};
 
   @state()
   posInline = 0;
@@ -25,6 +48,9 @@ export class ChSpreadsheet extends LitElement {
   sizeInline = 0;
   @state()
   sizeBlock = 0;
+
+  @state()
+  cellByPosition: Record<string, string> = {};
 
   @state()
   observer = new ResizeObserver((entries) => {
@@ -42,6 +68,29 @@ export class ChSpreadsheet extends LitElement {
     this.posInline = Math.max(0, this.posInline + deltaX);
     this.posBlock = Math.max(0, this.posBlock + deltaY);
   };
+
+  override willUpdate(changed: PropertyValues<this>) {
+    if (changed.has('values')) {
+      console.log('[computing cellByPosition]');
+      this.cellByPosition = Object.entries(this.values).reduce(
+        (acc: Record<string, string>, [id, { pos, end }]) => {
+          const { i: i1, j: j1 } = posFromNumericNotation(pos);
+          if (end) {
+            const { i: i2, j: j2 } = posFromNumericNotation(end);
+            for (let ci = i1; ci <= i2; ci += 1) {
+              for (let cj = j1; cj <= j2; cj += 1) {
+                acc[`${ci},${cj}`] = id;
+              }
+            }
+          } else {
+            acc[`${i1},${j1}`] = id;
+          }
+          return acc;
+        },
+        {},
+      );
+    }
+  }
 
   override render() {
     const colMin = Math.floor(this.posInline / (colSize + gap));
@@ -107,14 +156,36 @@ export class ChSpreadsheet extends LitElement {
         >
           ${[...Array(visibleCols)].map((_, i) => {
             return [...Array(visibleRows)].map((_, j) => {
-              const value = this.values[posToA1Notation(i, j)];
-              return html`<div
-                role="gridcell"
-                style="inline-size:${colSize}px;block-size:${rowSize}px;grid-column:${i +
-                1}/${i + 2};grid-row:${j + 1}/${j + 2}"
-              >
-                ${value}
-              </div>`;
+              const posAbs = `${i + colMin},${j + rowMin}`;
+              const cellId = this.cellByPosition[posAbs];
+              const cell = cellId ? this.values[cellId] : undefined;
+              if (cell?.end) {
+                // This is a merged cell
+                if (posAbs !== cell?.pos) {
+                  // Don’t render subcells within the merge if not at the start (probably)
+                  return null;
+                } else {
+                  // Render the full merged cell
+                  const { i: iEndAbs, j: jEndAbs } = posFromNumericNotation(
+                    cell.end,
+                  );
+                  return html`<div
+                    role="gridcell"
+                    style="grid-column:${i + 1} / ${iEndAbs -
+                    colMin +
+                    2};grid-row:${j + 1} / ${jEndAbs - rowMin + 2}"
+                  >
+                    ${cell?.value}
+                  </div>`;
+                }
+              } else {
+                return html`<div
+                  role="gridcell"
+                  style="grid-column:${i + 1};grid-row:${j + 1}"
+                >
+                  ${cell?.value}
+                </div>`;
+              }
             });
           })}
         </div>

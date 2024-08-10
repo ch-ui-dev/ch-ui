@@ -1,16 +1,13 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-export const MAX_COLUMNS = 100;
-export const MAX_ROWS = 100;
-
-export type CellPosition = { column: number; row: number };
+export type CellPosition = { i: number; j: number };
 
 export type CellRange = { from: CellPosition; to?: CellPosition };
 
 export const posEquals = (
   a: CellPosition | undefined,
   b: CellPosition | undefined,
-) => a?.column === b?.column && a?.row === b?.row;
+) => a?.i === b?.i && a?.j === b?.j;
 
 export const colToA1Notation = (column: number): string => {
   return (
@@ -25,12 +22,6 @@ export const rowToA1Notation = (row: number): string => {
 };
 
 export const posToA1Notation = (column: number, row: number): string => {
-  if (column > MAX_COLUMNS) {
-    throw Error(`Invalid column: ${column}`);
-  }
-  if (row > MAX_ROWS) {
-    throw Error(`Invalid row: ${row}`);
-  }
   const columnA1 = colToA1Notation(column);
   const rowA1 = rowToA1Notation(row);
   return `${columnA1}${rowA1}`;
@@ -49,13 +40,21 @@ export const posFromA1Notation = (notation: string): CellPosition => {
         0,
       ) - 1;
   const row = parseInt(match[2], 10) - 1;
-  return { column, row };
+  return { i: column, j: row };
+};
+
+export const posFromNumericNotation = (notation: string): CellPosition => {
+  const [iStr, jStr] = notation.split(',');
+  if (!iStr || !jStr) {
+    throw Error('[posFromNumericNotation] Bad input');
+  }
+  return { i: parseInt(iStr), j: parseInt(jStr) };
 };
 
 export const rangeToA1Notation = (range: CellRange) =>
   [
-    range?.from && posToA1Notation(range?.from.column, range?.from.row),
-    range?.to && posToA1Notation(range?.to.column, range.to.row),
+    range?.from && posToA1Notation(range?.from.i, range?.from.j),
+    range?.to && posToA1Notation(range?.to.i, range.to.j),
   ]
     .filter(Boolean)
     .join(':');
@@ -82,14 +81,14 @@ export const inRange = (
     return false;
   }
 
-  const { column, row } = pos;
+  const { i, j } = pos;
 
-  const { column: c1, row: r1 } = from;
-  const { column: c2, row: r2 } = to;
+  const { i: c1, j: r1 } = from;
+  const { i: c2, j: r2 } = to;
   const cMin = Math.min(c1, c2);
   const cMax = Math.max(c1, c2);
   const rMin = Math.min(r1, r2);
   const rMax = Math.max(r1, r2);
 
-  return column >= cMin && column <= cMax && row >= rMin && row <= rMax;
+  return i >= cMin && i <= cMax && j >= rMin && j <= rMax;
 };
