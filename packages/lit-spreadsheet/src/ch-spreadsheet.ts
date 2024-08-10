@@ -92,20 +92,79 @@ export class ChSpreadsheet extends LitElement {
     }
   }
 
-  override render() {
-    const colMin = Math.floor(this.posInline / (colSize + gap));
-    const colMax = Math.ceil(
+  private getCell(i: number, j: number) {
+    const pos = `${i},${j}`;
+    const cellId = this.cellByPosition[pos];
+    return cellId ? this.values[cellId] : undefined;
+  }
+
+  private computeExtrema() {
+    const colVisMin = Math.floor(this.posInline / (colSize + gap));
+    const colVisMax = Math.ceil(
       (this.sizeInline + this.posInline) / (colSize + gap),
     );
-    const visibleCols = colMax - colMin;
-    const offsetInline = colMin * colSize - this.posInline;
 
-    const rowMin = Math.floor(this.posBlock / (rowSize + gap));
-    const rowMax = Math.ceil(
+    const rowVisMin = Math.floor(this.posBlock / (rowSize + gap));
+    const rowVisMax = Math.ceil(
       (this.sizeBlock + this.posBlock) / (rowSize + gap),
     );
-    const visibleRows = rowMax - rowMin;
-    const offsetBlock = rowMin * rowSize - this.posBlock;
+
+    const { colExtMin, colExtMax } = [...Array(rowVisMax - rowVisMin)].reduce(
+      (acc, _, j) => {
+        const colVisMinCell = this.getCell(colVisMin, j + rowVisMin);
+        if (colVisMinCell?.end) {
+          const { i: iStart } = posFromNumericNotation(colVisMinCell.pos);
+          acc.colExtMin = Math.min(acc.colExtMin, iStart);
+        }
+        const colVisMaxCell = this.getCell(colVisMax, j + rowVisMin);
+        if (colVisMaxCell?.end) {
+          const { i: iEnd } = posFromNumericNotation(colVisMaxCell.end);
+          acc.colExtMax = Math.max(acc.colExtMax, iEnd);
+        }
+        return acc;
+      },
+      { colExtMin: colVisMin, colExtMax: colVisMax },
+    );
+
+    const { rowExtMin, rowExtMax } = [...Array(colVisMax - colVisMin)].reduce(
+      (acc, _, i) => {
+        const rowVisMinCell = this.getCell(i + colVisMin, rowVisMin);
+        if (rowVisMinCell?.end) {
+          const { j: jStart } = posFromNumericNotation(rowVisMinCell.pos);
+          acc.rowExtMin = Math.min(acc.rowExtMin, jStart);
+        }
+        const rowVisMaxCell = this.getCell(i + colVisMin, rowVisMax);
+        if (rowVisMaxCell?.end) {
+          const { j: jEnd } = posFromNumericNotation(rowVisMaxCell.end);
+          acc.rowExtMax = Math.max(acc.rowExtMax, jEnd);
+        }
+        return acc;
+      },
+      { rowExtMin: rowVisMin, rowExtMax: rowVisMax },
+    );
+
+    return {
+      colVisMin,
+      colExtMin,
+      colVisMax,
+      colExtMax,
+      rowVisMin,
+      rowExtMin,
+      rowVisMax,
+      rowExtMax,
+    };
+  }
+
+  override render() {
+    const { colVisMin, colVisMax, rowVisMin, rowVisMax } =
+      this.computeExtrema();
+
+    const visibleCols = colVisMax - colVisMin;
+    const visibleRows = rowVisMax - rowVisMin;
+
+    // TODO(thure): now compute the offset based on the extrema.
+    const offsetInline = colVisMin * colSize - this.posInline;
+    const offsetBlock = rowVisMin * rowSize - this.posBlock;
 
     return html`<div role="none" class="ch-spreadsheet">
       <div role="none" class="ch-spreadsheet__corner"></div>
@@ -121,7 +180,7 @@ export class ChSpreadsheet extends LitElement {
               style="inline-size:${colSize}px;block-size:${rowSize}px;grid-column:${i +
               1}/${i + 2};"
             >
-              ${colToA1Notation(colMin + i)}
+              ${colToA1Notation(colVisMin + i)}
             </div>`;
           })}
         </div>
@@ -138,7 +197,7 @@ export class ChSpreadsheet extends LitElement {
               role="gridcell"
               style="block-size:${rowSize}px;grid-row:${j + 1}/${j + 2}"
             >
-              ${rowToA1Notation(rowMin + j)}
+              ${rowToA1Notation(rowVisMin + j)}
             </div>`;
           })}
         </div>
@@ -156,7 +215,7 @@ export class ChSpreadsheet extends LitElement {
         >
           ${[...Array(visibleCols)].map((_, i) => {
             return [...Array(visibleRows)].map((_, j) => {
-              const posAbs = `${i + colMin},${j + rowMin}`;
+              const posAbs = `${i + colVisMin},${j + rowVisMin}`;
               const cellId = this.cellByPosition[posAbs];
               const cell = cellId ? this.values[cellId] : undefined;
               if (cell?.end) {
@@ -172,8 +231,8 @@ export class ChSpreadsheet extends LitElement {
                   return html`<div
                     role="gridcell"
                     style="grid-column:${i + 1} / ${iEndAbs -
-                    colMin +
-                    2};grid-row:${j + 1} / ${jEndAbs - rowMin + 2}"
+                    colVisMin +
+                    2};grid-row:${j + 1} / ${jEndAbs - rowVisMin + 2}"
                   >
                     ${cell?.value}
                   </div>`;
