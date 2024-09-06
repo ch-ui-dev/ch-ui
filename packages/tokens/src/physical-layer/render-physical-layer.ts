@@ -8,16 +8,19 @@ import {
 } from '../types';
 import { renderCondition, resolveNaming, seriesValues } from '../util';
 
-export type RenderTokens<S extends Series = Series> = (renderProps: {
+export type RenderTokens<S extends Series<any> = Series> = (renderProps: {
   seriesId: string;
   conditionId: string;
   series: S;
   namespace?: string;
   resolvedNaming: ResolvedNaming;
-  values: number[];
+  values: S['values'];
 }) => string[];
 
-export const renderPhysicalLayer = <L extends PhysicalLayer, S extends Series>(
+export const renderPhysicalLayer = <
+  L extends PhysicalLayer<string, Series<any>>,
+  S extends Series<any>,
+>(
   { conditions, series, namespace = '' }: L,
   renderTokens: RenderTokens<S>,
   semanticValues?: SemanticValues,
