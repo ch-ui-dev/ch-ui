@@ -21,7 +21,7 @@ export type Facet<
     | ColorsPhysicalLayer,
 > = {
   physical: L;
-  semantic?: SemanticLayer<K, S>;
+  semantic?: SemanticLayer<K, S, any>;
 };
 
 export const isColorPhysicalLayer = (
