@@ -15,6 +15,7 @@ import {
   seriesValues,
   variableNameFromValue,
   nameFromValue,
+  Series,
 } from '@ch-ui/tokens';
 
 type TwKey = keyof TwTheme;
@@ -35,7 +36,7 @@ type Mapping = Record<string, string | Record<string, string>>;
 const defaultAdapterConfig = {} satisfies TailwindAdapterConfig;
 
 const renderPhysicalMappings = (
-  { conditions, series, namespace }: PhysicalLayer,
+  { conditions, series, namespace }: PhysicalLayer<string, Series<any>>,
   semanticValues?: SemanticValues,
 ): Mapping =>
   Object.entries(conditions).reduce(
