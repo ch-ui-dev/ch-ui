@@ -68,6 +68,9 @@ export const resolveNaming = (
         return acc;
       }, new Map());
 
+export const escapeValue = (value: string) =>
+  value.replace('/', '\\/').replace('.', '\\.');
+
 export const nameFromValue = (
   value: number | string,
   resolvedNaming: ResolvedNaming,
@@ -77,7 +80,7 @@ export const nameFromValue = (
       ? resolvedNaming === 'toString'
       : !resolvedNaming.has(value)
   ) {
-    return `${value}`.replace('/', '\\/').replace('.', '\\.');
+    return escapeValue(`${value}`);
   } else {
     return (resolvedNaming as Exclude<ResolvedNaming, 'toString'>).get(value)!;
   }
