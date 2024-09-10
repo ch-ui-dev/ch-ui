@@ -1,0 +1,52 @@
+{
+  "root": "packages/lit-spreadsheet",
+  "sourceRoot": "packages/lit-spreadsheet/src",
+  "projectType": "library",
+  "targets": {
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "packages/lit-spreadsheet/src/index.ts",
+        "outputPath": "packages/lit-spreadsheet/dist/types",
+        "tsConfig": "packages/lit-spreadsheet/tsconfig.json"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "build-esm": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/lit-spreadsheet/src/index.ts",
+        "outputPath": "packages/lit-spreadsheet/dist/esm",
+        "tsConfig": "packages/lit-spreadsheet/tsconfig-esbuild.json",
+        "format": ["esm"]
+      },
+      "dependsOn": ["^build", "compile"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "main": "packages/lit-spreadsheet/src/index.ts",
+        "outputPath": "packages/lit-spreadsheet/dist/cjs",
+        "tsConfig": "packages/lit-spreadsheet/tsconfig-esbuild.json",
+        "format": ["cjs"]
+      },
+      "dependsOn": ["^build", "compile", "build-esm"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": [
+          "packages/lit-spreadsheet/src/**/*.{js,jsx,ts,tsx}"
+        ],
+        "quiet": true
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "command": "cd packages/lit-spreadsheet && ts-node ./test/sanity.spec.ts"
+    }
+  }
+}

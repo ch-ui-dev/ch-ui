@@ -1,0 +1,35 @@
+{
+  "name": "@ch-ui/lit-spreadsheet",
+  "version": "0.5.0",
+  "description": "A spreadsheet webcomponent using Lit",
+  "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
+  "authors": [
+    "Will Shown <w@willshown.com> (https://willshown.com/)"
+  ],
+  "license": "Ch Public License",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/src/index.d.ts"
+    },
+    "./README.md": {
+      "import": "./README.md"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.3",
+    "ts-node": "^10.9.2"
+  }
+}
