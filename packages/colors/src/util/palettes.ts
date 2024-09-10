@@ -1,7 +1,13 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { arcToConstellation } from './geometry';
-import { HelicalArc, Gamut, HelicalArcConfig, Vec3 } from './types';
+import {
+  HelicalArc,
+  Gamut,
+  HelicalArcConfig,
+  Vec3,
+  AlphaLuminosity,
+} from './types';
 import Color from 'colorjs';
 
 export const getLinearSpace = (
@@ -17,8 +23,21 @@ export const getLinearSpace = (
   return result;
 };
 
+const alphaPattern = /\//;
+
+export const parseAlphaLuminosity = (
+  alphaLuminosity: AlphaLuminosity,
+): [number, number | undefined] => {
+  if (typeof alphaLuminosity === 'number') {
+    return [alphaLuminosity, undefined];
+  } else {
+    const [luminosity, alpha] = alphaLuminosity.split(alphaPattern);
+    return [parseFloat(luminosity), parseFloat(alpha)];
+  }
+};
+
 export const getOklabVectorsFromLuminosities = (
-  luminosities: number[],
+  luminosities: AlphaLuminosity[],
   constellation: Vec3[],
 ): Vec3[] => {
   let c = 0;
@@ -26,7 +45,7 @@ export const getOklabVectorsFromLuminosities = (
   const result: Vec3[] = [];
 
   for (let i = 0; i < luminosities.length; i++) {
-    const l = luminosities[i];
+    const [l] = parseAlphaLuminosity(luminosities[i]);
 
     while (constellation[c + 1] && l > constellation[c + 1][0]) {
       c++;
@@ -59,8 +78,12 @@ export function constellationFromHelicalArc(
   );
 }
 
-export function oklabVectorToValue(Lab: Vec3, gamut: Gamut): string {
-  return new Color('oklab', Lab).to(gamut).toString({ inGamut: true });
+export function oklabVectorToValue(
+  Lab: Vec3,
+  gamut: Gamut,
+  alpha?: number,
+): string {
+  return new Color('oklab', Lab, alpha).to(gamut).toString({ inGamut: true });
 }
 
 function constellationToValues(constellation: Vec3[], gamut: Gamut): string[] {

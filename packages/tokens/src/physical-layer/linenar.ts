@@ -12,7 +12,7 @@ export const renderLinearTokens: RenderTokens<LinearSeries> = ({
   series,
   seriesId,
   namespace,
-  values,
+  values = [],
   resolvedNaming,
 }) => {
   const { initial, slope, unit = '' } = series;

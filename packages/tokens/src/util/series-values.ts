@@ -11,10 +11,10 @@ import {
 /**
  * Produces all unique values of a series
  */
-export const seriesValues = (
-  { values = [], naming }: Series,
-  semanticValues: number[] = [],
-): number[] =>
+export const seriesValues = <V = number>(
+  { values = [], naming }: Series<V>,
+  semanticValues: V[] = [],
+): V[] =>
   Array.from(
     new Set([
       ...values,
@@ -26,13 +26,13 @@ export const seriesValues = (
 export const facetSemanticValues = <
   K extends string = string,
   S extends string = string,
-  V extends number = number,
+  V = number,
 >(
   semanticLayer?: SemanticLayer<K, S, V>,
-): SemanticValues => {
+): SemanticValues<S, V> => {
   return semanticLayer
     ? Object.values(semanticLayer.sememes).reduce(
-        (acc: SemanticValues, sememe) => {
+        (acc, sememe) => {
           Object.values(sememe).forEach((sememe) => {
             const [seriesId, value] = sememe as [S, V];
             if (!acc[seriesId]) {
@@ -42,9 +42,9 @@ export const facetSemanticValues = <
           });
           return acc;
         },
-        {},
+        {} as SemanticValues<S, V>,
       )
-    : {};
+    : ({} as SemanticValues<S, V>);
 };
 
 const defaultRelation: AccompanyingSeries = {
@@ -68,8 +68,11 @@ export const resolveNaming = (
         return acc;
       }, new Map());
 
+export const escapeValue = (value: string) =>
+  value.replace('/', '\\/').replace('.', '\\.');
+
 export const nameFromValue = (
-  value: number,
+  value: number | string,
   resolvedNaming: ResolvedNaming,
 ): string => {
   if (
@@ -77,14 +80,14 @@ export const nameFromValue = (
       ? resolvedNaming === 'toString'
       : !resolvedNaming.has(value)
   ) {
-    return `${value}`;
+    return escapeValue(`${value}`);
   } else {
-    return (resolvedNaming as Map<number, string>).get(value)!;
+    return (resolvedNaming as Exclude<ResolvedNaming, 'toString'>).get(value)!;
   }
 };
 
 export const variableNameFromValue = (
-  value: number,
+  value: number | string,
   resolvedNaming: ResolvedNaming,
   seriesId: string,
   namespace: string = '',

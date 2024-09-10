@@ -12,7 +12,7 @@ export const renderExponentialTokens: RenderTokens<ExponentialSeries> = ({
   series,
   seriesId,
   namespace,
-  values,
+  values = [],
   resolvedNaming,
 }) => {
   const { initial, base, unit = '', snapTo } = series;

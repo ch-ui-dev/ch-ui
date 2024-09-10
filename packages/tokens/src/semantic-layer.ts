@@ -1,7 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { SemanticLayer, Statements } from './types';
-import { renderCondition } from './util';
+import { escapeValue, renderCondition } from './util';
 
 export const renderSemanticLayer = <
   K extends string = string,
@@ -27,7 +27,7 @@ export const renderSemanticLayer = <
               // TODO(thure): This should almost certainly use `variableNameFromValue`.
               `--${namespace}${sememeName}: var(--${
                 physicalNamespace ?? namespace
-              }${seriesName}-${value});`,
+              }${seriesName}-${escapeValue(`${value}`)});`,
           )
           .join('\n'),
         0,
