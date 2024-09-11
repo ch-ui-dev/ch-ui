@@ -29,10 +29,10 @@ import chTokensPlugin, { defaultTokenSet } from '@ch-ui/vite-plugin-tokens';
   ]
 ```
 
-Then use the `@chui` at-rule to invoke the plugin.
+Then use the `@tokens` at-rule to invoke the plugin.
 
 ```css
 @layer tokens {
-  @chui my-tokens;
+  @tokens my-token-set;
 }
 ```
