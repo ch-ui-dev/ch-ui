@@ -1,6 +1,6 @@
 # `@ch-ui/tokens`
 
-The tokens package renders sets of CSS custom properties, a.k.a. CSS variables, that you can put upstream of a utility system like Tailwind or a web component library like `@ch-ui/elements` (or use on their own of course).
+The tokens package renders sets of CSS custom properties, a.k.a. CSS variables, that you can put upstream of a utility system like Tailwind or a web component library (or use on their own of course).
 
 This package generates tokens using a principled approach that aims to make it easier for platform developers, app developers, and end-users alike to maintain and apply adjustments to an app’s design system tokens.
 
@@ -11,6 +11,52 @@ pnpm add -D @ch-ui/tokens
 ```
 
 Then, use any of the render functions as you like. If you’re using Vite, there’s already <a href="./vite-plugin-tokens" class="ch-link">`@ch-ui/vite-plugin-tokens`</a> if you like.
+
+## Use with PostCSS
+
+To add to your PostCSS setup:
+
+```ts
+import chTokens from '@ch-ui/tokens';
+import myTokenSet from './config';
+//...
+plugins: [
+  // ...
+  chTokens((params: string) => myTokenSet),
+  // ...
+]
+//...
+```
+
+In your PostCSS:
+
+```postcss
+@layer tokens {
+  @tokens myTokens
+}
+```
+
+Easy.
+
+If you like, you can resolve different sets of tokens using the `params` provided after `@tokens`.
+
+A “default token set” is provided if you suffer from blank canvas syndrome:
+
+```ts
+import chTokens, { defaultTokenSet } from '@ch-ui/tokens';
+import myTokenSet from './config';
+//...
+plugins: [
+  // ...
+  chTokens(
+    (params: string) => params === 'myProductionApp'
+      ? myTokenSet
+      : defaultTokenSet
+  ),
+  // ...
+]
+//...
+```
 
 ## Background
 
