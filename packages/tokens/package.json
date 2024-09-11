@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/tokens",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "A tokens system for a more malleable web.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -26,7 +26,7 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/colors": "workspace:*",
+    "@ch-ui/colors": "workspace:^",
     "postcss": "^8.4.38"
   },
   "devDependencies": {
