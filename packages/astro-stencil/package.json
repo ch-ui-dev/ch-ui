@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/astro-stencil",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "SSR integrations for @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -30,7 +30,7 @@
     "dist"
   ],
   "dependencies": {
-    "@ch-ui/elements-hydrate-temp": "workspace:*"
+    "@ch-ui/elements-hydrate-temp": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^20.12.3",

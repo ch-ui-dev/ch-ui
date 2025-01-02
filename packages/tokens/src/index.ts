@@ -11,7 +11,7 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
   return {
     postcssPlugin: '@ch-ui/tokens',
     AtRule: {
-      async chui(rule) {
+      async tokens(rule) {
         const config = (await opts?.config(rule.params)) ?? {};
         rule.replaceWith(parse(renderTokenSet(config)));
       },
