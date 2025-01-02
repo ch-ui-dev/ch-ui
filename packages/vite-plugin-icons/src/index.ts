@@ -1,47 +1,35 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 // Based upon @tailwindcss/vite, fetched on 9 April 2024 from <https://github.com/tailwindlabs/tailwindcss/blob/next/packages/%40tailwindcss-vite/package.json>
 
-import type { Plugin, ViteDevServer } from 'vite';
 import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
+import fs from 'fs';
 import pm from 'picomatch';
+import type { Plugin, ViteDevServer } from 'vite';
 
-export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
+export const IconsPlugin = (params: BundleParams & { verbose?: boolean }): Plugin[] => {
   const { symbolPattern, contentPaths } = params;
 
   const pms = contentPaths.map((contentPath) => pm(contentPath));
   const isContent = (id: string) => !!pms.find((pm) => pm(id));
-
-  function shouldIgnore(id: string, src: string) {
-    return !isContent(id);
-  }
+  const shouldIgnore = (id: string) => !isContent(id);
 
   let server: ViteDevServer | null = null;
-  let detectedSymbols = new Set<string>();
-  let updated = true;
-  // In serve mode this is treated as a set — the content doesn't matter.
-  // In build mode, we store file contents to use them in renderChunk.
-  let iconModules: Record<
-    string,
-    {
-      content: string;
-      handled: boolean;
-    }
-  > = {};
+  const detectedSymbols = new Set<string>();
+  const visitedFiles = new Set<string>();
+  const status = { updated: false };
 
-  function scan(src: string) {
+  const scan = (src: string) => {
     let updated = false;
-    const nextCandidates = scanString({
-      contentString: src,
-      symbolPattern,
-    });
+    const nextCandidates = scanString({ contentString: src, symbolPattern });
     Array.from(nextCandidates).forEach((candidate) => {
       if (!detectedSymbols.has(candidate)) {
+        detectedSymbols.add(candidate);
         updated = true;
       }
-      detectedSymbols.add(candidate);
     });
+
     return updated;
-  }
+  };
 
   return [
     {
@@ -49,40 +37,54 @@ export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
       name: '@ch-ui/icons:scan',
       enforce: 'pre',
 
-      configureServer(_server) {
+      configureServer: (_server) => {
         server = _server;
+
+        // Process chunks.
+        server.middlewares.use((req, res, next) => {
+          const match = req.url?.match(/^\/@fs(.+)\.(\w+)$/);
+          if (match) {
+            const [, path, ext] = match;
+            const filename = `${path}.${ext}`;
+            if (ext === 'mjs') {
+              // TODO(burdon): Check if matches contentPaths (note: different filename).
+              if (!visitedFiles.has(filename) && path.indexOf('node_modules') === -1) {
+                visitedFiles.add(filename);
+                const src = fs.readFileSync(filename, 'utf-8');
+                status.updated ||= scan(src);
+              }
+            }
+          }
+          next();
+        });
       },
 
-      transformIndexHtml(html) {
-        scan(html);
-        updated = true;
+      transformIndexHtml: (html) => {
+        status.updated ||= scan(html);
       },
 
-      transform(src, id, options) {
-        if (shouldIgnore(id, src)) return;
-        scan(src);
-        updated = true;
+      transform: (src, id) => {
+        if (!shouldIgnore(id)) {
+          status.updated ||= scan(src);
+        }
       },
     },
 
     {
       // Step 2: Write sprite
       name: '@ch-ui/icons:write',
+      enforce: 'post',
 
-      async transform(src, id, options) {
-        // if (!options?.ssr) {
-        // // Wait until all other files have been processed, so we can extract
-        // // all detected symbols before generating the sprite. This must not be
-        // // called during SSR, or it will block the server.
-        //   await server?.waitForRequestsIdle?.(id);
-        // }
-
-        if (updated) {
+      transform: async () => {
+        if (status.updated) {
+          status.updated = false;
           await makeSprite(params, detectedSymbols);
-          updated = false;
+          if (params.verbose) {
+            // eslint-disable-next-line no-console
+            console.log('sprite updated', detectedSymbols.size);
+          }
         }
-        return { code: src, map: null };
       },
     },
   ] satisfies Plugin[];
-}
+};
