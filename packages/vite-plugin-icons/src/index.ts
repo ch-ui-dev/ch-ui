@@ -1,88 +1,128 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 // Based upon @tailwindcss/vite, fetched on 9 April 2024 from <https://github.com/tailwindlabs/tailwindcss/blob/next/packages/%40tailwindcss-vite/package.json>
 
-import type { Plugin, ViteDevServer } from 'vite';
 import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
-import pm from 'picomatch';
+import fs from 'fs';
+import picomatch from 'picomatch';
+import type { Plugin, ViteDevServer } from 'vite';
+import { join, resolve } from 'path';
 
-export default function vitePluginChUiIcons(params: BundleParams): Plugin[] {
-  const { symbolPattern, contentPaths } = params;
+export type IconsPluginParams = Omit<BundleParams, 'spritePath'> & {
+  spriteFile: string;
+  verbose?: boolean;
+};
 
-  const pms = contentPaths.map((contentPath) => pm(contentPath));
-  const isContent = (id: string) => !!pms.find((pm) => pm(id));
+export const IconsPlugin = ({
+  assetPath,
+  symbolPattern,
+  contentPaths,
+  spriteFile,
+  config,
+  verbose,
+}: IconsPluginParams): Plugin[] => {
+  const pms = contentPaths.map((contentPath) => picomatch(contentPath));
+  const isContent = (filepath: string) => !!pms.find((pm) => pm(filepath));
+  const shouldIgnore = (filepath: string) => !isContent(filepath);
 
-  function shouldIgnore(id: string, src: string) {
-    return !isContent(id);
-  }
-
+  let rootDir: string;
+  let spritePath: string;
   let server: ViteDevServer | null = null;
-  let detectedSymbols = new Set<string>();
-  let updated = true;
-  // In serve mode this is treated as a set — the content doesn't matter.
-  // In build mode, we store file contents to use them in renderChunk.
-  let iconModules: Record<
-    string,
-    {
-      content: string;
-      handled: boolean;
-    }
-  > = {};
+  const detectedSymbols = new Set<string>();
+  const visitedFiles = new Set<string>();
+  const status = { updated: false };
 
-  function scan(src: string) {
+  const scan = (src: string) => {
     let updated = false;
-    const nextCandidates = scanString({
-      contentString: src,
-      symbolPattern,
-    });
+    const nextCandidates = scanString({ contentString: src, symbolPattern });
     Array.from(nextCandidates).forEach((candidate) => {
       if (!detectedSymbols.has(candidate)) {
+        detectedSymbols.add(candidate);
         updated = true;
       }
-      detectedSymbols.add(candidate);
     });
+
     return updated;
-  }
+  };
 
   return [
     {
-      // Step 1: Scan source files for detectedSymbols
+      // Step 1: Scan source files incrementally.
       name: '@ch-ui/icons:scan',
       enforce: 'pre',
 
-      configureServer(_server) {
+      configResolved: (config) => {
+        rootDir = resolve(config.root);
+        spritePath = resolve(config.publicDir, spriteFile);
+      },
+
+      configureServer: (_server) => {
         server = _server;
+
+        // Process chunks.
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.indexOf('/virtual:') === -1) {
+            const match = req.url?.match(/^(\/@fs)?(.+)\.(\w+)$/);
+            if (match) {
+              const [, prefix, path, ext] = match;
+              const filename = join((prefix ? '' : rootDir) + `${path}.${ext}`);
+              if (!visitedFiles.has(filename)) {
+                visitedFiles.add(filename);
+                if (isContent(filename)) {
+                  try {
+                    const src = fs.readFileSync(filename, 'utf8');
+                    const match = scan(src);
+                    status.updated ||= match;
+                  } catch (err) {
+                    console.error('Missing file', req.url);
+                  }
+                }
+              }
+            }
+          }
+
+          next();
+        });
       },
 
-      transformIndexHtml(html) {
-        scan(html);
-        updated = true;
+      transformIndexHtml: (html) => {
+        const match = scan(html);
+        status.updated ||= match;
       },
 
-      transform(src, id, options) {
-        if (shouldIgnore(id, src)) return;
-        scan(src);
-        updated = true;
+      transform: (src, id) => {
+        if (!shouldIgnore(id)) {
+          const match = scan(src);
+          status.updated ||= match;
+        }
       },
     },
-
     {
-      // Step 2: Write sprite
+      // Step 2: Write sprite.
+      // NOTE: This must run before the public directory is copied.
       name: '@ch-ui/icons:write',
 
-      async transform(src, id, options) {
-        // if (!options?.ssr) {
-        // // Wait until all other files have been processed, so we can extract
-        // // all detected symbols before generating the sprite. This must not be
-        // // called during SSR, or it will block the server.
-        //   await server?.waitForRequestsIdle?.(id);
-        // }
+      transform: async () => {
+        if (status.updated) {
+          status.updated = false;
+          await makeSprite(
+            { assetPath, symbolPattern, spritePath, contentPaths, config },
+            detectedSymbols,
+          );
 
-        if (updated) {
-          await makeSprite(params, detectedSymbols);
-          updated = false;
+          if (verbose) {
+            const symbols = Array.from(detectedSymbols.values());
+            symbols.sort();
+            console.log(
+              'Sprite updated:',
+              JSON.stringify(
+                { path: spritePath, size: detectedSymbols.size, symbols },
+                null,
+                2,
+              ),
+            );
+          }
         }
-        return { code: src, map: null };
       },
     },
   ] satisfies Plugin[];
-}
+};
