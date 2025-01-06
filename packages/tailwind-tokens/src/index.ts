@@ -15,6 +15,7 @@ import {
   seriesValues,
   variableNameFromValue,
   nameFromValue,
+  Series,
 } from '@ch-ui/tokens';
 
 type TwKey = keyof TwTheme;
@@ -30,12 +31,12 @@ export type TailwindAdapterConfig = Partial<
   Record<TwKey, TailwindAdapterFacet>
 >;
 
-type Mapping = Record<string, string>;
+type Mapping = Record<string, string | Record<string, string>>;
 
 const defaultAdapterConfig = {} satisfies TailwindAdapterConfig;
 
 const renderPhysicalMappings = (
-  { conditions, series, namespace }: PhysicalLayer,
+  { conditions, series, namespace }: PhysicalLayer<string, Series<any>>,
   semanticValues?: SemanticValues,
 ): Mapping =>
   Object.entries(conditions).reduce(
@@ -43,12 +44,12 @@ const renderPhysicalMappings = (
       Object.entries(series).reduce(
         (acc: Mapping, [seriesId, { [conditionId]: series }]) => {
           const resolvedNaming = resolveNaming(series?.naming);
-          return seriesValues(
+          acc[seriesId] = seriesValues(
             series!,
             Array.from(semanticValues?.[seriesId] ?? []),
-          ).reduce((acc, value) => {
+          ).reduce((acc: Record<string, string>, value) => {
             acc[
-              `${seriesId}-${nameFromValue(value, resolvedNaming)}`
+              `${nameFromValue(value, resolvedNaming)}`
             ] = `var(${variableNameFromValue(
               value,
               resolvedNaming,
@@ -56,7 +57,8 @@ const renderPhysicalMappings = (
               namespace,
             )})`;
             return acc;
-          }, acc);
+          }, {});
+          return acc;
         },
         acc,
       ),

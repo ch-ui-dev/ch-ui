@@ -15,17 +15,17 @@ import { renderSemanticLayer } from './semantic-layer';
 export type Facet<
   K extends string = string,
   S extends string = string,
-  L extends PhysicalLayer =
+  L extends PhysicalLayer<string, Series<any>> =
     | ExponentialPhysicalLayer<S>
     | LinearPhysicalLayer<S>
     | ColorsPhysicalLayer,
 > = {
   physical: L;
-  semantic?: SemanticLayer<K, S>;
+  semantic?: SemanticLayer<K, S, any>;
 };
 
 export const isColorPhysicalLayer = (
-  layer: PhysicalLayer,
+  layer: PhysicalLayer<string, Series<any>>,
   firstSeriesInLayer: Series,
 ): layer is ColorsPhysicalLayer => {
   return 'keyPoint' in firstSeriesInLayer;
@@ -45,7 +45,9 @@ export const isLinearLayer = (
   return 'slope' in firstSeriesInLayer;
 };
 
-export const getFirstSeriesInPhysicalLayer = (layer: PhysicalLayer): Series => {
+export const getFirstSeriesInPhysicalLayer = (
+  layer: PhysicalLayer<string, Series<any>>,
+): Series => {
   const seriesIds = Object.keys(layer.series);
   const conditionIds = Object.keys(layer.series[seriesIds[0]]);
   return layer.series[seriesIds[0]][conditionIds[0]]!;

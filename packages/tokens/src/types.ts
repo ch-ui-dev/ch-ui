@@ -1,17 +1,17 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { type HelicalArcConfig } from '@ch-ui/colors';
+import { AlphaLuminosity, type HelicalArcConfig } from '@ch-ui/colors';
 
 export { type Gamut } from '@ch-ui/colors';
 
 export type PhysicalSeries<
   K extends string = string,
-  S extends Series = Series,
+  S extends Series<any> = Series,
 > = Partial<Record<K, S>>;
 
 export type PhysicalLayer<
   K extends string = string,
-  S extends Series = Series,
+  S extends Series<any> = Series,
 > = {
   conditions: Conditions<K>;
   series: Record<string, PhysicalSeries<K, S>>;
@@ -21,7 +21,7 @@ export type PhysicalLayer<
 export type SemanticLayer<
   K extends string = string,
   S extends string = string,
-  V extends number = number,
+  V = number,
 > = {
   conditions: Conditions<K>;
   sememes: Record<string, Record<K, [S, V]>>;
@@ -29,10 +29,10 @@ export type SemanticLayer<
   namespace?: string;
 };
 
-export type SemanticValues<
-  S extends string = string,
-  V extends number = number,
-> = Record<S, Set<V>>;
+export type SemanticValues<S extends string = string, V = number> = Record<
+  S,
+  Set<V>
+>;
 
 /**
  * A group of statements within which to recursively nest a declaration block.
@@ -53,7 +53,7 @@ export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
 /**
  * A series of physical tokens. A series must have a `keys` or `values`, and may have both.
  */
-export type Series = {
+export type Series<V = number> = {
   /**
    * The CSS unit to apply to output numbers.
    */
@@ -65,14 +65,14 @@ export type Series = {
   /**
    * Values of members of the series
    */
-  values?: number[];
+  values?: V[];
   /**
    * Whether to convert values to string directly or name them manually
    */
-  naming?: 'toString' | Record<string, number>;
+  naming?: 'toString' | Record<string, V>;
 };
 
-export type ResolvedNaming = Map<number, string> | 'toString';
+export type ResolvedNaming = Map<number | string, string> | 'toString';
 
 /**
  * A series of values in the layer which are linear in nature, e.g. gaps.
@@ -102,10 +102,12 @@ export type ExponentialSeries = Series & {
   base: number;
 };
 
+export type HelicalArcValue = AlphaLuminosity;
+
 /**
  * A series of values in the layer which lay on a helical arc, the shape of a color palette.
  */
-export type HelicalArcSeries = Series &
+export type HelicalArcSeries = Series<HelicalArcValue> &
   HelicalArcConfig & {
     physicalValueRelation: AccompanyingSeries;
   };

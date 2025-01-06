@@ -2,6 +2,8 @@
 
 import SpaceAccessors from 'colorjs/types/src/space-coord-accessors';
 
+export type AlphaLuminosity = number | string;
+
 export type Vec3 = [number, number, number];
 
 export type BezierCurve = {
