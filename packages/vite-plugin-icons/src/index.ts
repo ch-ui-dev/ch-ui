@@ -3,16 +3,29 @@
 
 import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
 import fs from 'fs';
-import pm from 'picomatch';
+import picomatch from 'picomatch';
 import type { Plugin, ViteDevServer } from 'vite';
+import { join, resolve } from 'path';
 
-export const IconsPlugin = (params: BundleParams & { verbose?: boolean }): Plugin[] => {
-  const { symbolPattern, contentPaths } = params;
+export type IconsPluginParams = Omit<BundleParams, 'spritePath'> & {
+  spriteFile: string;
+  verbose?: boolean;
+};
 
-  const pms = contentPaths.map((contentPath) => pm(contentPath));
-  const isContent = (id: string) => !!pms.find((pm) => pm(id));
-  const shouldIgnore = (id: string) => !isContent(id);
+export const IconsPlugin = ({
+  assetPath,
+  symbolPattern,
+  contentPaths,
+  spriteFile,
+  config,
+  verbose,
+}: IconsPluginParams): Plugin[] => {
+  const pms = contentPaths.map((contentPath) => picomatch(contentPath));
+  const isContent = (filepath: string) => !!pms.find((pm) => pm(filepath));
+  const shouldIgnore = (filepath: string) => !isContent(filepath);
 
+  let rootDir: string;
+  let spritePath: string;
   let server: ViteDevServer | null = null;
   const detectedSymbols = new Set<string>();
   const visitedFiles = new Set<string>();
@@ -33,55 +46,80 @@ export const IconsPlugin = (params: BundleParams & { verbose?: boolean }): Plugi
 
   return [
     {
-      // Step 1: Scan source files for detectedSymbols
+      // Step 1: Scan source files incrementally.
       name: '@ch-ui/icons:scan',
       enforce: 'pre',
+
+      configResolved: (config) => {
+        rootDir = resolve(config.root);
+        spritePath = resolve(config.publicDir, spriteFile);
+      },
 
       configureServer: (_server) => {
         server = _server;
 
         // Process chunks.
         server.middlewares.use((req, res, next) => {
-          const match = req.url?.match(/^\/@fs(.+)\.(\w+)$/);
-          if (match) {
-            const [, path, ext] = match;
-            const filename = `${path}.${ext}`;
-            if (ext === 'mjs') {
-              // TODO(burdon): Check if matches contentPaths (note: different filename).
-              if (!visitedFiles.has(filename) && path.indexOf('node_modules') === -1) {
+          if (req.url?.indexOf('/virtual:') === -1) {
+            const match = req.url?.match(/^(\/@fs)?(.+)\.(\w+)$/);
+            if (match) {
+              const [, prefix, path, ext] = match;
+              const filename = join((prefix ? '' : rootDir) + `${path}.${ext}`);
+              if (!visitedFiles.has(filename)) {
                 visitedFiles.add(filename);
-                const src = fs.readFileSync(filename, 'utf-8');
-                status.updated ||= scan(src);
+                if (isContent(filename)) {
+                  try {
+                    const src = fs.readFileSync(filename, 'utf8');
+                    const match = scan(src);
+                    status.updated ||= match;
+                  } catch (err) {
+                    console.error('Missing file', req.url);
+                  }
+                }
               }
             }
           }
+
           next();
         });
       },
 
       transformIndexHtml: (html) => {
-        status.updated ||= scan(html);
+        const match = scan(html);
+        status.updated ||= match;
       },
 
       transform: (src, id) => {
         if (!shouldIgnore(id)) {
-          status.updated ||= scan(src);
+          const match = scan(src);
+          status.updated ||= match;
         }
       },
     },
-
     {
-      // Step 2: Write sprite
+      // Step 2: Write sprite.
+      // NOTE: This must run before the public directory is copied.
       name: '@ch-ui/icons:write',
-      enforce: 'post',
 
       transform: async () => {
         if (status.updated) {
           status.updated = false;
-          await makeSprite(params, detectedSymbols);
-          if (params.verbose) {
-            // eslint-disable-next-line no-console
-            console.log('sprite updated', detectedSymbols.size);
+          await makeSprite(
+            { assetPath, symbolPattern, spritePath, contentPaths, config },
+            detectedSymbols,
+          );
+
+          if (verbose) {
+            const symbols = Array.from(detectedSymbols.values());
+            symbols.sort();
+            console.log(
+              'Sprite updated:',
+              JSON.stringify(
+                { path: spritePath, size: detectedSymbols.size, symbols },
+                null,
+                2,
+              ),
+            );
           }
         }
       },
