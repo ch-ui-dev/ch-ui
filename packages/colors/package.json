@@ -11,6 +11,10 @@
     "node": ">=20.0.0"
   },
   "main": "src/index.ts",
+  "publishConfig": {
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -27,9 +31,5 @@
   ],
   "dependencies": {
     "colorjs": "npm:colorjs.io@0.5.2"
-  },
-  "publishConfig": {
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.js"
   }
 }
