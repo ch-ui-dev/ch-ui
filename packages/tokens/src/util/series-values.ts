@@ -58,14 +58,17 @@ export const facetSemanticValues = <
         (acc, [sememeName, sememe]) => {
           Object.entries(sememe).forEach(([conditionId, sememe]) => {
             const [seriesId, value] = sememe as [S, V];
+            const annotation = {
+              sememeName,
+              conditionId,
+            } satisfies SememeAnnotation;
             if (!acc[seriesId]) {
               acc[seriesId] = new Map<V, SememeAnnotation[]>();
-              acc[seriesId].set(value, [{ sememeName, conditionId }]);
+            }
+            if (acc[seriesId].has(value)) {
+              acc[seriesId].get(value)!.push(annotation);
             } else {
-              acc[seriesId].set(value, [
-                ...acc[seriesId].get(value)!,
-                { sememeName, conditionId },
-              ]);
+              acc[seriesId].set(value, [annotation]);
             }
           });
           return acc;
