@@ -17,7 +17,8 @@
         "tsConfig": "{projectRoot}/tsconfig.json",
         "format": ["cjs", "esm"],
         "declarationRootDir": "{projectRoot}",
-        "sourcemap": true
+        "sourcemap": true,
+        "generatePackageJson": false
       },
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"]
