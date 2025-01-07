@@ -10,11 +10,20 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "publishConfig": {
-    "main": "dist/cjs/index.cjs",
-    "module": "dist/esm/index.js",
-    "types": "dist/types/src/index.d.ts"
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./types/src/index.d.ts"
+    },
+    "./README.md": {
+      "import": "./README.md"
+    }
   },
   "files": [
     "src",
