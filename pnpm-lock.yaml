@@ -101,15 +101,9 @@ importers:
       '@astropub/md':
         specifier: ^0.4.0
         version: 0.4.0(@astrojs/markdown-remark@4.3.2)
-      '@ch-ui/astro-stencil':
-        specifier: workspace:*
-        version: link:../../packages/astro-stencil
       '@ch-ui/colors':
         specifier: workspace:*
         version: link:../../packages/colors
-      '@ch-ui/elements':
-        specifier: workspace:*
-        version: link:../../packages/elements
       '@ch-ui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -157,18 +151,11 @@ importers:
         specifier: ^20.12.3
         version: 20.14.2
       vite:
-        specifier: ^5.1.5
+        specifier: ^5.2.8
         version: 5.2.11(@types/node@20.14.2)
-
-  apps/docs/public/ch-ui-elements/hydrate: {}
-
-  apps/docs/public/ch-ui-elements/loader: {}
 
   apps/stories:
     devDependencies:
-      '@ch-ui/elements':
-        specifier: workspace:*
-        version: link:../../packages/elements
       '@ch-ui/vite-plugin-icons':
         specifier: workspace:*
         version: link:../../packages/vite-plugin-icons
@@ -224,42 +211,11 @@ importers:
         specifier: ^1.0.2
         version: 1.0.3
 
-  packages/astro-stencil:
-    dependencies:
-      '@ch-ui/elements-hydrate-temp':
-        specifier: workspace:^
-        version: link:../elements-hydrate-temp
-    devDependencies:
-      '@types/node':
-        specifier: ^20.12.3
-        version: 20.14.2
-      astro:
-        specifier: ^4.8.7
-        version: 4.8.7(@types/node@20.14.2)(typescript@5.6.3)
-
   packages/colors:
     dependencies:
       colorjs:
         specifier: npm:colorjs.io@0.5.2
         version: colorjs.io@0.5.2
-
-  packages/elements:
-    dependencies:
-      alea:
-        specifier: ^1.0.1
-        version: 1.0.1
-    devDependencies:
-      '@stencil/core':
-        specifier: 4.19.0
-        version: 4.19.0
-      '@types/jest':
-        specifier: ^29.5.6
-        version: 29.5.12
-      '@types/node':
-        specifier: ^20.12.3
-        version: 20.12.7
-
-  packages/elements-hydrate-temp: {}
 
   packages/icons:
     dependencies:
@@ -395,10 +351,6 @@ packages:
     resolution: {integrity: sha512-Xk1sIhyNC/esHGGVjL/niHLowM0csl/kFO5uawBy4IrWwy0o1G8LGt3jP6nmWGz+USxeeqbihAmp/oVZju6wug==}
     hasBin: true
 
-  '@babel/code-frame@7.23.5':
-    resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/code-frame@7.24.2':
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
     engines: {node: '>=6.9.0'}
@@ -506,10 +458,6 @@ packages:
     resolution: {integrity: sha512-2ofRCjnnA9y+wk8b9IAREroeUP02KHp431N2mhKniy2yKIDKpbrHv9eXwm8cBeWQYcJmzv5qKCu65P47eCF7CQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-validator-identifier@7.22.20':
-    resolution: {integrity: sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-validator-identifier@7.24.5':
     resolution: {integrity: sha512-3q93SSKX2TWCG30M2G2kwaKeTYgEUp5Snjuj8qm729SObL6nbtUldAi37qbxkD5gg3xnBio+f9nqpSepGZMvxA==}
     engines: {node: '>=6.9.0'}
@@ -524,10 +472,6 @@ packages:
 
   '@babel/helpers@7.24.5':
     resolution: {integrity: sha512-CiQmBMMpMQHwM5m01YnrM6imUG1ebgYJ+fAIW4FZe6m4qHTPaRHti+R8cggAwkdz4oXhtO4/K9JWlh+8hIfR2Q==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/highlight@7.23.4':
-    resolution: {integrity: sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==}
     engines: {node: '>=6.9.0'}
 
   '@babel/highlight@7.24.5':
@@ -2915,9 +2859,6 @@ packages:
 
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
-
-  alea@1.0.1:
-    resolution: {integrity: sha512-QU+wv+ziDXaMxRdsQg/aH7sVfWdhKps5YP97IIwFkHCsbDZA3k87JXoZ5/iuemf4ntytzIWeScrRpae8+lDrXA==}
 
   ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
@@ -6983,11 +6924,6 @@ snapshots:
     dependencies:
       default-browser-id: 3.0.0
 
-  '@babel/code-frame@7.23.5':
-    dependencies:
-      '@babel/highlight': 7.23.4
-      chalk: 2.4.2
-
   '@babel/code-frame@7.24.2':
     dependencies:
       '@babel/highlight': 7.24.5
@@ -7131,8 +7067,6 @@ snapshots:
 
   '@babel/helper-string-parser@7.24.1': {}
 
-  '@babel/helper-validator-identifier@7.22.20': {}
-
   '@babel/helper-validator-identifier@7.24.5': {}
 
   '@babel/helper-validator-option@7.23.5': {}
@@ -7150,12 +7084,6 @@ snapshots:
       '@babel/types': 7.24.5
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/highlight@7.23.4':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.22.20
-      chalk: 2.4.2
-      js-tokens: 4.0.0
 
   '@babel/highlight@7.24.5':
     dependencies:
@@ -8177,6 +8105,7 @@ snapshots:
   '@jest/expect-utils@29.7.0':
     dependencies:
       jest-get-type: 29.6.3
+    optional: true
 
   '@jest/schemas@29.6.3':
     dependencies:
@@ -8190,6 +8119,7 @@ snapshots:
       '@types/node': 20.14.6
       '@types/yargs': 17.0.32
       chalk: 4.1.2
+    optional: true
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
@@ -9890,20 +9820,24 @@ snapshots:
 
   '@types/http-errors@2.0.4': {}
 
-  '@types/istanbul-lib-coverage@2.0.6': {}
+  '@types/istanbul-lib-coverage@2.0.6':
+    optional: true
 
   '@types/istanbul-lib-report@3.0.3':
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
+    optional: true
 
   '@types/istanbul-reports@3.0.4':
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
+    optional: true
 
   '@types/jest@29.5.12':
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
+    optional: true
 
   '@types/json-schema@7.0.15': {}
 
@@ -9994,7 +9928,8 @@ snapshots:
       '@types/mime': 3.0.4
       '@types/node': 20.14.6
 
-  '@types/stack-utils@2.0.3': {}
+  '@types/stack-utils@2.0.3':
+    optional: true
 
   '@types/svg-sprite@0.0.39':
     dependencies:
@@ -10017,11 +9952,13 @@ snapshots:
       '@types/expect': 1.20.4
       '@types/node': 20.14.6
 
-  '@types/yargs-parser@21.0.3': {}
+  '@types/yargs-parser@21.0.3':
+    optional: true
 
   '@types/yargs@17.0.32':
     dependencies:
       '@types/yargs-parser': 21.0.3
+    optional: true
 
   '@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.3.3))(eslint@8.57.0)(typescript@5.3.3)':
     dependencies:
@@ -10311,8 +10248,6 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
-
-  alea@1.0.1: {}
 
   ansi-align@3.0.1:
     dependencies:
@@ -10795,7 +10730,8 @@ snapshots:
 
   chromatic@11.3.0: {}
 
-  ci-info@3.9.0: {}
+  ci-info@3.9.0:
+    optional: true
 
   ci-info@4.0.0: {}
 
@@ -11455,7 +11391,8 @@ snapshots:
 
   escape-string-regexp@1.0.5: {}
 
-  escape-string-regexp@2.0.0: {}
+  escape-string-regexp@2.0.0:
+    optional: true
 
   escape-string-regexp@4.0.0: {}
 
@@ -11660,6 +11597,7 @@ snapshots:
       jest-matcher-utils: 29.7.0
       jest-message-util: 29.7.0
       jest-util: 29.7.0
+    optional: true
 
   express@4.18.2:
     dependencies:
@@ -12440,10 +12378,11 @@ snapshots:
       jest-diff: 29.7.0
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
+    optional: true
 
   jest-message-util@29.7.0:
     dependencies:
-      '@babel/code-frame': 7.23.5
+      '@babel/code-frame': 7.24.2
       '@jest/types': 29.6.3
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
@@ -12452,6 +12391,7 @@ snapshots:
       pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
+    optional: true
 
   jest-util@29.7.0:
     dependencies:
@@ -12461,6 +12401,7 @@ snapshots:
       ci-info: 3.9.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
+    optional: true
 
   jiti@1.21.6: {}
 
@@ -14143,6 +14084,7 @@ snapshots:
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
+    optional: true
 
   stackback@0.0.2: {}
 
