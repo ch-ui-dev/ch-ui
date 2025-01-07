@@ -1,37 +1,25 @@
 {
+  "name": "tailwind-tokens",
   "root": "packages/tailwind-tokens",
   "sourceRoot": "packages/tailwind-tokens/src",
   "projectType": "library",
   "targets": {
-    "compile": {
-      "executor": "@nx/js:tsc",
-      "options": {
-        "main": "packages/tailwind-tokens/src/index.ts",
-        "outputPath": "packages/tailwind-tokens/dist/types",
-        "tsConfig": "packages/tailwind-tokens/tsconfig.json"
-      },
-      "outputs": ["{options.outputPath}"]
-    },
-    "build-esm": {
-      "executor": "@nx/esbuild:esbuild",
-      "options": {
-        "main": "packages/tailwind-tokens/src/index.ts",
-        "outputPath": "packages/tailwind-tokens/dist/esm",
-        "tsConfig": "packages/tailwind-tokens/tsconfig-esbuild.json",
-        "format": ["esm"]
-      },
-      "dependsOn": ["^build", "compile"],
-      "outputs": ["{options.outputPath}"]
-    },
     "build": {
+      "command": "rm packages/tailwind-tokens/dist/package.json",
+      "dependsOn": ["preBuild"]
+    },
+    "preBuild": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "main": "packages/tailwind-tokens/src/index.ts",
-        "outputPath": "packages/tailwind-tokens/dist/cjs",
-        "tsConfig": "packages/tailwind-tokens/tsconfig-esbuild.json",
-        "format": ["cjs"]
+        "external": ["@ch-ui/tokens"],
+        "main": "{projectRoot}/src/index.ts",
+        "outputPath": "{projectRoot}/dist",
+        "tsConfig": "{projectRoot}/tsconfig.json",
+        "format": ["cjs", "esm"],
+        "declarationRootDir": "{projectRoot}",
+        "sourcemap": true
       },
-      "dependsOn": ["^build", "compile", "build-esm"],
+      "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"]
     },
     "lint": {
