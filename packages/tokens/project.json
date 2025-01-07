@@ -1,71 +1,38 @@
 {
+  "name": "tokens",
   "root": "packages/tokens",
   "sourceRoot": "packages/tokens/src",
   "projectType": "library",
-    "targets": {
-      "compile": {
-        "executor": "@nx/js:tsc",
-        "options": {
-          "main": "packages/tokens/src/index.ts",
-          "outputPath": "packages/tokens/dist/types",
-          "tsConfig": "packages/tokens/tsconfig.json"
-        },
-        "outputs": [
-          "{options.outputPath}"
-        ]
+  "targets": {
+    "build": {
+      "command": "rm packages/tokens/dist/package.json",
+      "dependsOn": ["preBuild"]
+    },
+    "preBuild": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "external": ["@ch-ui/colors", "postcss"],
+        "main": "{projectRoot}/src/index.ts",
+        "outputPath": "{projectRoot}/dist",
+        "tsConfig": "{projectRoot}/tsconfig.json",
+        "format": ["cjs", "esm"],
+        "declarationRootDir": "{projectRoot}",
+        "sourcemap": true
       },
-      "build-esm": {
-        "executor": "@nx/esbuild:esbuild",
-        "options": {
-          "main": "packages/tokens/src/index.ts",
-          "outputPath": "packages/tokens/dist/esm",
-          "tsConfig": "packages/tokens/tsconfig-esbuild.json",
-          "format": [
-            "esm"
-          ]
-        },
-        "dependsOn": [
-          "^build",
-          "compile"
-        ],
-        "outputs": [
-          "{options.outputPath}"
-        ]
+      "dependsOn": ["^build"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "format": "unix",
+        "lintFilePatterns": ["packages/tokens/src/**/*.{js,jsx,ts,tsx}"],
+        "quiet": true
       },
-      "build": {
-        "executor": "@nx/esbuild:esbuild",
-        "options": {
-          "main": "packages/tokens/src/index.ts",
-          "outputPath": "packages/tokens/dist/cjs",
-          "tsConfig": "packages/tokens/tsconfig-esbuild.json",
-          "format": [
-            "cjs"
-          ]
-        },
-        "dependsOn": [
-          "^build",
-          "compile",
-          "build-esm"
-        ],
-        "outputs": [
-          "{options.outputPath}"
-        ]
-      },
-      "lint": {
-        "executor": "@nx/linter:eslint",
-        "options": {
-          "format": "unix",
-          "lintFilePatterns": [
-            "packages/tokens/src/**/*.{js,jsx,ts,tsx}"
-          ],
-          "quiet": true
-        },
-        "outputs": [
-          "{options.outputFile}"
-        ]
-      },
-      "test": {
-        "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
-      }
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
+    }
   }
 }

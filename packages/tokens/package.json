@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/tokens",
-  "version": "0.5.6",
+  "version": "1.0.0-rc.1",
   "description": "A tokens system for a more malleable web.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -10,12 +10,12 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/src/index.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"
