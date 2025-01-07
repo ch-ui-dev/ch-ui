@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/vite-plugin-icons",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Vite plugin for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -17,9 +17,9 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./types/src/index.d.ts"
+      "import": "./dist/index.js",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"
