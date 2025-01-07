@@ -29,9 +29,18 @@ export type SemanticLayer<
   namespace?: string;
 };
 
+export type SememeAnnotation = { sememeName: string; conditionId: string };
+
 export type SemanticValues<S extends string = string, V = number> = Record<
   S,
-  Set<V>
+  SemanticAnnotatedValues<V>
+>;
+
+export type SemanticAnnotatedValues<V = number> = Map<V, SememeAnnotation[]>;
+
+export type FacetAnnotatedValues<V = number> = Map<
+  V,
+  { physical: ('values' | 'naming')[]; semantic: SememeAnnotation[] }
 >;
 
 /**
@@ -111,3 +120,10 @@ export type HelicalArcSeries = Series<HelicalArcValue> &
   HelicalArcConfig & {
     physicalValueRelation: AccompanyingSeries;
   };
+
+/**
+ * Options for audit functions.
+ */
+export type AuditOptions<C extends string = string> = {
+  condition: C;
+};

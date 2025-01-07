@@ -3,9 +3,12 @@
 import {
   AccompanyingSeries,
   ResolvedNaming,
+  SememeAnnotation,
   SemanticLayer,
   SemanticValues,
   Series,
+  FacetAnnotatedValues,
+  SemanticAnnotatedValues,
 } from '../types';
 
 /**
@@ -13,15 +16,35 @@ import {
  */
 export const seriesValues = <V = number>(
   { values = [], naming }: Series<V>,
-  semanticValues: V[] = [],
-): V[] =>
-  Array.from(
+  semanticValues?: SemanticAnnotatedValues<V>,
+): FacetAnnotatedValues<V> => {
+  const seriesAnnotatedValues = Array.from(
     new Set([
       ...values,
       ...(naming && typeof naming !== 'string' ? Object.values(naming) : []),
-      ...semanticValues,
+      ...(semanticValues ? Array.from(semanticValues.keys()) : []),
     ]),
-  ).sort();
+  )
+    .sort()
+    .reduce((acc: FacetAnnotatedValues<V>, value) => {
+      acc.set(value, { physical: [], semantic: [] });
+      return acc;
+    }, new Map());
+  values.forEach((directValue) => {
+    seriesAnnotatedValues.get(directValue)?.physical.push('values');
+  });
+  if (naming && typeof naming !== 'string') {
+    Object.values(naming).forEach((nameValue) => {
+      seriesAnnotatedValues.get(nameValue)?.physical.push('naming');
+    });
+  }
+  if (semanticValues) {
+    semanticValues.forEach((annotations, value) => {
+      seriesAnnotatedValues.get(value)?.semantic.push(...annotations);
+    });
+  }
+  return seriesAnnotatedValues;
+};
 
 export const facetSemanticValues = <
   K extends string = string,
@@ -31,14 +54,19 @@ export const facetSemanticValues = <
   semanticLayer?: SemanticLayer<K, S, V>,
 ): SemanticValues<S, V> => {
   return semanticLayer
-    ? Object.values(semanticLayer.sememes).reduce(
-        (acc, sememe) => {
-          Object.values(sememe).forEach((sememe) => {
+    ? Object.entries(semanticLayer.sememes).reduce(
+        (acc, [sememeName, sememe]) => {
+          Object.entries(sememe).forEach(([conditionId, sememe]) => {
             const [seriesId, value] = sememe as [S, V];
             if (!acc[seriesId]) {
-              acc[seriesId] = new Set<V>();
+              acc[seriesId] = new Map<V, SememeAnnotation[]>();
+              acc[seriesId].set(value, [{ sememeName, conditionId }]);
+            } else {
+              acc[seriesId].set(value, [
+                ...acc[seriesId].get(value)!,
+                { sememeName, conditionId },
+              ]);
             }
-            acc[seriesId].add(value);
           });
           return acc;
         },

@@ -31,9 +31,8 @@ export const renderPhysicalLayer = <
         Object.entries(series)
           .map(([seriesId, { [conditionId]: series }]) => {
             const resolvedNaming = resolveNaming(series?.naming);
-            const values = seriesValues(
-              series!,
-              Array.from(semanticValues?.[seriesId] ?? []),
+            const values = Array.from(
+              seriesValues(series!, semanticValues?.[seriesId]).keys(),
             );
             return renderTokens({
               seriesId,
