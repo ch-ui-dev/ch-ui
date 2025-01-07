@@ -8,35 +8,55 @@ import {
   getOklabVectorsFromLuminosities,
   parseAlphaLuminosity,
 } from '@ch-ui/colors';
-import { HelicalArcSeries, PhysicalLayer, SemanticValues } from '../types';
+import {
+  AuditOptions,
+  HelicalArcSeries,
+  PhysicalLayer,
+  SemanticValues,
+} from '../types';
 import { variableNameFromValue, physicalValueFromValueRelation } from '../util';
 import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
+import { auditPhysicalLayer, AuditTokens } from './audit-physical-layer';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
-export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = ({
+const helicalArcNamedVectors = ({
   series,
   seriesId,
-  conditionId,
   namespace,
   values = [],
   resolvedNaming,
-}) => {
-  const oklabVectors = getOklabVectorsFromLuminosities(
+}: Omit<Parameters<RenderTokens<HelicalArcSeries>>[0], 'conditionId'>) =>
+  getOklabVectorsFromLuminosities(
     values.map((value) => {
       const [l] = parseAlphaLuminosity(value);
       return physicalValueFromValueRelation(l, series.physicalValueRelation);
     }),
     constellationFromPalette(series),
-  );
-  return oklabVectors.map((oklab, index) => {
-    const [_, alpha] = parseAlphaLuminosity(values[index]);
-    return `${variableNameFromValue(
-      values[index],
-      resolvedNaming,
-      seriesId,
-      namespace,
-    )}: ${oklabVectorToValue(oklab, conditionId as Gamut, alpha)};`;
+  ).map((oklabVector, index) => {
+    return {
+      value: values[index],
+      variableName: variableNameFromValue(
+        values[index],
+        resolvedNaming,
+        seriesId,
+        namespace,
+      ),
+      oklabVector,
+    };
+  });
+
+export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = (
+  params,
+) => {
+  const namedVectors = helicalArcNamedVectors(params);
+  return namedVectors.map(({ oklabVector, value, variableName }) => {
+    const [_, alpha] = parseAlphaLuminosity(value);
+    return `${variableName}: ${oklabVectorToValue(
+      oklabVector,
+      params.conditionId as Gamut,
+      alpha,
+    )};`;
   });
 };
 
@@ -47,6 +67,32 @@ export const renderPhysicalColorLayer = (
   renderPhysicalLayer<ColorsPhysicalLayer, HelicalArcSeries>(
     layer,
     renderHelicalArcTokens,
+    semanticValues,
+  );
+
+export const auditHelicalArcTokens: AuditTokens<HelicalArcSeries> = ({
+  values,
+  ...params
+}) =>
+  helicalArcNamedVectors({
+    ...params,
+    values: Array.from(values.keys()),
+  }).map(({ value, variableName }) => ({
+    variableName,
+    value,
+    seriesId: params.seriesId,
+    ...values.get(value)!,
+  }));
+
+export const auditPhysicalColorLayer = (
+  layer: ColorsPhysicalLayer,
+  auditOptions: AuditOptions,
+  semanticValues?: SemanticValues,
+) =>
+  auditPhysicalLayer<ColorsPhysicalLayer, HelicalArcSeries>(
+    layer,
+    auditOptions,
+    auditHelicalArcTokens,
     semanticValues,
   );
 
