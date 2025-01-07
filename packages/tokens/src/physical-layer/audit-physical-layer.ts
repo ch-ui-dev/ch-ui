@@ -40,13 +40,16 @@ export const auditPhysicalLayer = <
     Object.entries(series).map(([seriesId, { [condition]: series }]) => {
       const resolvedNaming = resolveNaming(series?.naming);
       const values = seriesValues(series!, semanticValues?.[seriesId]);
-      return auditTokens({
+      return [
         seriesId,
-        series: series as S,
-        namespace,
-        resolvedNaming,
-        values,
-      });
+        auditTokens({
+          seriesId,
+          series: series as S,
+          namespace,
+          resolvedNaming,
+          values,
+        }),
+      ];
     }),
   );
 };
