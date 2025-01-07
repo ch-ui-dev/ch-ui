@@ -9,7 +9,47 @@ export type BezierCurve = {
   cacheArcLengths?: number[];
 };
 
-export type Gamut = string;
+/**
+ * Gamuts expressly supported by the versions of colorjs.io used by this
+ * package. Copied from the `SpaceAccessors` class in colorjs.io which is not
+ * exported on its own.
+ */
+export type Gamut =
+  | 'a98rgb'
+  | 'a98rgb_linear'
+  | 'acescc'
+  | 'acescg'
+  | 'cam16_jmh'
+  | 'hct'
+  | 'hpluv'
+  | 'hsl'
+  | 'hsluv'
+  | 'hsv'
+  | 'hwb'
+  | 'ictcp'
+  | 'jzazbz'
+  | 'jzczhz'
+  | 'lab'
+  | 'lab_d65'
+  | 'lch'
+  | 'lchuv'
+  | 'luv'
+  | 'oklab'
+  | 'oklch'
+  | 'p3'
+  | 'p3_linear'
+  | 'prophoto'
+  | 'prophoto_linear'
+  | 'rec2020'
+  | 'rec2020_linear'
+  | 'rec2100hlg'
+  | 'rec2100pq'
+  | 'srgb'
+  | 'srgb_linear'
+  | 'xyz'
+  | 'xyz_abs_d65'
+  | 'xyz_d50'
+  | 'xyz_d65';
 
 export interface Arc {
   curves: BezierCurve[];
