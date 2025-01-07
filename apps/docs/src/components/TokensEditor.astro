@@ -1,7 +1,6 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import { persistentAtom } from '@nanostores/persistent';
-import { ChOklchPicker } from '../components/Elements.jsx';
 import { docsTokens } from '../tokens.ts';
 import get from 'lodash.get';
 const userTokensConfigString = persistentAtom(
@@ -17,14 +16,13 @@ const accentKeyPoint = get(userTokensConfig, 'colors.physical.series.accent.srgb
   }
 </style>
 <p id="tokens-editor-label">Base token set configuration</p>
-<ChOklchPicker aria-labelledby="tokens-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />
+<!--<ChOklchPicker aria-labelledby="tokens-editor-label" lightness={accentKeyPoint[0]} chroma={accentKeyPoint[1]} hue={accentKeyPoint[2]} />-->
 <script>
   import { persistentAtom } from '@nanostores/persistent'
   import { type Gamut, renderFacet } from '@ch-ui/tokens';
   import { docsTokens } from '../tokens.ts';
   import set from 'lodash.set';
   import { yieldOrContinue } from 'main-thread-scheduling';
-  import { ChOklchPickerCustomEvent, Oklch } from '@ch-ui/elements';
 
   const gamuts = ['srgb', 'p3', 'rec2020'] satisfies Gamut[];
 
@@ -44,7 +42,7 @@ const accentKeyPoint = get(userTokensConfig, 'colors.physical.series.accent.srgb
   //   set(defaultTokenSet, `colors.physical.series.accent.${gamut}.keyPoint[2]`, valueNumber);
   // })
 
-  $accentKeyPointInput!.addEventListener('oklchChange', async ({ detail: {lightness, chroma, hue} }: ChOklchPickerCustomEvent<Oklch>) => {
+  $accentKeyPointInput!.addEventListener('oklchChange', async ({ detail: {lightness, chroma, hue} }: any) => {
     gamuts.map(gamut=>{
       console.log('[tokensConfig]', tokensConfig.colors.physical.series.accent);
       set(tokensConfig, `colors.physical.series.accent.${gamut}.keyPoint`, [lightness, chroma, hue]);

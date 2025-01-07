@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/colors",
-  "version": "0.5.1",
+  "version": "1.0.0-rc.2",
   "description": "Procedural color algorithms based upon drawing helical bézier curves in LAB space.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -11,11 +11,16 @@
     "node": ">=20.0.0"
   },
   "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/src/index.d.ts"
+  },
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/src/index.d.ts"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"
@@ -26,6 +31,6 @@
     "dist"
   ],
   "dependencies": {
-    "colorjs": "npm:colorjs.io@^0.5.0"
+    "colorjs": "npm:colorjs.io@0.5.2"
   }
 }

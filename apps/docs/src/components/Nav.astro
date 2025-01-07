@@ -1,6 +1,5 @@
 ---
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-import elementsDocs from '@ch-ui/elements/docs';
 import TokensEditor from './TokensEditor.astro';
 ---
 <nav>
@@ -9,14 +8,6 @@ import TokensEditor from './TokensEditor.astro';
     <li><a class="ch-link" href="/tokens/colors">Colors</a></li>
     <li><a class="ch-link" href="/tokens/vite-plugin-tokens">Vite plugin</a></li>
   </ul>
-  <!--<h2><a class="ch-link" href="/elements">Elements</a></h2>-->
-  <!--<ul>-->
-    {/*elementsDocs.components.map(({ tag }) => {
-      return <li>
-        <a class="ch-link" href={`/elements/${tag}`}>{tag}</a>
-      </li>;
-    })*/}
-  <!--</ul>-->
   <h2><a class="ch-link" href="/vite-plugin-icons">Icons</a></h2>
   <div role="none" style="margin-block-start:var(--ch-gap-4);padding:var(--ch-gap-2);background:var(--ch-bg-input);border-radius:var(--ch-gap-1)">
     <TokensEditor/>

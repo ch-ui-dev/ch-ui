@@ -11,6 +11,10 @@ pnpm add -D @ch-ui/vite-plugin-icons
 ```ts
 import IconsPlugin from '@ch-ui/vite-plugin-icons';
 // ...
+export default defineConfig((env) => ({
+  // The plugin will put the sprite in the project’s `publicDir`
+  publicDir: resolve(__dirname, '../dist/assets'),
+  // ...
   plugins: [
     // ...
     IconsPlugin({
@@ -22,13 +26,14 @@ import IconsPlugin from '@ch-ui/vite-plugin-icons';
         `./packages/icons/node_modules/@phosphor-icons/core/assets/${variant}/${name}${
           variant === 'regular' ? '' : `-${variant}`
         }.svg`,
-      // Tell the plugin where to put the sprite.
-      spritePath: resolve(__dirname, '../dist/assets/sprite.svg'),
+      // Tell the plugin how to name the sprite.
+      spriteFile: 'sprite.svg',
       // Tell the plugin in which files to look for icon symbols.
       contentPaths: ['**/*.stories.tsx'],
     }),
     // ...
-  ]
+  ],
+}));
 // ...
 ```
 

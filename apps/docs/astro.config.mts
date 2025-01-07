@@ -2,8 +2,7 @@
 
 import { defineConfig } from 'astro/config';
 import chTokensPlugin, { defaultTokenSet } from '@ch-ui/vite-plugin-tokens';
-import chIconsPlugin from '@ch-ui/vite-plugin-icons';
-import { elementsAstro } from '@ch-ui/astro-stencil';
+import { IconsPlugin } from '@ch-ui/vite-plugin-icons';
 import merge from 'lodash.merge';
 // Appease TS2742:
 import _astro from 'astro';
@@ -46,23 +45,23 @@ export default defineConfig({
     locales: ['en'],
   },
   vite: {
+    publicDir: 'public',
     plugins: [
       // @ts-ignore
       chTokensPlugin({
         config: () => docsTokens,
       }),
       // @ts-ignore
-      chIconsPlugin({
+      IconsPlugin({
         symbolPattern:
           'ph--([a-z]+[a-z-]*)--(bold|duotone|fill|light|regular|thin)',
         assetPath: (name, variant) =>
           `../../packages/icons/node_modules/@phosphor-icons/core/assets/${variant}/${name}${
             variant === 'regular' ? '' : `-${variant}`
           }.svg`,
-        spritePath: 'public/icons.svg',
+        spriteFile: 'icons.svg',
         contentPaths: ['**/src/**/*.{ts,tsx,astro,md}'],
       }),
     ],
   },
-  integrations: [elementsAstro()],
 });

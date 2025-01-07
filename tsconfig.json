@@ -3,16 +3,10 @@
     "allowJs": false,
     "baseUrl": ".",
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "module": "CommonJS",
     "moduleResolution": "node",
     "isolatedModules": true,
@@ -27,13 +21,6 @@
   "ts-node": {
     "swc": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "out"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["dist", "node_modules", "out"]
 }

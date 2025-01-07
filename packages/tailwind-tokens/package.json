@@ -1,7 +1,7 @@
 {
   "name": "@ch-ui/tailwind-tokens",
-  "version": "0.5.5",
-  "description": "A tokens system for @ch-ui/elements",
+  "version": "1.0.0-rc.2",
+  "description": "A tokens system for a more malleable web.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
     "Will Shown <w@willshown.com> (https://willshown.com/)"
@@ -10,12 +10,17 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/src/index.d.ts"
+  },
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/src/index.d.ts"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"

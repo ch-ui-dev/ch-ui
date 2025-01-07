@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/vite-plugin-tokens",
-  "version": "0.5.2",
+  "version": "1.0.0-rc.3",
   "description": "A Vite plugin which configures & builds a tokens system compatible with @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -10,12 +10,17 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/src/index.d.ts"
+  },
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./types/src/index.d.ts"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"

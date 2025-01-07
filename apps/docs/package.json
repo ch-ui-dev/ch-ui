@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/docs",
-  "version": "0.5.0",
+  "version": "1.0.0-rc.1",
   "private": true,
   "description": "An Astro webpage for ch-ui",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
@@ -13,9 +13,8 @@
   },
   "dependencies": {
     "@astropub/md": "^0.4.0",
-    "@ch-ui/astro-stencil": "workspace:*",
+    "@astrojs/markdown-remark": "^4.3.2",
     "@ch-ui/colors": "workspace:*",
-    "@ch-ui/elements": "workspace:*",
     "@ch-ui/tokens": "workspace:*",
     "@ch-ui/vite-plugin-icons": "workspace:*",
     "@ch-ui/vite-plugin-tokens": "workspace:*",
@@ -33,7 +32,7 @@
     "@types/lodash.merge": "^4.6.9",
     "@types/lodash.set": "^4.3.9",
     "@types/node": "^20.12.3",
-    "vite": "^5.1.5"
+    "vite": "^5.2.8"
   },
   "scripts": {
     "astro:build": "astro build",

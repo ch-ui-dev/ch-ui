@@ -1,14 +1,9 @@
 {
   "extends": "../../tsconfig.json",
-  "plugins": [
-    { "name": "@astrojs/ts-plugin" }
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.astro",
-  ]
+  "compilerOptions": {
+    "allowImportingTsExtensions": true
+  },
+  "plugins": [{ "name": "@astrojs/ts-plugin" }],
+  "exclude": ["dist", "node_modules"],
+  "include": ["./src/**/*.ts", "./src/**/*.astro"]
 }
