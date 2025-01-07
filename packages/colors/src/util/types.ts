@@ -1,7 +1,5 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import SpaceAccessors from 'colorjs/types/src/space-coord-accessors';
-
 export type AlphaLuminosity = number | string;
 
 export type Vec3 = [number, number, number];
@@ -11,7 +9,7 @@ export type BezierCurve = {
   cacheArcLengths?: number[];
 };
 
-export type Gamut = keyof SpaceAccessors;
+export type Gamut = string;
 
 export interface Arc {
   curves: BezierCurve[];

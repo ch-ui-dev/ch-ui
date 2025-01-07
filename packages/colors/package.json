@@ -13,9 +13,9 @@
   "main": "src/index.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/src/index.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/src/index.d.ts"
     },
     "./README.md": {
       "import": "./README.md"
@@ -26,6 +26,10 @@
     "dist"
   ],
   "dependencies": {
-    "colorjs": "npm:colorjs.io@^0.5.0"
+    "colorjs": "npm:colorjs.io@0.5.2"
+  },
+  "publishConfig": {
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js"
   }
 }
