@@ -9,6 +9,7 @@ import {
   renderPhysicalColorLayer,
   auditPhysicalColorLayer,
   auditExponentialLayer,
+  auditLinearLayer,
 } from './physical-layer';
 import { AuditOptions, PhysicalLayer, SemanticLayer, Series } from './types';
 import { facetSemanticValues } from './util';
