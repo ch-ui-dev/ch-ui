@@ -7,8 +7,10 @@ import {
   renderExponentialLayer,
   renderLinearLayer,
   renderPhysicalColorLayer,
+  auditPhysicalColorLayer,
+  auditExponentialLayer,
 } from './physical-layer';
-import { PhysicalLayer, SemanticLayer, Series } from './types';
+import { AuditOptions, PhysicalLayer, SemanticLayer, Series } from './types';
 import { facetSemanticValues } from './util';
 import { renderSemanticLayer } from './semantic-layer';
 
@@ -66,4 +68,19 @@ export const renderFacet = ({ physical, semantic }: Facet) => {
       : '/* Invalid physical layer */',
     ...(semantic ? [renderSemanticLayer(semantic)] : []),
   ].join('\n\n');
+};
+
+export const auditFacet = (
+  { physical, semantic }: Facet,
+  auditOptions: AuditOptions,
+) => {
+  const semanticValues = facetSemanticValues(semantic);
+  const firstSeries = getFirstSeriesInPhysicalLayer(physical);
+  return isColorPhysicalLayer(physical, firstSeries)
+    ? auditPhysicalColorLayer(physical, auditOptions, semanticValues)
+    : isExponentialLayer(physical, firstSeries)
+    ? auditExponentialLayer(physical, auditOptions, semanticValues)
+    : isLinearLayer(physical, firstSeries)
+    ? auditLinearLayer(physical, auditOptions, semanticValues)
+    : '/* Invalid physical layer */';
 };

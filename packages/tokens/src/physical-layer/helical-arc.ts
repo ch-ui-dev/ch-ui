@@ -48,9 +48,8 @@ const helicalArcNamedVectors = ({
 
 export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = (
   params,
-) => {
-  const namedVectors = helicalArcNamedVectors(params);
-  return namedVectors.map(({ oklabVector, value, variableName }) => {
+) =>
+  helicalArcNamedVectors(params).map(({ oklabVector, value, variableName }) => {
     const [_, alpha] = parseAlphaLuminosity(value);
     return `${variableName}: ${oklabVectorToValue(
       oklabVector,
@@ -58,7 +57,6 @@ export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = (
       alpha,
     )};`;
   });
-};
 
 export const renderPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
