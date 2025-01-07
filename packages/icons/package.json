@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/icons",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "description": "Tools for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
