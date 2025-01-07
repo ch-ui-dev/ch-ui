@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/icons",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Tools for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -12,8 +12,9 @@
   },
   "main": "./src/index.ts",
   "publishConfig": {
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.js"
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/src/index.d.ts"
   },
   "exports": {
     ".": {
