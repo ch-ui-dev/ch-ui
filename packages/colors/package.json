@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/colors",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "description": "Procedural color algorithms based upon drawing helical bézier curves in LAB space.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
