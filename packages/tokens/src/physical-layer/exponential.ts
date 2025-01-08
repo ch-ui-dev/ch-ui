@@ -4,11 +4,14 @@ import {
   AuditOptions,
   ExponentialSeries,
   PhysicalLayer,
+  RenderTokensParams,
   SemanticValues,
+  AuditTokens,
+  RenderTokens,
 } from '../types';
-import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
+import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue } from '../util';
-import { auditPhysicalLayer, AuditTokens } from './audit-physical-layer';
+import { auditPhysicalLayer } from './audit-physical-layer';
 
 export type ExponentialPhysicalLayer<S extends string = string> =
   //
@@ -20,7 +23,7 @@ const exponentialNamedResolvedValues = ({
   namespace,
   values = [],
   resolvedNaming,
-}: Omit<Parameters<RenderTokens<ExponentialSeries>>[0], 'conditionId'>) => {
+}: Omit<RenderTokensParams<ExponentialSeries>, 'conditionId'>) => {
   const { initial, base, snapTo } = series;
   return values
     .map((value) => {

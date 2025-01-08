@@ -13,10 +13,13 @@ import {
   HelicalArcSeries,
   PhysicalLayer,
   SemanticValues,
+  AuditTokens,
+  RenderTokensParams,
+  RenderTokens,
 } from '../types';
 import { variableNameFromValue, physicalValueFromValueRelation } from '../util';
-import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
-import { auditPhysicalLayer, AuditTokens } from './audit-physical-layer';
+import { renderPhysicalLayer } from './render-physical-layer';
+import { auditPhysicalLayer } from './audit-physical-layer';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
@@ -26,7 +29,7 @@ const helicalArcNamedVectors = ({
   namespace,
   values = [],
   resolvedNaming,
-}: Omit<Parameters<RenderTokens<HelicalArcSeries>>[0], 'conditionId'>) =>
+}: Omit<RenderTokensParams<HelicalArcSeries>, 'conditionId'>) =>
   getOklabVectorsFromLuminosities(
     values.map((value) => {
       const [l] = parseAlphaLuminosity(value);

@@ -4,11 +4,14 @@ import {
   AuditOptions,
   LinearSeries,
   PhysicalLayer,
+  RenderTokensParams,
   SemanticValues,
+  RenderTokens,
+  AuditTokens,
 } from '../types';
-import { renderPhysicalLayer, RenderTokens } from './render-physical-layer';
+import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue } from '../util';
-import { auditPhysicalLayer, AuditTokens } from './audit-physical-layer';
+import { auditPhysicalLayer } from './audit-physical-layer';
 
 export type LinearPhysicalLayer<S extends string = string> =
   //
@@ -20,7 +23,7 @@ const linearNamedResolvedValues = ({
   namespace,
   values = [],
   resolvedNaming,
-}: Omit<Parameters<RenderTokens<LinearSeries>>[0], 'conditionId'>) => {
+}: Omit<RenderTokensParams<LinearSeries>, 'conditionId'>) => {
   const { initial, slope } = series;
   return values
     .map((value) => initial + slope * value)

@@ -1,21 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import {
-  PhysicalLayer,
-  ResolvedNaming,
-  SemanticValues,
-  Series,
-} from '../types';
+import { PhysicalLayer, RenderTokens, SemanticValues, Series } from '../types';
 import { renderCondition, resolveNaming, seriesValues } from '../util';
-
-export type RenderTokens<S extends Series<any> = Series> = (renderProps: {
-  seriesId: string;
-  conditionId: string;
-  series: S;
-  namespace?: string;
-  resolvedNaming: ResolvedNaming;
-  values: S['values'];
-}) => string[];
 
 export const renderPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,

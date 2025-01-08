@@ -81,7 +81,5 @@ export const auditFacet = (
     ? auditPhysicalColorLayer(physical, auditOptions, semanticValues)
     : isExponentialLayer(physical, firstSeries)
     ? auditExponentialLayer(physical, auditOptions, semanticValues)
-    : isLinearLayer(physical, firstSeries)
-    ? auditLinearLayer(physical, auditOptions, semanticValues)
-    : '/* Invalid physical layer */';
+    : auditLinearLayer(physical, auditOptions, semanticValues);
 };

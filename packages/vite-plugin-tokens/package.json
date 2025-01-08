@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/vite-plugin-tokens",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "A Vite plugin which configures & builds a tokens system compatible with @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [

@@ -16,13 +16,9 @@ test('audits are generated as expected', async () => {
     },
     { condition: 'p3' },
   );
-  assert.notEqual(typeof colorAudit, 'string');
-  const accent600 =
-    typeof colorAudit !== 'string'
-      ? colorAudit.accent.find(
-          ({ variableName }) => variableName === '--ch-accent-600',
-        )
-      : undefined;
+  const accent600 = colorAudit.accent.find(
+    ({ variableName }) => variableName === '--ch-accent-600',
+  );
   assert.deepEqual(accent600?.semantic, [
     {
       sememeName: 'bg-accentHover',

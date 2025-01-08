@@ -2,30 +2,13 @@
 
 import {
   AuditOptions,
-  FacetAnnotatedValues,
+  AuditTokens,
   PhysicalLayer,
-  ResolvedNaming,
   SemanticValues,
-  SememeAnnotation,
   Series,
+  TokenAudit,
 } from '../types';
 import { resolveNaming, seriesValues } from '../util';
-
-export type TokenAudit<S extends Series<any> = Series> = {
-  variableName: string;
-  seriesId: string;
-  value: NonNullable<S['values']>[number];
-  physical: ('values' | 'naming')[];
-  semantic: SememeAnnotation[];
-};
-
-export type AuditTokens<S extends Series<any> = Series> = (auditProps: {
-  seriesId: string;
-  series: S;
-  namespace?: string;
-  resolvedNaming: ResolvedNaming;
-  values: FacetAnnotatedValues<NonNullable<S['values']>[number]>;
-}) => TokenAudit<S>[];
 
 export const auditPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,
