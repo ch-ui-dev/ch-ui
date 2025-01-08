@@ -7,16 +7,7 @@ Tools for malleable design systems! Deliver quality, accessible, consistent expe
 - Profoundly configurable design system token generation ([`@ch-ui/tokens`](https://ch-ui.dev/tokens))
 - Procedurally generated color palettes in any gamut ([`@ch-ui/colors`](https://ch-ui.dev/tokens/colors))
 - Tailwind-style SVG icon spriting ([`@ch-ui/vite-plugin-icons`](https://ch-ui.dev/vite-plugin-icons))
-
-## Drawbacks
-
-- Not tested in production yet!
-
-## To do
-
-- [ ] `@ch-ui/elements`: lower-level accessible[¹](#footnotes) elements
-
-See the issues for other items.
+- Vetted in production!
 
 ## Footnotes
 
