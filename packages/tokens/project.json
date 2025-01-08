@@ -33,7 +33,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts"
+      "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts && ts-node ./test/audit.spec.ts"
     }
   }
 }

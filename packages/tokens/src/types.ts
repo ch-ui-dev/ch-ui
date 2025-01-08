@@ -29,9 +29,18 @@ export type SemanticLayer<
   namespace?: string;
 };
 
+export type SememeAnnotation = { sememeName: string; conditionId: string };
+
 export type SemanticValues<S extends string = string, V = number> = Record<
   S,
-  Set<V>
+  SemanticAnnotatedValues<V>
+>;
+
+export type SemanticAnnotatedValues<V = number> = Map<V, SememeAnnotation[]>;
+
+export type FacetAnnotatedValues<V = number> = Map<
+  V,
+  { physical: ('values' | 'naming')[]; semantic: SememeAnnotation[] }
 >;
 
 /**
@@ -111,3 +120,65 @@ export type HelicalArcSeries = Series<HelicalArcValue> &
   HelicalArcConfig & {
     physicalValueRelation: AccompanyingSeries;
   };
+
+/**
+ * Options for audit functions.
+ */
+export type AuditOptions<C extends string = string> = {
+  condition: C;
+};
+
+/**
+ * The type of a series’s values
+ */
+export type ValueOfSeries<S extends Series<any> = Series> = NonNullable<
+  S['values']
+>[number];
+
+/**
+ * Information about a physical token, including why it was generated.
+ */
+export type TokenAudit<S extends Series<any> = Series> = {
+  variableName: string;
+  seriesId: string;
+  value: ValueOfSeries<S>;
+  physical: ('values' | 'naming')[];
+  semantic: SememeAnnotation[];
+};
+
+/**
+ * Parameters needed to audit a facet of tokens.
+ */
+export type AuditTokensParams<S extends Series<any> = Series> = {
+  seriesId: string;
+  series: S;
+  namespace?: string;
+  resolvedNaming: ResolvedNaming;
+  values: FacetAnnotatedValues<ValueOfSeries<S>>;
+};
+
+/**
+ * The function provided by different physical layer types which produces `TokenAudit`s.
+ */
+export type AuditTokens<S extends Series<any> = Series> = (
+  auditProps: AuditTokensParams<S>,
+) => TokenAudit<S>[];
+
+/**
+ * Parameters needed to render a facet of tokens.
+ */
+export type RenderTokensParams<S extends Series<any> = Series> = {
+  seriesId: string;
+  conditionId: string;
+  series: S;
+  namespace?: string;
+  resolvedNaming: ResolvedNaming;
+  values: ValueOfSeries<S>[];
+};
+
+/**
+ * The function provided by different physical layer types which renders the layer.
+ */
+export type RenderTokens<S extends Series<any> = Series> = (
+  renderProps: RenderTokensParams<S>,
+) => string[];

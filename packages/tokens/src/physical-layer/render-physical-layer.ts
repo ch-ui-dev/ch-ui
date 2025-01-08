@@ -1,21 +1,7 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import {
-  PhysicalLayer,
-  ResolvedNaming,
-  SemanticValues,
-  Series,
-} from '../types';
+import { PhysicalLayer, RenderTokens, SemanticValues, Series } from '../types';
 import { renderCondition, resolveNaming, seriesValues } from '../util';
-
-export type RenderTokens<S extends Series<any> = Series> = (renderProps: {
-  seriesId: string;
-  conditionId: string;
-  series: S;
-  namespace?: string;
-  resolvedNaming: ResolvedNaming;
-  values: S['values'];
-}) => string[];
 
 export const renderPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,
@@ -31,9 +17,8 @@ export const renderPhysicalLayer = <
         Object.entries(series)
           .map(([seriesId, { [conditionId]: series }]) => {
             const resolvedNaming = resolveNaming(series?.naming);
-            const values = seriesValues(
-              series!,
-              Array.from(semanticValues?.[seriesId] ?? []),
+            const values = Array.from(
+              seriesValues(series!, semanticValues?.[seriesId]).keys(),
             );
             return renderTokens({
               seriesId,

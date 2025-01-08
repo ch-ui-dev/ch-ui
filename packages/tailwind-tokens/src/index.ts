@@ -44,9 +44,8 @@ const renderPhysicalMappings = (
       Object.entries(series).reduce(
         (acc: Mapping, [seriesId, { [conditionId]: series }]) => {
           const resolvedNaming = resolveNaming(series?.naming);
-          acc[seriesId] = seriesValues(
-            series!,
-            Array.from(semanticValues?.[seriesId] ?? []),
+          acc[seriesId] = Array.from(
+            seriesValues(series!, semanticValues?.[seriesId]).keys(),
           ).reduce((acc: Record<string, string>, value) => {
             acc[
               `${nameFromValue(value, resolvedNaming)}`

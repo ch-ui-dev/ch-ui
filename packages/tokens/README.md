@@ -175,3 +175,12 @@ For better ergonomics, physical and semantic layers can be combined into a *face
 All tokens can be rendered using `renderTokenSet(tokenSet: TokenSet)`.
 
 A `TokenSet` is just a `Record<string, Facet>` containing all the facets you’d like to render, keyed by ids you provide.
+
+## Auditing
+
+You can audit tokens (one facet at a time) if you’d like more information about why the system is rendering the physical tokens it’s rendering.
+
+```ts
+import { auditFacet } from '@ch-ui/tokens';
+const colorsAudit = auditFacet(tokenSet.colors, { condition: 'p3' });
+```
