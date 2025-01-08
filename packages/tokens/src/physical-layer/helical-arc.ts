@@ -105,3 +105,5 @@ export const constellationFromPalette = (
     helicalArcFromConfig(helicalArcConfig),
     curveDepth,
   );
+
+export { parseAlphaLuminosity };
