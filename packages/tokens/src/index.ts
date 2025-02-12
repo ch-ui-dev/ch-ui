@@ -13,7 +13,11 @@ const creator: PluginCreator<PluginOptions> = (opts?: PluginOptions) => {
     AtRule: {
       async tokens(rule) {
         const config = (await opts?.config(rule.params)) ?? {};
-        rule.replaceWith(parse(renderTokenSet(config)));
+        rule.replaceWith(
+          parse(renderTokenSet(config), {
+            from: rule.source?.input.file ?? 'unknown',
+          }),
+        );
       },
     },
   };
