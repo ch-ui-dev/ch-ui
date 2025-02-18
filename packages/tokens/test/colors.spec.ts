@@ -10,12 +10,13 @@ import {
   renderFacet,
 } from '../src';
 
-test('physical and semantic color tokens are generated as expected', async () => {
+test('physical, semantic, and alias color tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
   const tokens = renderFacet({
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
+    alias: { aliases: { 'bg-base': ['bg-html', 'bg-body'] }, namespace: 'ch-' },
   });
   await writeFile(resolve(dir, 'colors.css'), tokens);
   assert.equal(
@@ -34,6 +35,14 @@ test('physical and semantic color tokens are generated as expected', async () =>
         '    --ch-neutral-0: color(rec2020 0 0 0);\n' +
         '    --ch-neutral-150: color(rec2020 0.01335 0.0154 0.02147);\n' +
         '    --ch-neutral-175: color(rec2020 0.02142 0.02444 0.03325);',
+    ),
+    true,
+  );
+  assert.equal(
+    tokens.includes(
+      ':root {\n' +
+        '  --ch-bg-html: var(--ch-bg-base);\n' +
+        '  --ch-bg-body: var(--ch-bg-base);',
     ),
     true,
   );
