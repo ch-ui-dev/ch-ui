@@ -16,6 +16,7 @@ import {
   variableNameFromValue,
   nameFromValue,
   Series,
+  AliasLayer,
 } from '@ch-ui/tokens';
 
 type TwKey = keyof TwTheme;
@@ -80,12 +81,30 @@ const renderSemanticMappings = (semantic?: SemanticLayer): Mapping => {
   }
 };
 
-const renderTailwindFacet = ({ physical, semantic }: Facet): Mapping => {
-  const semanticValues = facetSemanticValues(semantic);
+const renderAliasMappings = (alias?: AliasLayer): Mapping => {
+  if (!alias) {
+    return {};
+  } else {
+    const { namespace, aliases } = alias;
+    return Object.entries(aliases).reduce(
+      (acc: Mapping, [_sememeName, aliasNames]) => {
+        return aliasNames.reduce((acc, aliasName) => {
+          acc[aliasName] = `var(--${namespace}${aliasName})`;
+          return acc;
+        }, acc);
+      },
+      {},
+    );
+  }
+};
+
+const renderTailwindFacet = ({ physical, semantic, alias }: Facet): Mapping => {
+  const semanticValues = facetSemanticValues(semantic) as SemanticValues;
   // TODO(thure): Need case(s) for Tailwind’s `fontSize`.
   return {
     ...renderPhysicalMappings(physical, semanticValues),
-    ...renderSemanticMappings(semantic),
+    ...renderSemanticMappings(semantic as SemanticLayer),
+    ...renderAliasMappings(alias),
   };
 };
 
