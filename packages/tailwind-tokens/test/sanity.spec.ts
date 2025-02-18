@@ -14,10 +14,26 @@ const testConfig: TailwindAdapterConfig = {
 };
 
 test('mapper returns valid tailwind theme extension partial', async () => {
-  const result = mapper(defaultTokenSet, testConfig);
+  const result = mapper(
+    {
+      ...defaultTokenSet,
+      colors: {
+        ...defaultTokenSet.colors,
+        alias: {
+          aliases: { 'bg-base': ['bg-html', 'bg-body'] },
+          namespace: 'ch-',
+        },
+      },
+    },
+    testConfig,
+  );
   // console.log(result);
   assert.equal(
     (result.colors as Record<string, string>)['fg-base'],
     'var(--ch-fg-base)',
+  );
+  assert.equal(
+    (result.colors as Record<string, string>)['bg-html'],
+    'var(--ch-bg-html)',
   );
 });

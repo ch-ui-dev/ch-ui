@@ -5,18 +5,24 @@ import { escapeValue, renderCondition } from './util';
 
 export const renderSemanticLayer = <
   K extends string = string,
-  S extends string = string,
-  V extends number = number,
+  P extends string = string,
+  V = number,
+  Q extends string = string,
 >({
   conditions,
   sememes,
   namespace = '',
-  physicalNamespace,
-}: SemanticLayer<K, S, V>): string => {
+  physicalNamespace = namespace,
+}: SemanticLayer<K, P, V, Q>): string => {
   return Object.entries(conditions)
     .map(([conditionId, statements]) =>
       renderCondition(
-        Object.entries(sememes)
+        (
+          Object.entries(sememes) as [
+            keyof typeof sememes,
+            (typeof sememes)[Q],
+          ][]
+        )
           .map(
             ([
               sememeName,
@@ -25,9 +31,9 @@ export const renderSemanticLayer = <
               },
             ]) =>
               // TODO(thure): This should almost certainly use `variableNameFromValue`.
-              `--${namespace}${sememeName}: var(--${
-                physicalNamespace ?? namespace
-              }${seriesName}-${escapeValue(`${value}`)});`,
+              `--${namespace}${sememeName}: var(--${physicalNamespace}${seriesName}-${escapeValue(
+                `${value}`,
+              )});`,
           )
           .join('\n'),
         0,

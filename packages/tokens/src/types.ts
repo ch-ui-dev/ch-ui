@@ -12,27 +12,36 @@ export type PhysicalSeries<
 export type PhysicalLayer<
   K extends string = string,
   S extends Series<any> = Series,
+  P extends string = string,
 > = {
   conditions: Conditions<K>;
-  series: Record<string, PhysicalSeries<K, S>>;
+  series: Record<P, PhysicalSeries<K, S>>;
   namespace?: string;
 };
 
 export type SemanticLayer<
   K extends string = string,
-  S extends string = string,
+  P extends string = string,
   V = number,
+  Q extends string = string,
 > = {
   conditions: Conditions<K>;
-  sememes: Record<string, Record<K, [S, V]>>;
+  sememes: Record<Q, Record<K, [P, V]>>;
   physicalNamespace?: string;
+  namespace?: string;
+};
+
+export type AliasLayer<Q extends string = string> = {
+  statements?: Statements;
+  aliases: Record<Q, string[]>;
+  semanticNamespace?: string;
   namespace?: string;
 };
 
 export type SememeAnnotation = { sememeName: string; conditionId: string };
 
-export type SemanticValues<S extends string = string, V = number> = Record<
-  S,
+export type SemanticValues<P extends string = string, V = number> = Record<
+  P,
   SemanticAnnotatedValues<V>
 >;
 
