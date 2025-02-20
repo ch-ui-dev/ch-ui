@@ -10,6 +10,18 @@ const testConfig: TailwindAdapterConfig = {
   colors: {
     facet: 'colors',
     disposition: 'overwrite',
+    tokenization: 'recursive',
+  },
+  borderWidth: {
+    facet: 'lengths',
+    disposition: 'extend',
+    tokenization: 'keep-series',
+    seriesValueSeparator: '/',
+  },
+  outlineWidth: {
+    facet: 'lengths',
+    disposition: 'extend',
+    tokenization: 'omit-series',
   },
 };
 
@@ -35,5 +47,13 @@ test('mapper returns valid tailwind theme extension partial', async () => {
   assert.equal(
     (result.colors as Record<string, string>)['bg-html'],
     'var(--ch-bg-html)',
+  );
+  assert.equal(
+    (result.extend?.borderWidth as Record<string, string>)['gap/half'],
+    'var(--ch-gap-half)',
+  );
+  assert.equal(
+    (result.extend?.outlineWidth as Record<string, string>)['hairline'],
+    'var(--ch-gap-hairline)',
   );
 });

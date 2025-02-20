@@ -24,8 +24,8 @@ type TwKey = keyof TwTheme;
 export type TailwindAdapterFacet = {
   facet: string;
   disposition?: 'extend' | 'overwrite';
-  // TODO(thure): This seems dumb, and Tailwind accepts other shapes than 'var(--etc)', how can this be better? Callbacks?
-  lineHeightFacet?: string;
+  tokenization?: 'keep-series' | 'omit-series' | 'recursive';
+  seriesValueSeparator?: string;
 };
 
 export type TailwindAdapterConfig = Partial<
@@ -37,6 +37,7 @@ type Mapping = Record<string, string | Record<string, string>>;
 const defaultAdapterConfig = {} satisfies TailwindAdapterConfig;
 
 const renderPhysicalMappings = (
+  config: TailwindAdapterFacet,
   { conditions, series, namespace }: PhysicalLayer<string, Series<any>>,
   semanticValues?: SemanticValues,
 ): Mapping =>
@@ -45,19 +46,45 @@ const renderPhysicalMappings = (
       Object.entries(series).reduce(
         (acc: Mapping, [seriesId, { [conditionId]: series }]) => {
           const resolvedNaming = resolveNaming(series?.naming);
-          acc[seriesId] = Array.from(
-            seriesValues(series!, semanticValues?.[seriesId]).keys(),
-          ).reduce((acc: Record<string, string>, value) => {
-            acc[
-              `${nameFromValue(value, resolvedNaming)}`
-            ] = `var(${variableNameFromValue(
-              value,
-              resolvedNaming,
-              seriesId,
-              namespace,
-            )})`;
-            return acc;
-          }, {});
+          const tokenization = config.tokenization ?? 'keep-series';
+          const separator = config.seriesValueSeparator ?? '-';
+          if (tokenization === 'recursive') {
+            acc[seriesId] = Array.from(
+              seriesValues(series!, semanticValues?.[seriesId]).keys(),
+            ).reduce((acc: Record<string, string>, value) => {
+              acc[
+                `${nameFromValue(value, resolvedNaming)}`
+              ] = `var(${variableNameFromValue(
+                value,
+                resolvedNaming,
+                seriesId,
+                namespace,
+              )})`;
+              return acc;
+            }, {});
+          } else {
+            acc = {
+              ...acc,
+              ...Array.from(
+                seriesValues(series!, semanticValues?.[seriesId]).keys(),
+              ).reduce((acc, value) => {
+                const tokenName =
+                  tokenization === 'keep-series'
+                    ? `${seriesId}${separator}${nameFromValue(
+                        value,
+                        resolvedNaming,
+                      )}`
+                    : nameFromValue(value, resolvedNaming);
+                acc[tokenName] = `var(${variableNameFromValue(
+                  value,
+                  resolvedNaming,
+                  seriesId,
+                  namespace,
+                )})`;
+                return acc;
+              }, {}),
+            };
+          }
           return acc;
         },
         acc,
@@ -65,7 +92,10 @@ const renderPhysicalMappings = (
     {},
   );
 
-const renderSemanticMappings = (semantic?: SemanticLayer): Mapping => {
+const renderSemanticMappings = (
+  config: TailwindAdapterFacet,
+  semantic?: SemanticLayer,
+): Mapping => {
   if (!semantic) {
     return {};
   } else {
@@ -81,7 +111,10 @@ const renderSemanticMappings = (semantic?: SemanticLayer): Mapping => {
   }
 };
 
-const renderAliasMappings = (alias?: AliasLayer): Mapping => {
+const renderAliasMappings = (
+  config: TailwindAdapterFacet,
+  alias?: AliasLayer,
+): Mapping => {
   if (!alias) {
     return {};
   } else {
@@ -98,13 +131,16 @@ const renderAliasMappings = (alias?: AliasLayer): Mapping => {
   }
 };
 
-const renderTailwindFacet = ({ physical, semantic, alias }: Facet): Mapping => {
+const renderTailwindFacet = (
+  config: TailwindAdapterFacet,
+  { physical, semantic, alias }: Facet,
+): Mapping => {
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
   // TODO(thure): Need case(s) for Tailwind’s `fontSize`.
   return {
-    ...renderPhysicalMappings(physical, semanticValues),
-    ...renderSemanticMappings(semantic as SemanticLayer),
-    ...renderAliasMappings(alias),
+    ...renderPhysicalMappings(config, physical, semanticValues),
+    ...renderSemanticMappings(config, semantic as SemanticLayer),
+    ...renderAliasMappings(config, alias),
   };
 };
 
@@ -116,9 +152,13 @@ export default (
     (acc: OptionalConfig['theme'], entry) => {
       const [twKey, config] = entry as [TwKey, TailwindAdapterFacet];
       if (config.facet in tokensConfig) {
-        const twFacet = renderTailwindFacet(tokensConfig[config.facet]);
-        acc[twKey] =
-          config.disposition === 'overwrite' ? twFacet : { extend: twFacet };
+        const twFacet = renderTailwindFacet(config, tokensConfig[config.facet]);
+        if (config.disposition === 'extend') {
+          acc.extend ??= {};
+          acc.extend[twKey] = twFacet;
+        } else {
+          acc[twKey] = twFacet;
+        }
       }
       return acc;
     },
