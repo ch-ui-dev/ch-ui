@@ -21,7 +21,10 @@ export const IconsPlugin = ({
   verbose,
 }: IconsPluginParams): Plugin[] => {
   const pms = contentPaths.map((contentPath) => picomatch(contentPath));
-  const isContent = (filepath: string) => !!pms.find((pm) => pm(filepath));
+  const isContent = (viteQuery: string) => {
+    const [filepath] = viteQuery.split('?');
+    return !!pms.find((pm) => pm(filepath));
+  };
   const shouldIgnore = (filepath: string) => !isContent(filepath);
 
   let rootDir: string;
