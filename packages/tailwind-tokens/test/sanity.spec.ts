@@ -32,7 +32,16 @@ test('mapper returns valid tailwind theme extension partial', async () => {
       colors: {
         ...defaultTokenSet.colors,
         alias: {
-          aliases: { 'bg-base': ['bg-html', 'bg-body'] },
+          conditions: {
+            root: [':root'],
+            attention: ['.attention:focus-within'],
+          },
+          aliases: {
+            'bg-base': {
+              root: ['bg-html', 'bg-body'],
+              attention: ['bg-html', 'bg-body'],
+            },
+          },
           namespace: 'ch-',
         },
       },
