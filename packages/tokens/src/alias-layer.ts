@@ -1,26 +1,32 @@
 // Required notice: Copyright (c) 2025, Will Shown <ch-ui@willshown.com>
 
-import { AliasLayer } from './types';
+import { AliasLayer, Statements } from './types';
 import { renderCondition } from './util';
 
-export const renderAliasLayer = <Q extends string = string>({
+export const renderAliasLayer = <
+  K extends string = string,
+  Q extends string = string,
+>({
+  conditions,
   aliases,
   namespace = '',
   semanticNamespace = namespace,
-  statements = [':root'],
-}: AliasLayer<Q>): string => {
-  return renderCondition(
-    (Object.entries(aliases) as [Q, (typeof aliases)[Q]][])
-      .map(([sememeName, sememeAliases]) =>
-        sememeAliases
-          .map(
-            (aliasName) =>
-              `--${namespace}${aliasName}: var(--${semanticNamespace}${sememeName});`,
-          )
+}: AliasLayer<K, Q>): string => {
+  return Object.entries(conditions)
+    .map(([conditionId, statements]) =>
+      renderCondition(
+        (Object.entries(aliases) as [Q, Record<K, string[]>][])
+          .filter(([_, sememeAliases]) => sememeAliases[conditionId as K])
+          .map(([sememeName, sememeAliases]) => {
+            return sememeAliases[conditionId as K]!.map(
+              (aliasName) =>
+                `--${namespace}${aliasName}: var(--${semanticNamespace}${sememeName});`,
+            ).join('\n');
+          })
           .join('\n'),
-      )
-      .join('\n\n'),
-    0,
-    statements,
-  );
+        0,
+        statements as Statements,
+      ),
+    )
+    .join('\n\n');
 };

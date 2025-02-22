@@ -15,7 +15,7 @@ export type PhysicalLayer<
   P extends string = string,
 > = {
   conditions: Conditions<K>;
-  series: Record<P, PhysicalSeries<K, S>>;
+  series: Record<P, Partial<PhysicalSeries<K, S>>>;
   namespace?: string;
 };
 
@@ -26,14 +26,14 @@ export type SemanticLayer<
   Q extends string = string,
 > = {
   conditions: Conditions<K>;
-  sememes: Record<Q, Record<K, [P, V]>>;
+  sememes: Record<Q, Partial<Record<K, [P, V]>>>;
   physicalNamespace?: string;
   namespace?: string;
 };
 
-export type AliasLayer<Q extends string = string> = {
-  statements?: Statements;
-  aliases: Record<Q, string[]>;
+export type AliasLayer<K extends string = string, Q extends string = string> = {
+  conditions: Conditions<K>;
+  aliases: Record<Q, Record<K, string[]>>;
   semanticNamespace?: string;
   namespace?: string;
 };

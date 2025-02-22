@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/tokens",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "A tokens system for a more malleable web.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [

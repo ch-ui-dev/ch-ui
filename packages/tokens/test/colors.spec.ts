@@ -16,7 +16,16 @@ test('physical, semantic, and alias color tokens are generated as expected', asy
   const tokens = renderFacet({
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
-    alias: { aliases: { 'bg-base': ['bg-html', 'bg-body'] }, namespace: 'ch-' },
+    alias: {
+      conditions: { root: [':root'], attention: ['.attention:focus-within'] },
+      aliases: {
+        'bg-base': {
+          root: ['bg-html', 'bg-body'],
+          attention: ['bg-html', 'bg-body'],
+        },
+      },
+      namespace: 'ch-',
+    },
   });
   await writeFile(resolve(dir, 'colors.css'), tokens);
   assert.equal(
