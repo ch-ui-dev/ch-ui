@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/vite-plugin-icons",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Vite plugin for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
