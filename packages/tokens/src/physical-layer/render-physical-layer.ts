@@ -15,6 +15,7 @@ export const renderPhysicalLayer = <
     .map(([conditionId, statements]) =>
       renderCondition(
         Object.entries(series)
+          .filter(([_, series]) => series[conditionId])
           .map(([seriesId, { [conditionId]: series }]) => {
             const resolvedNaming = resolveNaming(series?.naming);
             const values = Array.from(

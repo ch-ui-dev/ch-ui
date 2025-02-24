@@ -120,11 +120,16 @@ const renderAliasMappings = (
   } else {
     const { namespace, aliases } = alias;
     return Object.entries(aliases).reduce(
-      (acc: Mapping, [_sememeName, aliasNames]) => {
-        return aliasNames.reduce((acc, aliasName) => {
-          acc[aliasName] = `var(--${namespace}${aliasName})`;
-          return acc;
-        }, acc);
+      (acc: Mapping, [sememeName, sememeAliases]) => {
+        return Object.entries(sememeAliases).reduce(
+          (acc, [conditionId, aliasNames]) => {
+            return aliasNames.reduce((acc, aliasName) => {
+              acc[aliasName] = `var(--${namespace}${aliasName})`;
+              return acc;
+            }, acc);
+          },
+          acc,
+        );
       },
       {},
     );

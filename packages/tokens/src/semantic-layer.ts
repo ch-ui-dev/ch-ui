@@ -23,18 +23,13 @@ export const renderSemanticLayer = <
             (typeof sememes)[Q],
           ][]
         )
-          .map(
-            ([
-              sememeName,
-              {
-                [conditionId as K]: [seriesName, value],
-              },
-            ]) =>
-              // TODO(thure): This should almost certainly use `variableNameFromValue`.
-              `--${namespace}${sememeName}: var(--${physicalNamespace}${seriesName}-${escapeValue(
-                `${value}`,
-              )});`,
-          )
+          .filter(([, sememe]) => sememe[conditionId as K])
+          .map(([sememeName, sememe]) => {
+            const [seriesName, value] = sememe[conditionId as K]!;
+            return `--${namespace}${sememeName}: var(--${physicalNamespace}${seriesName}-${escapeValue(
+              `${value}`,
+            )});`;
+          })
           .join('\n'),
         0,
         statements as Statements,
