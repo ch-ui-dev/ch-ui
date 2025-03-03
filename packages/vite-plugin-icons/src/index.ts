@@ -20,7 +20,9 @@ export const IconsPlugin = ({
   config,
   verbose,
 }: IconsPluginParams): Plugin[] => {
-  const pms = contentPaths.map((contentPath) => picomatch(contentPath));
+  const pms = contentPaths.map((contentPath) =>
+    picomatch(contentPath, { windows: true }),
+  );
   const isContent = (viteQuery: string) => {
     const [filepath] = viteQuery.split('?');
     return !!pms.find((pm) => pm(filepath));
