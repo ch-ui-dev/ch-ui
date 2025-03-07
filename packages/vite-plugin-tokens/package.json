@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/vite-plugin-tokens",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "type": "module",
   "description": "A Vite plugin which configures & builds a tokens system compatible with @ch-ui/elements",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
@@ -42,7 +42,7 @@
     "vite": "^5.2.8"
   },
   "peerDependencies": {
-    "postcss": "^8.4.38",
-    "vite": "^5.2.8"
+    "postcss": "8.x",
+    "vite": "5.x,6.x"
   }
 }
