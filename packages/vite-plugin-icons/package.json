@@ -1,6 +1,7 @@
 {
   "name": "@ch-ui/vite-plugin-icons",
-  "version": "1.0.4",
+  "version": "1.0.7",
+  "type": "module",
   "description": "Vite plugin for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -40,6 +41,6 @@
     "vite": "^5.2.8"
   },
   "peerDependencies": {
-    "vite": "^5.2.8"
+    "vite": "5.x || 6.x"
   }
 }
