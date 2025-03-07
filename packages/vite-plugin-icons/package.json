@@ -41,6 +41,6 @@
     "vite": "^5.2.8"
   },
   "peerDependencies": {
-    "vite": "5.x,6.x"
+    "vite": "5.x || 6.x"
   }
 }
