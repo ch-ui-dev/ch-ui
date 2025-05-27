@@ -16,6 +16,9 @@ export type PhysicalLayer<
 > = {
   conditions: Conditions<K>;
   series: Record<P, Partial<PhysicalSeries<K, S>>>;
+  definitions?: Partial<{
+    series: Record<string, S>;
+  }>;
   namespace?: string;
 };
 
@@ -51,6 +54,8 @@ export type FacetAnnotatedValues<V = number> = Map<
   V,
   { physical: ('values' | 'naming')[]; semantic: SememeAnnotation[] }
 >;
+
+type RequiresExtendsIfNotProvided<T> = T | (Partial<T> & { extends: string });
 
 /**
  * A group of statements within which to recursively nest a declaration block.
@@ -88,6 +93,10 @@ export type Series<V = number> = {
    * Whether to convert values to string directly or name them manually
    */
   naming?: 'toString' | Record<string, V>;
+  /**
+   * The key of a series defined in the `definitions` of an ancestor object.
+   */
+  extends?: string;
 };
 
 export type ResolvedNaming = Map<number | string, string> | 'toString';
@@ -95,30 +104,32 @@ export type ResolvedNaming = Map<number | string, string> | 'toString';
 /**
  * A series of values in the layer which are linear in nature, e.g. gaps.
  */
-export type LinearSeries = Series & {
-  /**
-   * The value of `b` in the equation `y = ax + b`
-   */
-  initial: number;
-  /**
-   * The value of `a` in the equation `y = ax + b`
-   */
-  slope: number;
-};
+export type LinearSeries = Series &
+  RequiresExtendsIfNotProvided<{
+    /**
+     * The value of `b` in the equation `y = ax + b`
+     */
+    initial: number;
+    /**
+     * The value of `a` in the equation `y = ax + b`
+     */
+    slope: number;
+  }>;
 
 /**
  * A series of values in the layer which are exponential in nature, e.g. type sizes.
  */
-export type ExponentialSeries = Series & {
-  /**
-   * The value of `a` in the equation `y = a b^x`
-   */
-  initial: number;
-  /**
-   * The value of `b` in the equation `y = a b^x`
-   */
-  base: number;
-};
+export type ExponentialSeries = Series &
+  RequiresExtendsIfNotProvided<{
+    /**
+     * The value of `a` in the equation `y = a b^x`
+     */
+    initial: number;
+    /**
+     * The value of `b` in the equation `y = a b^x`
+     */
+    base: number;
+  }>;
 
 export type HelicalArcValue = AlphaLuminosity;
 
@@ -126,9 +137,11 @@ export type HelicalArcValue = AlphaLuminosity;
  * A series of values in the layer which lay on a helical arc, the shape of a color palette.
  */
 export type HelicalArcSeries = Series<HelicalArcValue> &
-  HelicalArcConfig & {
-    physicalValueRelation: AccompanyingSeries;
-  };
+  RequiresExtendsIfNotProvided<
+    HelicalArcConfig & {
+      physicalValueRelation: AccompanyingSeries;
+    }
+  >;
 
 /**
  * Options for audit functions.
