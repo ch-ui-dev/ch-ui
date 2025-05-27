@@ -9,6 +9,13 @@ export type PhysicalSeries<
   S extends Series<any> = Series,
 > = Partial<Record<K, S>>;
 
+export type Definitions<S extends Series<any> = Series> = Partial<{
+  series: Record<string, S>;
+  [key: string]: Record<string, any>;
+}>;
+
+export type InvariantCheck = (resolvedDefinition: any) => boolean;
+
 export type PhysicalLayer<
   K extends string = string,
   S extends Series<any> = Series,
@@ -16,9 +23,7 @@ export type PhysicalLayer<
 > = {
   conditions: Conditions<K>;
   series: Record<P, Partial<PhysicalSeries<K, S>>>;
-  definitions?: Partial<{
-    series: Record<string, S>;
-  }>;
+  definitions?: Definitions<S>;
   namespace?: string;
 };
 
@@ -69,7 +74,19 @@ export type Conditions<K extends string = string> = Partial<
   Record<K, Statements>
 >;
 
-export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
+export type AccompanyingSeries = Pick<
+  LinearSeries,
+  'slope' | 'initial' | 'extends'
+> &
+  RequiresExtendsIfNotProvided<AccompanyingSeriesConfig>;
+
+export type ResolvedAccompanyingSeries = Pick<
+  ResolvedLinearSeries,
+  'slope' | 'initial'
+> &
+  AccompanyingSeriesConfig;
+
+type AccompanyingSeriesConfig = {
   method: 'floor' | 'ceil' | 'round';
 };
 
@@ -105,31 +122,39 @@ export type ResolvedNaming = Map<number | string, string> | 'toString';
  * A series of values in the layer which are linear in nature, e.g. gaps.
  */
 export type LinearSeries = Series &
-  RequiresExtendsIfNotProvided<{
-    /**
-     * The value of `b` in the equation `y = ax + b`
-     */
-    initial: number;
-    /**
-     * The value of `a` in the equation `y = ax + b`
-     */
-    slope: number;
-  }>;
+  RequiresExtendsIfNotProvided<LinearSeriesConfig>;
+
+export type ResolvedLinearSeries = Series & LinearSeriesConfig;
+
+type LinearSeriesConfig = {
+  /**
+   * The value of `b` in the equation `y = ax + b`
+   */
+  initial: number;
+  /**
+   * The value of `a` in the equation `y = ax + b`
+   */
+  slope: number;
+};
 
 /**
  * A series of values in the layer which are exponential in nature, e.g. type sizes.
  */
 export type ExponentialSeries = Series &
-  RequiresExtendsIfNotProvided<{
-    /**
-     * The value of `a` in the equation `y = a b^x`
-     */
-    initial: number;
-    /**
-     * The value of `b` in the equation `y = a b^x`
-     */
-    base: number;
-  }>;
+  RequiresExtendsIfNotProvided<ExponentialSeriesConfig>;
+
+export type ResolvedExponentialSeries = Series & ExponentialSeriesConfig;
+
+type ExponentialSeriesConfig = {
+  /**
+   * The value of `a` in the equation `y = a b^x`
+   */
+  initial: number;
+  /**
+   * The value of `b` in the equation `y = a b^x`
+   */
+  base: number;
+};
 
 export type HelicalArcValue = AlphaLuminosity;
 
@@ -137,11 +162,14 @@ export type HelicalArcValue = AlphaLuminosity;
  * A series of values in the layer which lay on a helical arc, the shape of a color palette.
  */
 export type HelicalArcSeries = Series<HelicalArcValue> &
-  RequiresExtendsIfNotProvided<
-    HelicalArcConfig & {
-      physicalValueRelation: AccompanyingSeries;
-    }
-  >;
+  RequiresExtendsIfNotProvided<HelicalArcSeriesConfig>;
+
+export type ResolvedHelicalArcSeries = HelicalArcSeries &
+  HelicalArcSeriesConfig;
+
+type HelicalArcSeriesConfig = HelicalArcConfig & {
+  physicalValueRelation: AccompanyingSeries;
+};
 
 /**
  * Options for audit functions.
@@ -196,6 +224,7 @@ export type RenderTokensParams<S extends Series<any> = Series> = {
   namespace?: string;
   resolvedNaming: ResolvedNaming;
   values: ValueOfSeries<S>[];
+  definitions?: Definitions<S>;
 };
 
 /**

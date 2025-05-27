@@ -33,9 +33,11 @@
   ],
   "dependencies": {
     "@ch-ui/colors": "workspace:^",
+    "invariant": "^2.2.4",
     "postcss": "^8.4.38"
   },
   "devDependencies": {
+    "@types/invariant": "^2.2.37",
     "@types/node": "^20.12.3",
     "ts-node": "^10.9.2"
   }

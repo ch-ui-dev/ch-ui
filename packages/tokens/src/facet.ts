@@ -14,6 +14,7 @@ import {
 import {
   AliasLayer,
   AuditOptions,
+  Definitions,
   PhysicalLayer,
   SemanticLayer,
   SemanticValues,
@@ -36,9 +37,7 @@ export type Facet<
   physical: L;
   semantic?: SemanticLayer<K, P, ValueOfSeries<L['series']>, Q>;
   alias?: AliasLayer<Q>;
-  definitions?: Partial<{
-    series: Record<string, ValueOfSeries<L['series']>>;
-  }>;
+  definitions?: Definitions<Series<ValueOfSeries<L['series']>>>;
 };
 
 export const isColorPhysicalLayer = (

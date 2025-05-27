@@ -8,14 +8,26 @@ import {
   SemanticValues,
   AuditTokens,
   RenderTokens,
+  ResolvedExponentialSeries,
 } from '../types';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue } from '../util';
 import { auditPhysicalLayer } from './audit-physical-layer';
+import invariant from 'invariant';
+import { resolveAccompanyingSeries } from '../util/resolve-definitions';
 
 export type ExponentialPhysicalLayer<S extends string = string> =
   //
   PhysicalLayer<S, ExponentialSeries>;
+
+const exponentialSeriesCheck = (
+  resolvedSeries: any,
+): resolvedSeries is ExponentialSeries => {
+  return (
+    Number.isFinite(resolvedSeries.initial) &&
+    Number.isFinite(resolvedSeries.base)
+  );
+};
 
 const exponentialNamedResolvedValues = ({
   series,
@@ -23,18 +35,23 @@ const exponentialNamedResolvedValues = ({
   namespace,
   values = [],
   resolvedNaming,
-}: Omit<RenderTokensParams<ExponentialSeries>, 'conditionId'>) => {
+  definitions = {},
+}: Omit<RenderTokensParams<ResolvedExponentialSeries>, 'conditionId'>) => {
   const { initial, base, snapTo } = series;
+  invariant(
+    initial && base,
+    `Series ${seriesId} values could not be resolved.`,
+  );
   return values
     .map((value) => {
       const preSnappedValue = initial * Math.pow(base, value);
       if (snapTo) {
+        const { initial, slope, method } = resolveAccompanyingSeries(
+          snapTo,
+          definitions,
+        );
         return (
-          snapTo.initial +
-          snapTo.slope *
-            Math[snapTo.method](
-              (preSnappedValue - snapTo.initial) / snapTo.slope,
-            )
+          initial + slope * Math[method]((preSnappedValue - initial) / slope)
         );
       } else {
         return preSnappedValue;
@@ -54,9 +71,9 @@ const exponentialNamedResolvedValues = ({
     });
 };
 
-export const renderExponentialTokens: RenderTokens<ExponentialSeries> = (
-  params,
-) =>
+export const renderExponentialTokens: RenderTokens<
+  ResolvedExponentialSeries
+> = (params) =>
   exponentialNamedResolvedValues(params).map(
     ({ resolvedValue, variableName }) => {
       return `${variableName}: ${resolvedValue.toFixed(3)}${
@@ -69,13 +86,13 @@ export const renderExponentialLayer = (
   layer: ExponentialPhysicalLayer,
   semanticValues?: SemanticValues,
 ): string =>
-  renderPhysicalLayer<ExponentialPhysicalLayer, ExponentialSeries>(
-    layer,
-    renderExponentialTokens,
-    semanticValues,
-  );
+  renderPhysicalLayer<
+    ExponentialPhysicalLayer,
+    ExponentialSeries,
+    ResolvedExponentialSeries
+  >(layer, renderExponentialTokens, exponentialSeriesCheck, semanticValues);
 
-export const auditExponentialTokens: AuditTokens<ExponentialSeries> = ({
+export const auditExponentialTokens: AuditTokens<ResolvedExponentialSeries> = ({
   values,
   ...params
 }) =>
@@ -94,7 +111,7 @@ export const auditExponentialLayer = (
   auditOptions: AuditOptions,
   semanticValues?: SemanticValues,
 ) =>
-  auditPhysicalLayer<ExponentialPhysicalLayer, ExponentialSeries>(
+  auditPhysicalLayer<ExponentialPhysicalLayer, ResolvedExponentialSeries>(
     layer,
     auditOptions,
     auditExponentialTokens,

@@ -16,12 +16,26 @@ import {
   AuditTokens,
   RenderTokensParams,
   RenderTokens,
+  ResolvedHelicalArcSeries,
+  Definitions,
 } from '../types';
 import { variableNameFromValue, physicalValueFromValueRelation } from '../util';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { auditPhysicalLayer } from './audit-physical-layer';
+import { resolveAccompanyingSeries } from '../util/resolve-definitions';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
+
+const helicalArcSeriesCheck = (
+  resolvedSeries: any,
+): resolvedSeries is ResolvedHelicalArcSeries => {
+  return (
+    Array.isArray(resolvedSeries.keyPoint) &&
+    Number.isFinite(resolvedSeries.lowerCp) &&
+    Number.isFinite(resolvedSeries.upperCp) &&
+    Number.isFinite(resolvedSeries.torsion)
+  );
+};
 
 const helicalArcNamedVectors = ({
   series,
@@ -29,11 +43,16 @@ const helicalArcNamedVectors = ({
   namespace,
   values = [],
   resolvedNaming,
-}: Omit<RenderTokensParams<HelicalArcSeries>, 'conditionId'>) =>
+  definitions = {},
+}: Omit<RenderTokensParams<ResolvedHelicalArcSeries>, 'conditionId'>) =>
   getOklabVectorsFromLuminosities(
     values.map((value) => {
       const [l] = parseAlphaLuminosity(value);
-      return physicalValueFromValueRelation(l, series.physicalValueRelation);
+      const resolvedPhysicalValueRelation = resolveAccompanyingSeries(
+        series.physicalValueRelation,
+        definitions as Definitions,
+      );
+      return physicalValueFromValueRelation(l, resolvedPhysicalValueRelation);
     }),
     constellationFromPalette(series),
   ).map((oklabVector, index) => {
@@ -49,7 +68,7 @@ const helicalArcNamedVectors = ({
     };
   });
 
-export const renderHelicalArcTokens: RenderTokens<HelicalArcSeries> = (
+export const renderHelicalArcTokens: RenderTokens<ResolvedHelicalArcSeries> = (
   params,
 ) =>
   helicalArcNamedVectors(params).map(({ oklabVector, value, variableName }) => {
@@ -65,13 +84,13 @@ export const renderPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
   semanticValues?: SemanticValues,
 ): string =>
-  renderPhysicalLayer<ColorsPhysicalLayer, HelicalArcSeries>(
-    layer,
-    renderHelicalArcTokens,
-    semanticValues,
-  );
+  renderPhysicalLayer<
+    ColorsPhysicalLayer,
+    HelicalArcSeries,
+    ResolvedHelicalArcSeries
+  >(layer, renderHelicalArcTokens, helicalArcSeriesCheck, semanticValues);
 
-export const auditHelicalArcTokens: AuditTokens<HelicalArcSeries> = ({
+export const auditHelicalArcTokens: AuditTokens<ResolvedHelicalArcSeries> = ({
   values,
   ...params
 }) =>
@@ -90,7 +109,7 @@ export const auditPhysicalColorLayer = (
   auditOptions: AuditOptions,
   semanticValues?: SemanticValues,
 ) =>
-  auditPhysicalLayer<ColorsPhysicalLayer, HelicalArcSeries>(
+  auditPhysicalLayer<ColorsPhysicalLayer, ResolvedHelicalArcSeries>(
     layer,
     auditOptions,
     auditHelicalArcTokens,

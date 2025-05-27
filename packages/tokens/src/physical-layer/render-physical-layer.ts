@@ -1,14 +1,23 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { PhysicalLayer, RenderTokens, SemanticValues, Series } from '../types';
+import {
+  InvariantCheck,
+  PhysicalLayer,
+  RenderTokens,
+  SemanticValues,
+  Series,
+} from '../types';
 import { renderCondition, resolveNaming, seriesValues } from '../util';
+import { resolveDefinition } from '../util/resolve-definitions';
 
 export const renderPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,
   S extends Series<any>,
+  ResolvedSeries extends S = S,
 >(
-  { conditions, series, namespace = '' }: L,
-  renderTokens: RenderTokens<S>,
+  { conditions, series, definitions = {}, namespace = '' }: L,
+  renderTokens: RenderTokens<ResolvedSeries>,
+  invariantCheck: InvariantCheck,
   semanticValues?: SemanticValues,
 ) => {
   return `${Object.entries(conditions)
@@ -21,10 +30,16 @@ export const renderPhysicalLayer = <
             const values = Array.from(
               seriesValues(series!, semanticValues?.[seriesId]).keys(),
             );
+            const resolvedSeries = resolveDefinition<S, ResolvedSeries>(
+              series as S,
+              'series',
+              invariantCheck,
+              definitions,
+            );
             return renderTokens({
               seriesId,
               conditionId,
-              series: series as S,
+              series: resolvedSeries,
               namespace,
               resolvedNaming,
               values,
