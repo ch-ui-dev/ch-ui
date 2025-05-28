@@ -20,7 +20,7 @@ export const renderPhysicalLayer = <
   S extends Series<any>,
   ResolvedSeries extends S = S,
 >(
-  { conditions, series, definitions = {}, namespace = '' }: L,
+  { conditions, series, namespace = '', definitions: layerDefinitions = {} }: L,
   renderTokens: RenderTokens<ResolvedSeries>,
   invariantCheck: InvariantCheck,
   semanticValues?: SemanticValues,
@@ -32,16 +32,16 @@ export const renderPhysicalLayer = <
         Object.entries(series)
           .filter(([_, series]) => series[conditionId])
           .map(([seriesId, { [conditionId]: series }]) => {
-            const resolvedNaming = resolveNaming(series?.naming);
-            const values = Array.from(
-              seriesValues(series!, semanticValues?.[seriesId]).keys(),
-            );
             const resolvedSeries = resolveDefinition<S, ResolvedSeries>(
               series as S,
               'series',
               invariantCheck,
-              definitions,
+              layerDefinitions,
               ...ancestorDefinitions,
+            );
+            const resolvedNaming = resolveNaming(resolvedSeries.naming);
+            const values = Array.from(
+              seriesValues(resolvedSeries, semanticValues?.[seriesId]).keys(),
             );
             return renderTokens(
               {
@@ -52,7 +52,7 @@ export const renderPhysicalLayer = <
                 resolvedNaming,
                 values,
               },
-              definitions,
+              layerDefinitions,
               ...ancestorDefinitions,
             ).join('\n');
           })

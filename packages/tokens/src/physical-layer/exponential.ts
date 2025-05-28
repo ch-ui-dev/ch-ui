@@ -101,14 +101,17 @@ export const renderExponentialLayer = (
     ...definitions,
   );
 
-export const auditExponentialTokens: AuditTokens<ResolvedExponentialSeries> = ({
-  values,
-  ...params
-}) =>
-  exponentialNamedResolvedValues({
-    ...params,
-    values: Array.from(values.keys()),
-  }).map(({ value, variableName }) => ({
+export const auditExponentialTokens: AuditTokens<ResolvedExponentialSeries> = (
+  { values, ...params },
+  ...definitions: Definitions[]
+) =>
+  exponentialNamedResolvedValues(
+    {
+      ...params,
+      values: Array.from(values.keys()),
+    },
+    ...definitions,
+  ).map(({ value, variableName }) => ({
     variableName,
     value,
     seriesId: params.seriesId,
@@ -119,10 +122,12 @@ export const auditExponentialLayer = (
   layer: ExponentialPhysicalLayer,
   auditOptions: AuditOptions,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ) =>
   auditPhysicalLayer<ExponentialPhysicalLayer, ResolvedExponentialSeries>(
     layer,
     auditOptions,
     auditExponentialTokens,
     semanticValues,
+    ...definitions,
   );

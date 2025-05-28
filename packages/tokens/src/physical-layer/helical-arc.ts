@@ -105,14 +105,17 @@ export const renderPhysicalColorLayer = (
     ...definitions,
   );
 
-export const auditHelicalArcTokens: AuditTokens<ResolvedHelicalArcSeries> = ({
-  values,
-  ...params
-}) =>
-  helicalArcNamedVectors({
-    ...params,
-    values: Array.from(values.keys()),
-  }).map(({ value, variableName }) => ({
+export const auditHelicalArcTokens: AuditTokens<ResolvedHelicalArcSeries> = (
+  { values, ...params },
+  ...definitions: Definitions[]
+) =>
+  helicalArcNamedVectors(
+    {
+      ...params,
+      values: Array.from(values.keys()),
+    },
+    ...definitions,
+  ).map(({ value, variableName }) => ({
     variableName,
     value,
     seriesId: params.seriesId,
@@ -123,12 +126,14 @@ export const auditPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
   auditOptions: AuditOptions,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ) =>
   auditPhysicalLayer<ColorsPhysicalLayer, ResolvedHelicalArcSeries>(
     layer,
     auditOptions,
     auditHelicalArcTokens,
     semanticValues,
+    ...definitions,
   );
 
 export const constellationFromPalette = (

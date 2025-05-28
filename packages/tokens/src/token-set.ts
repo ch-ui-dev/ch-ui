@@ -41,6 +41,7 @@ export const defaultColorDefs = {
 };
 
 export const defaultPhysicalColors = {
+  definitions: defaultColorDefs,
   conditions: {
     srgb: [':root'],
     p3: ['@media (color-gamut: p3)', ':root'],
@@ -195,7 +196,6 @@ export const defaultTokenSet = {
   colors: {
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
-    definitions: defaultColorDefs,
   },
   fontSizes: {
     physical: {

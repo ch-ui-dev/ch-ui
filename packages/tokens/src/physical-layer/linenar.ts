@@ -80,14 +80,17 @@ export const renderLinearLayer = (
     ...definitions,
   );
 
-export const auditLinearTokens: AuditTokens<ResolvedLinearSeries> = ({
-  values,
-  ...params
-}) =>
-  linearNamedResolvedValues({
-    ...params,
-    values: Array.from(values.keys()),
-  }).map(({ value, variableName }) => ({
+export const auditLinearTokens: AuditTokens<ResolvedLinearSeries> = (
+  { values, ...params },
+  ...definitions: Definitions[]
+) =>
+  linearNamedResolvedValues(
+    {
+      ...params,
+      values: Array.from(values.keys()),
+    },
+    ...definitions,
+  ).map(({ value, variableName }) => ({
     variableName,
     value,
     seriesId: params.seriesId,
@@ -98,10 +101,12 @@ export const auditLinearLayer = (
   layer: LinearPhysicalLayer,
   auditOptions: AuditOptions,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ) =>
   auditPhysicalLayer<LinearPhysicalLayer, ResolvedLinearSeries>(
     layer,
     auditOptions,
     auditLinearTokens,
     semanticValues,
+    ...definitions,
   );

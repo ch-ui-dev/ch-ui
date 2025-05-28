@@ -212,6 +212,7 @@ export type AuditTokensParams<S extends Series<any> = Series> = {
  */
 export type AuditTokens<S extends Series<any> = Series> = (
   auditProps: AuditTokensParams<S>,
+  ...definitions: Definitions<Series<any>>[]
 ) => TokenAudit<S>[];
 
 /**
