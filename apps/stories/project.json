@@ -9,28 +9,11 @@
           "quiet": true
         }
       },
-      "dependsOn": [
-        "^build",
-        "elements:build-watch"
-      ],
+      "dependsOn": ["^build", "elements:build-watch"],
       "executor": "@nx/storybook:storybook",
       "options": {
         "configDir": "apps/stories/all-stories"
       }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "format": "unix",
-        "lintFilePatterns": [
-          "apps/stories/**/*.{ts,mts}",
-          "apps/stories/.storybook-shared/*.ts"
-        ],
-        "quiet": true
-      },
-      "outputs": [
-        "{options.outputFile}"
-      ]
     }
   }
 }

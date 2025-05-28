@@ -22,15 +22,6 @@
       },
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"]
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "format": "unix",
-        "lintFilePatterns": ["packages/colors/src/**/*.{js,jsx,ts,tsx}"],
-        "quiet": true
-      },
-      "outputs": ["{options.outputFile}"]
     }
   }
 }

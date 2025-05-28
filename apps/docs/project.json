@@ -10,15 +10,6 @@
     "serve": {
       "command": "cd apps/docs && pnpm run astro:serve",
       "dependsOn": ["^build", "elements:build-watch"]
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "format": "unix",
-        "lintFilePatterns": ["apps/docs/**/*.{ts,astro}"],
-        "quiet": true
-      },
-      "outputs": ["{options.outputFile}"]
     }
   }
 }
