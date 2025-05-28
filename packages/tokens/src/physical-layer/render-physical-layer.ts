@@ -1,14 +1,19 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import {
+  Definitions,
   InvariantCheck,
   PhysicalLayer,
   RenderTokens,
   SemanticValues,
   Series,
 } from '../types';
-import { renderCondition, resolveNaming, seriesValues } from '../util';
-import { resolveDefinition } from '../util/resolve-definitions';
+import {
+  renderCondition,
+  resolveNaming,
+  seriesValues,
+  resolveDefinition,
+} from '../util';
 
 export const renderPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,
@@ -19,6 +24,7 @@ export const renderPhysicalLayer = <
   renderTokens: RenderTokens<ResolvedSeries>,
   invariantCheck: InvariantCheck,
   semanticValues?: SemanticValues,
+  ...ancestorDefinitions: Definitions[]
 ) => {
   return `${Object.entries(conditions)
     .map(([conditionId, statements]) =>
@@ -35,15 +41,20 @@ export const renderPhysicalLayer = <
               'series',
               invariantCheck,
               definitions,
+              ...ancestorDefinitions,
             );
-            return renderTokens({
-              seriesId,
-              conditionId,
-              series: resolvedSeries,
-              namespace,
-              resolvedNaming,
-              values,
-            }).join('\n');
+            return renderTokens(
+              {
+                seriesId,
+                conditionId,
+                series: resolvedSeries,
+                namespace,
+                resolvedNaming,
+                values,
+              },
+              definitions,
+              ...ancestorDefinitions,
+            ).join('\n');
           })
           .join('\n\n'),
         0,

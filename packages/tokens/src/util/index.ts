@@ -2,3 +2,4 @@
 
 export * from './render-condition';
 export * from './series-values';
+export * from './resolve-definitions';

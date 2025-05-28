@@ -9,6 +9,7 @@ import {
   RenderTokens,
   AuditTokens,
   ResolvedLinearSeries,
+  Definitions,
 } from '../types';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue } from '../util';
@@ -27,13 +28,16 @@ const checkLinearSeries = (
   );
 };
 
-const linearNamedResolvedValues = ({
-  series,
-  seriesId,
-  namespace,
-  values = [],
-  resolvedNaming,
-}: Omit<RenderTokensParams<ResolvedLinearSeries>, 'conditionId'>) => {
+const linearNamedResolvedValues = (
+  {
+    series,
+    seriesId,
+    namespace,
+    values = [],
+    resolvedNaming,
+  }: Omit<RenderTokensParams<ResolvedLinearSeries>, 'conditionId'>,
+  ...definitions: Definitions[]
+) => {
   const { initial, slope } = series;
   return values
     .map((value) => initial + slope * value)
@@ -53,20 +57,27 @@ const linearNamedResolvedValues = ({
 
 export const renderLinearTokens: RenderTokens<ResolvedLinearSeries> = (
   params,
+  ...definitions
 ) =>
-  linearNamedResolvedValues(params).map(({ variableName, resolvedValue }) => {
-    return `${variableName}: ${resolvedValue.toFixed(3)}${params.series.unit};`;
-  });
+  linearNamedResolvedValues(params, ...definitions).map(
+    ({ variableName, resolvedValue }) => {
+      return `${variableName}: ${resolvedValue.toFixed(3)}${
+        params.series.unit
+      };`;
+    },
+  );
 
 export const renderLinearLayer = (
   layer: LinearPhysicalLayer,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ): string =>
   renderPhysicalLayer<LinearPhysicalLayer, LinearSeries, ResolvedLinearSeries>(
     layer,
     renderLinearTokens,
     checkLinearSeries,
     semanticValues,
+    ...definitions,
   );
 
 export const auditLinearTokens: AuditTokens<ResolvedLinearSeries> = ({

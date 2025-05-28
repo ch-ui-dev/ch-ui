@@ -6,6 +6,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeFile, mkdir } from 'node:fs/promises';
 import {
+  defaultColorDefs,
   defaultPhysicalColors,
   defaultSemanticColors,
   renderFacet,
@@ -18,6 +19,7 @@ test('physical, semantic, and alias color tokens are generated as expected', asy
   const dir = resolve(__dirname, '../tmp');
   await mkdir(resolve(dir), { recursive: true });
   const tokens = renderFacet({
+    definitions: defaultColorDefs,
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
     alias: {

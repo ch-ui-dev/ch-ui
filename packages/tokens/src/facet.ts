@@ -21,7 +21,7 @@ import {
   Series,
   ValueOfSeries,
 } from './types';
-import { facetSemanticValues } from './util';
+import { facetSemanticValues, resolveDefinition } from './util';
 import { renderSemanticLayer } from './semantic-layer';
 import { renderAliasLayer } from './alias-layer';
 
@@ -63,22 +63,46 @@ export const isLinearLayer = (
 
 export const getFirstSeriesInPhysicalLayer = (
   layer: PhysicalLayer<string, Series<any>>,
+  ...definitions: Definitions[]
 ): Series => {
   const seriesIds = Object.keys(layer.series);
   const conditionIds = Object.keys(layer.series[seriesIds[0]]);
-  return layer.series[seriesIds[0]][conditionIds[0]]!;
+  const series = layer.series[seriesIds[0]][conditionIds[0]]!;
+  const resolvedSeries = resolveDefinition(
+    series,
+    'series',
+    () => true,
+    ...definitions,
+  );
+  return resolvedSeries;
 };
 
-export const renderFacet = ({ physical, semantic, alias }: Facet) => {
+export const renderFacet = ({
+  physical,
+  semantic,
+  alias,
+  definitions = {},
+}: Facet) => {
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
-  const firstSeries = getFirstSeriesInPhysicalLayer(physical);
+  const firstSeries = getFirstSeriesInPhysicalLayer(
+    physical,
+    definitions as Definitions,
+  );
   return [
     isColorPhysicalLayer(physical, firstSeries)
-      ? renderPhysicalColorLayer(physical, semanticValues)
+      ? renderPhysicalColorLayer(
+          physical,
+          semanticValues,
+          definitions as Definitions,
+        )
       : isExponentialLayer(physical, firstSeries)
-      ? renderExponentialLayer(physical, semanticValues)
+      ? renderExponentialLayer(
+          physical,
+          semanticValues,
+          definitions as Definitions,
+        )
       : isLinearLayer(physical, firstSeries)
-      ? renderLinearLayer(physical, semanticValues)
+      ? renderLinearLayer(physical, semanticValues, definitions as Definitions)
       : '/* Invalid physical layer */',
     ...(semantic ? [renderSemanticLayer(semantic)] : []),
     ...(alias ? [renderAliasLayer(alias)] : []),

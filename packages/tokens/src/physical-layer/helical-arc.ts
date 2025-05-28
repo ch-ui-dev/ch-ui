@@ -19,10 +19,13 @@ import {
   ResolvedHelicalArcSeries,
   Definitions,
 } from '../types';
-import { variableNameFromValue, physicalValueFromValueRelation } from '../util';
+import {
+  variableNameFromValue,
+  physicalValueFromValueRelation,
+  resolveAccompanyingSeries,
+} from '../util';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { auditPhysicalLayer } from './audit-physical-layer';
-import { resolveAccompanyingSeries } from '../util/resolve-definitions';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
@@ -37,20 +40,22 @@ const helicalArcSeriesCheck = (
   );
 };
 
-const helicalArcNamedVectors = ({
-  series,
-  seriesId,
-  namespace,
-  values = [],
-  resolvedNaming,
-  definitions = {},
-}: Omit<RenderTokensParams<ResolvedHelicalArcSeries>, 'conditionId'>) =>
+const helicalArcNamedVectors = (
+  {
+    series,
+    seriesId,
+    namespace,
+    values = [],
+    resolvedNaming,
+  }: Omit<RenderTokensParams<ResolvedHelicalArcSeries>, 'conditionId'>,
+  ...definitions: Definitions[]
+) =>
   getOklabVectorsFromLuminosities(
     values.map((value) => {
       const [l] = parseAlphaLuminosity(value);
       const resolvedPhysicalValueRelation = resolveAccompanyingSeries(
         series.physicalValueRelation,
-        definitions as Definitions,
+        ...definitions,
       );
       return physicalValueFromValueRelation(l, resolvedPhysicalValueRelation);
     }),
@@ -70,25 +75,35 @@ const helicalArcNamedVectors = ({
 
 export const renderHelicalArcTokens: RenderTokens<ResolvedHelicalArcSeries> = (
   params,
+  ...definitions
 ) =>
-  helicalArcNamedVectors(params).map(({ oklabVector, value, variableName }) => {
-    const [_, alpha] = parseAlphaLuminosity(value);
-    return `${variableName}: ${oklabVectorToValue(
-      oklabVector,
-      params.conditionId as Gamut,
-      alpha,
-    )};`;
-  });
+  helicalArcNamedVectors(params, ...definitions).map(
+    ({ oklabVector, value, variableName }) => {
+      const [_, alpha] = parseAlphaLuminosity(value);
+      return `${variableName}: ${oklabVectorToValue(
+        oklabVector,
+        params.conditionId as Gamut,
+        alpha,
+      )};`;
+    },
+  );
 
 export const renderPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ): string =>
   renderPhysicalLayer<
     ColorsPhysicalLayer,
     HelicalArcSeries,
     ResolvedHelicalArcSeries
-  >(layer, renderHelicalArcTokens, helicalArcSeriesCheck, semanticValues);
+  >(
+    layer,
+    renderHelicalArcTokens,
+    helicalArcSeriesCheck,
+    semanticValues,
+    ...definitions,
+  );
 
 export const auditHelicalArcTokens: AuditTokens<ResolvedHelicalArcSeries> = ({
   values,

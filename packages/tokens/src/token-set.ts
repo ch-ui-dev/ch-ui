@@ -2,11 +2,10 @@
 
 import { ColorsPhysicalLayer } from './physical-layer';
 import {
-  AccompanyingSeries,
   Conditions,
   ExponentialSeries,
-  HelicalArcSeries,
   LinearSeries,
+  ResolvedHelicalArcSeries,
   SemanticLayer,
 } from './types';
 import { Facet, renderFacet } from './facet';
@@ -15,27 +14,31 @@ export type TokenSet = Record<string, Facet>;
 
 // Default token set values
 
-const emissiveRelation = {
-  initial: 0,
-  slope: 1000,
-  method: 'floor',
-} satisfies AccompanyingSeries;
-
-const neutralArc = {
-  keyPoint: [0.47, 0.014, 256],
-  lowerCp: 0.8,
-  upperCp: 0.88,
-  torsion: 0,
-  physicalValueRelation: emissiveRelation,
-} satisfies HelicalArcSeries;
-
-const accentArc = {
-  keyPoint: [0.43, 0.4, 256],
-  lowerCp: 1,
-  upperCp: 1,
-  torsion: -12,
-  physicalValueRelation: emissiveRelation,
-} satisfies HelicalArcSeries;
+export const defaultColorDefs = {
+  accompanyingSeries: {
+    emissiveRelation: {
+      initial: 0,
+      slope: 1000,
+      method: 'floor',
+    },
+  },
+  series: {
+    neutralArc: {
+      keyPoint: [0.47, 0.014, 256],
+      lowerCp: 0.8,
+      upperCp: 0.88,
+      torsion: 0,
+      physicalValueRelation: { extends: 'emissiveRelation' },
+    } as ResolvedHelicalArcSeries,
+    accentArc: {
+      keyPoint: [0.43, 0.4, 256],
+      lowerCp: 1,
+      upperCp: 1,
+      torsion: -12,
+      physicalValueRelation: { extends: 'emissiveRelation' },
+    } as ResolvedHelicalArcSeries,
+  },
+};
 
 export const defaultPhysicalColors = {
   conditions: {
@@ -45,14 +48,14 @@ export const defaultPhysicalColors = {
   },
   series: {
     neutral: {
-      srgb: neutralArc,
-      p3: neutralArc,
-      rec2020: neutralArc,
+      srgb: { extends: 'neutralArc' },
+      p3: { extends: 'neutralArc' },
+      rec2020: { extends: 'neutralArc' },
     },
     accent: {
-      srgb: accentArc,
-      p3: accentArc,
-      rec2020: accentArc,
+      srgb: { extends: 'accentArc' },
+      p3: { extends: 'accentArc' },
+      rec2020: { extends: 'accentArc' },
     },
   },
   namespace: 'ch-',
@@ -192,6 +195,7 @@ export const defaultTokenSet = {
   colors: {
     physical: defaultPhysicalColors,
     semantic: defaultSemanticColors,
+    definitions: defaultColorDefs,
   },
   fontSizes: {
     physical: {

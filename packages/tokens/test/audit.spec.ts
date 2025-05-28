@@ -3,6 +3,7 @@
 import assert from 'node:assert';
 import test from 'node:test';
 import {
+  defaultColorDefs,
   defaultPhysicalColors,
   defaultSemanticColors,
   auditFacet,
@@ -11,6 +12,7 @@ import {
 test('audits are generated as expected', async () => {
   const colorAudit = auditFacet(
     {
+      definitions: defaultColorDefs,
       physical: defaultPhysicalColors,
       semantic: defaultSemanticColors,
     },

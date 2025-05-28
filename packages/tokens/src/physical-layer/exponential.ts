@@ -9,12 +9,12 @@ import {
   AuditTokens,
   RenderTokens,
   ResolvedExponentialSeries,
+  Definitions,
 } from '../types';
 import { renderPhysicalLayer } from './render-physical-layer';
-import { variableNameFromValue } from '../util';
+import { variableNameFromValue, resolveAccompanyingSeries } from '../util';
 import { auditPhysicalLayer } from './audit-physical-layer';
 import invariant from 'invariant';
-import { resolveAccompanyingSeries } from '../util/resolve-definitions';
 
 export type ExponentialPhysicalLayer<S extends string = string> =
   //
@@ -29,14 +29,16 @@ const exponentialSeriesCheck = (
   );
 };
 
-const exponentialNamedResolvedValues = ({
-  series,
-  seriesId,
-  namespace,
-  values = [],
-  resolvedNaming,
-  definitions = {},
-}: Omit<RenderTokensParams<ResolvedExponentialSeries>, 'conditionId'>) => {
+const exponentialNamedResolvedValues = (
+  {
+    series,
+    seriesId,
+    namespace,
+    values = [],
+    resolvedNaming,
+  }: Omit<RenderTokensParams<ResolvedExponentialSeries>, 'conditionId'>,
+  ...definitions: Definitions[]
+) => {
   const { initial, base, snapTo } = series;
   invariant(
     initial && base,
@@ -48,7 +50,7 @@ const exponentialNamedResolvedValues = ({
       if (snapTo) {
         const { initial, slope, method } = resolveAccompanyingSeries(
           snapTo,
-          definitions,
+          ...definitions,
         );
         return (
           initial + slope * Math[method]((preSnappedValue - initial) / slope)
@@ -73,8 +75,8 @@ const exponentialNamedResolvedValues = ({
 
 export const renderExponentialTokens: RenderTokens<
   ResolvedExponentialSeries
-> = (params) =>
-  exponentialNamedResolvedValues(params).map(
+> = (params, ...definitions) =>
+  exponentialNamedResolvedValues(params, ...definitions).map(
     ({ resolvedValue, variableName }) => {
       return `${variableName}: ${resolvedValue.toFixed(3)}${
         params.series.unit
@@ -85,12 +87,19 @@ export const renderExponentialTokens: RenderTokens<
 export const renderExponentialLayer = (
   layer: ExponentialPhysicalLayer,
   semanticValues?: SemanticValues,
+  ...definitions: Definitions[]
 ): string =>
   renderPhysicalLayer<
     ExponentialPhysicalLayer,
     ExponentialSeries,
     ResolvedExponentialSeries
-  >(layer, renderExponentialTokens, exponentialSeriesCheck, semanticValues);
+  >(
+    layer,
+    renderExponentialTokens,
+    exponentialSeriesCheck,
+    semanticValues,
+    ...definitions,
+  );
 
 export const auditExponentialTokens: AuditTokens<ResolvedExponentialSeries> = ({
   values,

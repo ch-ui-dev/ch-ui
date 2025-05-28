@@ -224,7 +224,6 @@ export type RenderTokensParams<S extends Series<any> = Series> = {
   namespace?: string;
   resolvedNaming: ResolvedNaming;
   values: ValueOfSeries<S>[];
-  definitions?: Definitions<S>;
 };
 
 /**
@@ -232,4 +231,5 @@ export type RenderTokensParams<S extends Series<any> = Series> = {
  */
 export type RenderTokens<S extends Series<any> = Series> = (
   renderProps: RenderTokensParams<S>,
+  ...definitions: Definitions<Series<any>>[]
 ) => string[];
