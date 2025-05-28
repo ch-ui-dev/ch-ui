@@ -3,8 +3,12 @@
 import assert from 'node:assert';
 import test from 'node:test';
 import { defaultTokenSet, renderFacet } from '../src';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+
+// @ts-ignore
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('typography tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');
