@@ -11,7 +11,6 @@
     "preBuild": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
-        "external": ["colorjs"],
         "main": "{projectRoot}/src/index.ts",
         "outputPath": "{projectRoot}/dist",
         "tsConfig": "{projectRoot}/tsconfig.json",
