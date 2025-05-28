@@ -12,11 +12,13 @@ import {
   SemanticLayer,
   SemanticValues,
   resolveNaming,
+  resolveDefinition,
   seriesValues,
   variableNameFromValue,
   nameFromValue,
   Series,
   AliasLayer,
+  Definitions,
 } from '@ch-ui/tokens';
 
 type TwKey = keyof TwTheme;
@@ -38,19 +40,32 @@ const defaultAdapterConfig = {} satisfies TailwindAdapterConfig;
 
 const renderPhysicalMappings = (
   config: TailwindAdapterFacet,
-  { conditions, series, namespace }: PhysicalLayer<string, Series<any>>,
+  {
+    conditions,
+    series,
+    namespace,
+    definitions: layerDefinitions = {},
+  }: PhysicalLayer<string, Series<any>>,
   semanticValues?: SemanticValues,
+  ...ancestorDefinitions: Definitions[]
 ): Mapping =>
   Object.entries(conditions).reduce(
     (acc: Mapping, [conditionId, _statements]) =>
       Object.entries(series).reduce(
         (acc: Mapping, [seriesId, { [conditionId]: series }]) => {
-          const resolvedNaming = resolveNaming(series?.naming);
+          const resolvedSeries = resolveDefinition<Series<any>, Series<any>>(
+            series!,
+            'series',
+            () => true,
+            layerDefinitions,
+            ...ancestorDefinitions,
+          );
+          const resolvedNaming = resolveNaming(resolvedSeries.naming);
           const tokenization = config.tokenization ?? 'keep-series';
           const separator = config.seriesValueSeparator ?? '-';
           if (tokenization === 'recursive') {
             acc[seriesId] = Array.from(
-              seriesValues(series!, semanticValues?.[seriesId]).keys(),
+              seriesValues(resolvedSeries, semanticValues?.[seriesId]).keys(),
             ).reduce((acc: Record<string, string>, value) => {
               acc[
                 `${nameFromValue(value, resolvedNaming)}`
@@ -138,12 +153,17 @@ const renderAliasMappings = (
 
 const renderTailwindFacet = (
   config: TailwindAdapterFacet,
-  { physical, semantic, alias }: Facet,
+  { physical, semantic, alias, definitions: facetDefinitions = {} }: Facet,
 ): Mapping => {
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
   // TODO(thure): Need case(s) for Tailwind’s `fontSize`.
   return {
-    ...renderPhysicalMappings(config, physical, semanticValues),
+    ...renderPhysicalMappings(
+      config,
+      physical,
+      semanticValues,
+      facetDefinitions as Definitions,
+    ),
     ...renderSemanticMappings(config, semantic as SemanticLayer),
     ...renderAliasMappings(config, alias),
   };
