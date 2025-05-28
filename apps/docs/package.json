@@ -19,20 +19,18 @@
     "@ch-ui/vite-plugin-icons": "workspace:*",
     "@ch-ui/vite-plugin-tokens": "workspace:*",
     "@nanostores/persistent": "^0.10.1",
-    "astro": "^4.8.7",
-    "lodash.get": "^4.4.2",
-    "lodash.merge": "^4.6.2",
-    "lodash.set": "^4.3.2",
+    "astro": "4.x",
+    "lodash.merge": "4.x",
+    "lodash.set": "4.x",
     "main-thread-scheduling": "^14.2.0",
     "nanostores": "^0.10.3"
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.8.0",
-    "@types/lodash.get": "^4.4.9",
-    "@types/lodash.merge": "^4.6.9",
-    "@types/lodash.set": "^4.3.9",
+    "@types/lodash.merge": "4.x",
+    "@types/lodash.set": "4.x",
     "@types/node": "^20.12.3",
-    "vite": "^5.2.8"
+    "vite": "6.x"
   },
   "scripts": {
     "astro:build": "astro build",

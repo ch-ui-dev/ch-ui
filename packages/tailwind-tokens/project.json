@@ -35,7 +35,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "command": "cd packages/tailwind-tokens && ts-node ./test/sanity.spec.ts"
+      "command": "cd packages/tailwind-tokens && tsx ./test/sanity.spec.ts"
     }
   }
 }

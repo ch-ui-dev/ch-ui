@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/node": "^20.12.3",
     "postcss": "^8.4.38",
-    "vite": "^5.2.8"
+    "vite": "6.x"
   },
   "peerDependencies": {
     "postcss": "8.x",

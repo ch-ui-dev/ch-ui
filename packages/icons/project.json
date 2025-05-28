@@ -33,7 +33,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "command": "cd packages/icons && ts-node ./test/sanity.spec.ts"
+      "command": "cd packages/icons && tsx ./test/sanity.spec.ts"
     }
   }
 }
