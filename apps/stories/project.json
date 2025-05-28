@@ -14,6 +14,11 @@
       "options": {
         "configDir": "apps/stories/all-stories"
       }
+    },
+    "lint": {
+      "options": {
+        "lintFilePatterns": ["{projectRoot}/all-stories/**/*.{ts,mts}"]
+      }
     }
   }
 }

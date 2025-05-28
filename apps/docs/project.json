@@ -11,5 +11,6 @@
       "command": "cd apps/docs && pnpm run astro:serve",
       "dependsOn": ["^build", "elements:build-watch"]
     }
-  }
+  },
+  "lint": {}
 }
