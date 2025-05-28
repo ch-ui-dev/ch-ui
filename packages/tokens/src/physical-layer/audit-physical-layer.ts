@@ -3,35 +3,48 @@
 import {
   AuditOptions,
   AuditTokens,
+  Definitions,
   PhysicalLayer,
   SemanticValues,
   Series,
   TokenAudit,
 } from '../types';
-import { resolveNaming, seriesValues } from '../util';
+import { resolveDefinition, resolveNaming, seriesValues } from '../util';
 
 export const auditPhysicalLayer = <
   L extends PhysicalLayer<string, Series<any>>,
   S extends Series<any>,
 >(
-  { series, namespace = '' }: L,
+  { series, namespace = '', definitions: layerDefinitions = {} }: L,
   { condition }: AuditOptions,
   auditTokens: AuditTokens<S>,
   semanticValues?: SemanticValues,
+  ...ancestorDefinitions: Definitions[]
 ): Record<string, TokenAudit[]> => {
   return Object.fromEntries(
     Object.entries(series).map(([seriesId, { [condition]: series }]) => {
-      const resolvedNaming = resolveNaming(series?.naming);
-      const values = seriesValues(series!, semanticValues?.[seriesId]);
+      const resolvedSeries = resolveDefinition<S, S>(
+        series as S,
+        'series',
+        () => true,
+        layerDefinitions,
+        ...ancestorDefinitions,
+      );
+      const resolvedNaming = resolveNaming(resolvedSeries.naming);
+      const values = seriesValues(resolvedSeries, semanticValues?.[seriesId]);
       return [
         seriesId,
-        auditTokens({
-          seriesId,
-          series: series as S,
-          namespace,
-          resolvedNaming,
-          values,
-        }),
+        auditTokens(
+          {
+            seriesId,
+            series: resolvedSeries,
+            namespace,
+            resolvedNaming,
+            values,
+          },
+          layerDefinitions,
+          ...ancestorDefinitions,
+        ),
       ];
     }),
   );

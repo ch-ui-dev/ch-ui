@@ -40,6 +40,6 @@
     "@types/svg-sprite": "^0.0.39"
   },
   "scripts": {
-    "test": "ts-node ./test/sanity.spec.ts"
+    "test": "tsx ./test/sanity.spec.ts"
   }
 }

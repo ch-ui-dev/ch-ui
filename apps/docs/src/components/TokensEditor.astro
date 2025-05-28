@@ -2,13 +2,12 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 import { persistentAtom } from '@nanostores/persistent';
 import { docsTokens } from '../tokens.ts';
-import get from 'lodash.get';
 const userTokensConfigString = persistentAtom(
   'ch-tokens-config',
   JSON.stringify(docsTokens),
 );
 const userTokensConfig = JSON.parse(userTokensConfigString.get());
-const accentKeyPoint = get(userTokensConfig, 'colors.physical.series.accent.srgb.keyPoint');
+const accentKeyPoint = userTokensConfig?.colors?.physical?.series?.accent?.srgb?.keyPoint;
 ---
 <style>
   #tokens-editor-label {

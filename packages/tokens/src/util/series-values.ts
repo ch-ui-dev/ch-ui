@@ -1,7 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import {
-  AccompanyingSeries,
   ResolvedNaming,
   SememeAnnotation,
   SemanticLayer,
@@ -9,6 +8,7 @@ import {
   Series,
   FacetAnnotatedValues,
   SemanticAnnotatedValues,
+  ResolvedAccompanyingSeries,
 } from '../types';
 
 /**
@@ -78,7 +78,7 @@ export const facetSemanticValues = <
     : ({} as SemanticValues<S, V>);
 };
 
-const defaultRelation: AccompanyingSeries = {
+const defaultRelation: ResolvedAccompanyingSeries = {
   initial: 0,
   slope: 1,
   method: 'floor',
@@ -86,7 +86,7 @@ const defaultRelation: AccompanyingSeries = {
 
 export const physicalValueFromValueRelation = (
   value: number,
-  { initial, slope }: AccompanyingSeries = defaultRelation,
+  { initial, slope }: ResolvedAccompanyingSeries = defaultRelation,
 ) => (value - initial) / slope;
 
 export const resolveNaming = (

@@ -1,12 +1,14 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-// Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
-
 import assert from 'node:assert';
 import test from 'node:test';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { scanFiles, scanString, makeSprite, type BundleParams } from '../src';
 import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+
+// @ts-ignore
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const phosphorConfig: BundleParams = {
   symbolPattern:

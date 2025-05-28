@@ -9,6 +9,13 @@ export type PhysicalSeries<
   S extends Series<any> = Series,
 > = Partial<Record<K, S>>;
 
+export type Definitions<S extends Series<any> = Series> = Partial<{
+  series: Record<string, S>;
+  [key: string]: Record<string, any>;
+}>;
+
+export type InvariantCheck = (resolvedDefinition: any) => boolean;
+
 export type PhysicalLayer<
   K extends string = string,
   S extends Series<any> = Series,
@@ -16,6 +23,7 @@ export type PhysicalLayer<
 > = {
   conditions: Conditions<K>;
   series: Record<P, Partial<PhysicalSeries<K, S>>>;
+  definitions?: Definitions<S>;
   namespace?: string;
 };
 
@@ -52,6 +60,8 @@ export type FacetAnnotatedValues<V = number> = Map<
   { physical: ('values' | 'naming')[]; semantic: SememeAnnotation[] }
 >;
 
+type RequiresExtendsIfNotProvided<T> = T | (Partial<T> & { extends: string });
+
 /**
  * A group of statements within which to recursively nest a declaration block.
  */
@@ -64,7 +74,19 @@ export type Conditions<K extends string = string> = Partial<
   Record<K, Statements>
 >;
 
-export type AccompanyingSeries = Pick<LinearSeries, 'slope' | 'initial'> & {
+export type AccompanyingSeries = Pick<
+  LinearSeries,
+  'slope' | 'initial' | 'extends'
+> &
+  RequiresExtendsIfNotProvided<AccompanyingSeriesConfig>;
+
+export type ResolvedAccompanyingSeries = Pick<
+  ResolvedLinearSeries,
+  'slope' | 'initial'
+> &
+  AccompanyingSeriesConfig;
+
+type AccompanyingSeriesConfig = {
   method: 'floor' | 'ceil' | 'round';
 };
 
@@ -88,6 +110,10 @@ export type Series<V = number> = {
    * Whether to convert values to string directly or name them manually
    */
   naming?: 'toString' | Record<string, V>;
+  /**
+   * The key of a series defined in the `definitions` of an ancestor object.
+   */
+  extends?: string;
 };
 
 export type ResolvedNaming = Map<number | string, string> | 'toString';
@@ -95,7 +121,12 @@ export type ResolvedNaming = Map<number | string, string> | 'toString';
 /**
  * A series of values in the layer which are linear in nature, e.g. gaps.
  */
-export type LinearSeries = Series & {
+export type LinearSeries = Series &
+  RequiresExtendsIfNotProvided<LinearSeriesConfig>;
+
+export type ResolvedLinearSeries = Series & LinearSeriesConfig;
+
+type LinearSeriesConfig = {
   /**
    * The value of `b` in the equation `y = ax + b`
    */
@@ -109,7 +140,12 @@ export type LinearSeries = Series & {
 /**
  * A series of values in the layer which are exponential in nature, e.g. type sizes.
  */
-export type ExponentialSeries = Series & {
+export type ExponentialSeries = Series &
+  RequiresExtendsIfNotProvided<ExponentialSeriesConfig>;
+
+export type ResolvedExponentialSeries = Series & ExponentialSeriesConfig;
+
+type ExponentialSeriesConfig = {
   /**
    * The value of `a` in the equation `y = a b^x`
    */
@@ -126,9 +162,14 @@ export type HelicalArcValue = AlphaLuminosity;
  * A series of values in the layer which lay on a helical arc, the shape of a color palette.
  */
 export type HelicalArcSeries = Series<HelicalArcValue> &
-  HelicalArcConfig & {
-    physicalValueRelation: AccompanyingSeries;
-  };
+  RequiresExtendsIfNotProvided<HelicalArcSeriesConfig>;
+
+export type ResolvedHelicalArcSeries = HelicalArcSeries &
+  HelicalArcSeriesConfig;
+
+type HelicalArcSeriesConfig = HelicalArcConfig & {
+  physicalValueRelation: AccompanyingSeries;
+};
 
 /**
  * Options for audit functions.
@@ -171,6 +212,7 @@ export type AuditTokensParams<S extends Series<any> = Series> = {
  */
 export type AuditTokens<S extends Series<any> = Series> = (
   auditProps: AuditTokensParams<S>,
+  ...definitions: Definitions<Series<any>>[]
 ) => TokenAudit<S>[];
 
 /**
@@ -190,4 +232,5 @@ export type RenderTokensParams<S extends Series<any> = Series> = {
  */
 export type RenderTokens<S extends Series<any> = Series> = (
   renderProps: RenderTokensParams<S>,
+  ...definitions: Definitions<Series<any>>[]
 ) => string[];

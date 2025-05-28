@@ -1,24 +1,22 @@
 {
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "{projectRoot}/dist"
-      ],
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/dist"],
       "cache": true
     },
     "compile": {
-      "dependsOn": [
-        "^compile"
-      ],
-      "outputs": [
-        "{projectRoot}/dist"
-      ],
+      "dependsOn": ["^compile"],
+      "outputs": ["{projectRoot}/dist"],
       "cache": true
     },
     "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{js,ts,jsx,tsx,html,vue,astro,mjs,cjs}"
+        ]
+      },
       "cache": true
     }
   },

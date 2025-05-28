@@ -23,17 +23,9 @@
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"]
     },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "format": "unix",
-        "lintFilePatterns": ["packages/tokens/src/**/*.{js,jsx,ts,tsx}"],
-        "quiet": true
-      },
-      "outputs": ["{options.outputFile}"]
-    },
     "test": {
-      "command": "cd packages/tokens && ts-node ./test/colors.spec.ts && ts-node ./test/typography.spec.ts && ts-node ./test/audit.spec.ts"
-    }
+      "command": "cd packages/tokens && tsx ./test/colors.spec.ts && tsx ./test/typography.spec.ts && tsx ./test/audit.spec.ts"
+    },
+    "lint": {}
   }
 }

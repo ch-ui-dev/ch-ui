@@ -1,10 +1,14 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
 import { spawn } from 'node:child_process';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { BundleParams } from './types';
+import { fileURLToPath } from 'node:url';
 
 const split = /[\s\n"]+/m;
+
+// @ts-ignore
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const scanFile = ({
   symbolPattern,

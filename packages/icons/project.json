@@ -23,17 +23,9 @@
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"]
     },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "format": "unix",
-        "lintFilePatterns": ["packages/icons/src/**/*.{js,jsx,ts,tsx}"],
-        "quiet": true
-      },
-      "outputs": ["{options.outputFile}"]
-    },
     "test": {
-      "command": "cd packages/icons && ts-node ./test/sanity.spec.ts"
-    }
+      "command": "cd packages/icons && tsx ./test/sanity.spec.ts"
+    },
+    "lint": {}
   }
 }

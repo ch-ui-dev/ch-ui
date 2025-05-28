@@ -2,13 +2,17 @@
 
 import assert from 'node:assert';
 import test from 'node:test';
-import { resolve } from 'node:path';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { writeFile, mkdir } from 'node:fs/promises';
 import {
   defaultPhysicalColors,
   defaultSemanticColors,
   renderFacet,
 } from '../src';
+
+// @ts-ignore
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('physical, semantic, and alias color tokens are generated as expected', async () => {
   const dir = resolve(__dirname, '../tmp');

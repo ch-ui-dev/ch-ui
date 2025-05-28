@@ -14,13 +14,14 @@ import {
 import {
   AliasLayer,
   AuditOptions,
+  Definitions,
   PhysicalLayer,
   SemanticLayer,
   SemanticValues,
   Series,
   ValueOfSeries,
 } from './types';
-import { facetSemanticValues } from './util';
+import { facetSemanticValues, resolveDefinition } from './util';
 import { renderSemanticLayer } from './semantic-layer';
 import { renderAliasLayer } from './alias-layer';
 
@@ -36,6 +37,7 @@ export type Facet<
   physical: L;
   semantic?: SemanticLayer<K, P, ValueOfSeries<L['series']>, Q>;
   alias?: AliasLayer<Q>;
+  definitions?: Definitions<Series<ValueOfSeries<L['series']>>>;
 };
 
 export const isColorPhysicalLayer = (
@@ -61,22 +63,36 @@ export const isLinearLayer = (
 
 export const getFirstSeriesInPhysicalLayer = (
   layer: PhysicalLayer<string, Series<any>>,
+  ...definitions: Definitions[]
 ): Series => {
   const seriesIds = Object.keys(layer.series);
   const conditionIds = Object.keys(layer.series[seriesIds[0]]);
-  return layer.series[seriesIds[0]][conditionIds[0]]!;
+  const series = layer.series[seriesIds[0]][conditionIds[0]]!;
+  return resolveDefinition(
+    series,
+    'series',
+    () => true,
+    layer.definitions ?? {},
+    ...definitions,
+  );
 };
 
-export const renderFacet = ({ physical, semantic, alias }: Facet) => {
+export const renderFacet = ({
+  physical,
+  semantic,
+  alias,
+  definitions = {},
+}: Facet) => {
+  const facetDefinitions = definitions as Definitions;
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
-  const firstSeries = getFirstSeriesInPhysicalLayer(physical);
+  const firstSeries = getFirstSeriesInPhysicalLayer(physical, facetDefinitions);
   return [
     isColorPhysicalLayer(physical, firstSeries)
-      ? renderPhysicalColorLayer(physical, semanticValues)
+      ? renderPhysicalColorLayer(physical, semanticValues, facetDefinitions)
       : isExponentialLayer(physical, firstSeries)
-      ? renderExponentialLayer(physical, semanticValues)
+      ? renderExponentialLayer(physical, semanticValues, facetDefinitions)
       : isLinearLayer(physical, firstSeries)
-      ? renderLinearLayer(physical, semanticValues)
+      ? renderLinearLayer(physical, semanticValues, facetDefinitions)
       : '/* Invalid physical layer */',
     ...(semantic ? [renderSemanticLayer(semantic)] : []),
     ...(alias ? [renderAliasLayer(alias)] : []),
@@ -84,14 +100,30 @@ export const renderFacet = ({ physical, semantic, alias }: Facet) => {
 };
 
 export const auditFacet = (
-  { physical, semantic }: Facet,
+  { physical, semantic, definitions = {} }: Facet,
   auditOptions: AuditOptions,
 ) => {
+  const facetDefinitions = definitions as Definitions;
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
-  const firstSeries = getFirstSeriesInPhysicalLayer(physical);
+  const firstSeries = getFirstSeriesInPhysicalLayer(physical, facetDefinitions);
   return isColorPhysicalLayer(physical, firstSeries)
-    ? auditPhysicalColorLayer(physical, auditOptions, semanticValues)
+    ? auditPhysicalColorLayer(
+        physical,
+        auditOptions,
+        semanticValues,
+        facetDefinitions,
+      )
     : isExponentialLayer(physical, firstSeries)
-    ? auditExponentialLayer(physical, auditOptions, semanticValues)
-    : auditLinearLayer(physical, auditOptions, semanticValues);
+    ? auditExponentialLayer(
+        physical,
+        auditOptions,
+        semanticValues,
+        facetDefinitions,
+      )
+    : auditLinearLayer(
+        physical,
+        auditOptions,
+        semanticValues,
+        facetDefinitions,
+      );
 };
