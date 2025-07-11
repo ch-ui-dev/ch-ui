@@ -5,79 +5,79 @@
 import Color from 'colorjs';
 
 // exponents
-const normBG = 0.56;
-const normTXT = 0.57;
-const revTXT = 0.62;
-const revBG = 0.65;
+const normBg = 0.56;
+const normTxt = 0.57;
+const revTxt = 0.62;
+const revBg = 0.65;
 
 // clamps
 const blkThrs = 0.022;
 const blkClmp = 1.414;
 const loClip = 0.1;
-const deltaYmin = 0.0005;
+const deltaYMin = 0.0005;
 
 // scalers
 // see https://github.com/w3c/silver/issues/645
-const Wscale = 1.14;
-const Woffset = 0.027;
+const WScale = 1.14;
+const WOffset = 0.027;
 
 export const getLc = (Ytxt: number, Ybg: number) => {
   let S;
   let C;
-  let Sapc;
+  let SApc;
 
   // are we "Black on White" (dark on light), or light on dark?
-  let BoW = Ybg > Ytxt;
+  let isDarkOnLight = Ybg > Ytxt;
 
   // why is this a delta, when Y is not perceptually uniform?
   // Answer: it is a noise gate, see
   // https://github.com/LeaVerou/color.js/issues/208
-  if (Math.abs(Ybg - Ytxt) < deltaYmin) {
+  if (Math.abs(Ybg - Ytxt) < deltaYMin) {
     C = 0;
   } else {
-    if (BoW) {
+    if (isDarkOnLight) {
       // dark text on light background
-      S = Ybg ** normBG - Ytxt ** normTXT;
-      C = S * Wscale;
+      S = Ybg ** normBg - Ytxt ** normTxt;
+      C = S * WScale;
     } else {
       // light text on dark background
-      S = Ybg ** revBG - Ytxt ** revTXT;
-      C = S * Wscale;
+      S = Ybg ** revBg - Ytxt ** revTxt;
+      C = S * WScale;
     }
   }
   if (Math.abs(C) < loClip) {
-    Sapc = 0;
+    SApc = 0;
   } else if (C > 0) {
-    Sapc = C - Woffset;
+    SApc = C - WOffset;
   } else {
-    Sapc = C + Woffset;
+    SApc = C + WOffset;
   }
 
-  return Sapc * 100;
+  return SApc * 100;
 };
 
-const getSapc = (Lc100: number) => {
+const getSApc = (Lc100: number) => {
   const Lc1 = Lc100 / 100;
-  if (Math.abs(Lc1) <= Woffset) {
+  if (Math.abs(Lc1) <= WOffset) {
     return 0;
   } else {
-    return Lc1 + Woffset * (Lc1 < 0 ? -1 : 1);
+    return Lc1 + WOffset * (Lc1 < 0 ? -1 : 1);
   }
 };
 
 export const getL = (get: 'text' | 'background', L: number, Lc100: number) => {
-  const Sapc = getSapc(Lc100);
-  if (Sapc === 0) {
+  const SApc = getSApc(Lc100);
+  if (SApc === 0) {
     return L;
   } else {
     const isRev = Lc100 > 0 ? get === 'background' : get === 'text';
-    const expTxt = isRev ? revTXT : normTXT;
-    const expBg = isRev ? revBG : normBG;
+    const expTxt = isRev ? revTxt : normTxt;
+    const expBg = isRev ? revBg : normBg;
     const expL = get === 'background' ? expTxt : expBg;
     const expS = get === 'background' ? expBg : expTxt;
     const K = get === 'background' ? 1 : -1;
     return Math.pow(
-      Math.pow(L, expL) + (K * Sapc) / Wscale,
+      Math.pow(L, expL) + (K * SApc) / WScale,
       1 / expS,
       //
     );
