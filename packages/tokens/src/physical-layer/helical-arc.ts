@@ -7,6 +7,7 @@ import {
   oklabVectorToValue,
   getOklabVectorsFromLuminosities,
   parseAlphaLuminosity,
+  alphaPattern,
 } from '@ch-ui/colors';
 import {
   AuditOptions,
@@ -26,6 +27,7 @@ import {
 } from '../util';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { auditPhysicalLayer } from './audit-physical-layer';
+import { getL } from '@ch-ui/colors/src/util/apca';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
@@ -40,6 +42,31 @@ const helicalArcSeriesCheck = (
   );
 };
 
+const parseLcArg = (lc: string) => {
+  return {
+    get:
+      lc[lc.length - 1] === 'b' ? ('background' as const) : ('text' as const),
+    argL: parseFloat(lc.slice(0, -1)),
+  };
+};
+
+const computeContrast = (baseL: number, ...LcArgs: string[]): number => {
+  const [LcArg, ...LcArgRest] = LcArgs;
+  const { argL, get } = parseLcArg(LcArg);
+  const result = getL(get, baseL, argL);
+  return LcArgRest.length > 0
+    ? computeContrast(result, LcArgRest[0], ...LcArgRest.slice(1))
+    : result;
+};
+
+const resolveContrastLuminosity = (expression: string) => {
+  const [opaqueExpression, alpha] = expression.split(alphaPattern);
+  const parts = opaqueExpression.split(':');
+  const baseL = parseFloat(parts[parts.length - 1]);
+  const result = computeContrast(baseL, ...parts.slice(0, -1).reverse());
+  return alpha ? `${result}/${alpha}` : result;
+};
+
 const helicalArcNamedVectors = (
   {
     series,
@@ -52,7 +79,11 @@ const helicalArcNamedVectors = (
 ) =>
   getOklabVectorsFromLuminosities(
     values.map((value) => {
-      const [l] = parseAlphaLuminosity(value);
+      const resolvedValue =
+        typeof value === 'string' && value.includes(':')
+          ? resolveContrastLuminosity(value)
+          : value;
+      const [l] = parseAlphaLuminosity(resolvedValue);
       const resolvedPhysicalValueRelation = resolveAccompanyingSeries(
         series.physicalValueRelation,
         ...definitions,
