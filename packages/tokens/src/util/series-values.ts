@@ -157,6 +157,11 @@ export const physicalValueFromValueRelation = (
   { initial, slope }: ResolvedAccompanyingSeries = defaultRelation,
 ) => (value - initial) / slope;
 
+export const valueNameFromValueRelation = (
+  value: number,
+  { initial, slope }: ResolvedAccompanyingSeries = defaultRelation,
+) => Math.round(value * slope + initial);
+
 export const resolveNaming = (
   naming: Series['naming'] = 'toString',
 ): ResolvedNaming =>

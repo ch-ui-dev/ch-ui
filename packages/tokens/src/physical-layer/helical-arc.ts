@@ -24,10 +24,11 @@ import {
   variableNameFromValue,
   physicalValueFromValueRelation,
   resolveAccompanyingSeries,
+  valueNameFromValueRelation,
 } from '../util';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { auditPhysicalLayer } from './audit-physical-layer';
-import { getL } from '@ch-ui/colors/src/util/apca';
+import { getL } from '@ch-ui/colors';
 
 export type ColorsPhysicalLayer = PhysicalLayer<Gamut, HelicalArcSeries>;
 
@@ -76,26 +77,34 @@ const helicalArcNamedVectors = (
     resolvedNaming,
   }: Omit<RenderTokensParams<ResolvedHelicalArcSeries>, 'conditionId'>,
   ...definitions: Definitions[]
-) =>
-  getOklabVectorsFromLuminosities(
+) => {
+  const resolvedPhysicalValueRelation = resolveAccompanyingSeries(
+    series.physicalValueRelation,
+    ...definitions,
+  );
+  return getOklabVectorsFromLuminosities(
     values.map((value) => {
       const resolvedValue =
         typeof value === 'string' && value.includes(':')
           ? resolveContrastLuminosity(value)
           : value;
       const [l] = parseAlphaLuminosity(resolvedValue);
-      const resolvedPhysicalValueRelation = resolveAccompanyingSeries(
-        series.physicalValueRelation,
-        ...definitions,
-      );
       return physicalValueFromValueRelation(l, resolvedPhysicalValueRelation);
     }),
     constellationFromPalette(series),
   ).map((oklabVector, index) => {
+    const isExpression =
+      typeof values[index] === 'string' &&
+      (values[index] as string).includes(':');
     return {
       value: values[index],
       variableName: variableNameFromValue(
-        values[index],
+        isExpression
+          ? valueNameFromValueRelation(
+              oklabVector[0],
+              resolvedPhysicalValueRelation,
+            )
+          : values[index],
         resolvedNaming,
         seriesId,
         namespace,
@@ -103,6 +112,7 @@ const helicalArcNamedVectors = (
       oklabVector,
     };
   });
+};
 
 export const renderHelicalArcTokens: RenderTokens<ResolvedHelicalArcSeries> = (
   params,
