@@ -46,18 +46,27 @@ export type AliasLayer<K extends string = string, Q extends string = string> = {
   namespace?: string;
 };
 
-export type SememeAnnotation = { sememeName: string; conditionId: string };
+export type SememeAnnotation<V = number> = {
+  sememeName: string;
+  conditionId: string;
+  originalValue?: V;
+};
 
 export type SemanticValues<P extends string = string, V = number> = Record<
   P,
   SemanticAnnotatedValues<V>
 >;
 
-export type SemanticAnnotatedValues<V = number> = Map<V, SememeAnnotation[]>;
+export type PhysicalResolvedValueExpressions<
+  Value = number | string,
+  ResolvedValue = string,
+> = Map<Value, ResolvedValue>;
+
+export type SemanticAnnotatedValues<V = number> = Map<V, SememeAnnotation<V>[]>;
 
 export type FacetAnnotatedValues<V = number> = Map<
   V,
-  { physical: ('values' | 'naming')[]; semantic: SememeAnnotation[] }
+  { physical: ('values' | 'naming')[]; semantic: SememeAnnotation<V>[] }
 >;
 
 type RequiresExtendsIfNotProvided<T> = T | (Partial<T> & { extends: string });
@@ -193,7 +202,7 @@ export type TokenAudit<S extends Series<any> = Series> = {
   seriesId: string;
   value: ValueOfSeries<S>;
   physical: ('values' | 'naming')[];
-  semantic: SememeAnnotation[];
+  semantic: SememeAnnotation<ValueOfSeries<S>>[];
 };
 
 /**
@@ -225,12 +234,24 @@ export type RenderTokensParams<S extends Series<any> = Series> = {
   namespace?: string;
   resolvedNaming: ResolvedNaming;
   values: ValueOfSeries<S>[];
+  semanticValues?: SemanticValues;
 };
 
 /**
  * The function provided by different physical layer types which renders the layer.
  */
-export type RenderTokens<S extends Series<any> = Series> = (
+export type RenderTokens<
+  S extends Series<any> = Series,
+  ResolvedValue = string,
+> = (
   renderProps: RenderTokensParams<S>,
+  resolvedExpressions: PhysicalResolvedValueExpressions<
+    ValueOfSeries<S>,
+    ResolvedValue
+  >,
   ...definitions: Definitions<Series<any>>[]
-) => string[];
+) => [string[], PhysicalResolvedValueExpressions];
+
+export const isValueExpression = (value: any): value is string => {
+  return typeof value === 'string' && value.includes(':');
+};

@@ -86,15 +86,20 @@ export const renderFacet = ({
   const facetDefinitions = definitions as Definitions;
   const semanticValues = facetSemanticValues(semantic) as SemanticValues;
   const firstSeries = getFirstSeriesInPhysicalLayer(physical, facetDefinitions);
+  const [renderedPhysicalLayer, resolvedExpressions] = isColorPhysicalLayer(
+    physical,
+    firstSeries,
+  )
+    ? renderPhysicalColorLayer(physical, semanticValues, facetDefinitions)
+    : isExponentialLayer(physical, firstSeries)
+    ? renderExponentialLayer(physical, semanticValues, facetDefinitions)
+    : isLinearLayer(physical, firstSeries)
+    ? renderLinearLayer(physical, semanticValues, facetDefinitions)
+    : ['/* Invalid physical layer */', new Map()];
+  console.log('[rf]', resolvedExpressions);
   return [
-    isColorPhysicalLayer(physical, firstSeries)
-      ? renderPhysicalColorLayer(physical, semanticValues, facetDefinitions)
-      : isExponentialLayer(physical, firstSeries)
-      ? renderExponentialLayer(physical, semanticValues, facetDefinitions)
-      : isLinearLayer(physical, firstSeries)
-      ? renderLinearLayer(physical, semanticValues, facetDefinitions)
-      : '/* Invalid physical layer */',
-    ...(semantic ? [renderSemanticLayer(semantic)] : []),
+    renderedPhysicalLayer,
+    ...(semantic ? [renderSemanticLayer(semantic, resolvedExpressions)] : []),
     ...(alias ? [renderAliasLayer(alias)] : []),
   ].join('\n\n');
 };

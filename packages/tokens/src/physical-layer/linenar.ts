@@ -10,6 +10,7 @@ import {
   AuditTokens,
   ResolvedLinearSeries,
   Definitions,
+  PhysicalResolvedValueExpressions,
 } from '../types';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue } from '../util';
@@ -57,21 +58,23 @@ const linearNamedResolvedValues = (
 
 export const renderLinearTokens: RenderTokens<ResolvedLinearSeries> = (
   params,
+  resolvedExpressions,
   ...definitions
-) =>
-  linearNamedResolvedValues(params, ...definitions).map(
-    ({ variableName, resolvedValue }) => {
-      return `${variableName}: ${resolvedValue.toFixed(3)}${
-        params.series.unit
-      };`;
-    },
-  );
+) => {
+  const namedValues = linearNamedResolvedValues(params, ...definitions);
+
+  const cssDeclarations = namedValues.map(({ variableName, resolvedValue }) => {
+    return `${variableName}: ${resolvedValue.toFixed(3)}${params.series.unit};`;
+  });
+
+  return [cssDeclarations, resolvedExpressions];
+};
 
 export const renderLinearLayer = (
   layer: LinearPhysicalLayer,
   semanticValues?: SemanticValues,
   ...definitions: Definitions[]
-): string =>
+): [string, PhysicalResolvedValueExpressions] =>
   renderPhysicalLayer<LinearPhysicalLayer, LinearSeries, ResolvedLinearSeries>(
     layer,
     renderLinearTokens,

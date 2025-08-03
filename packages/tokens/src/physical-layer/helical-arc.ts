@@ -8,6 +8,7 @@ import {
   getOklabVectorsFromLuminosities,
   parseAlphaLuminosity,
   alphaPattern,
+  AlphaLuminosity,
 } from '@ch-ui/colors';
 import {
   AuditOptions,
@@ -19,6 +20,8 @@ import {
   RenderTokens,
   ResolvedHelicalArcSeries,
   Definitions,
+  PhysicalResolvedValueExpressions,
+  isValueExpression,
 } from '../types';
 import {
   variableNameFromValue,
@@ -60,7 +63,7 @@ const computeContrast = (baseL: number, ...LcArgs: string[]): number => {
     : result;
 };
 
-const resolveContrastLuminosity = (expression: string) => {
+const resolveContrastLuminosity = (expression: string): AlphaLuminosity => {
   const [opaqueExpression, alpha] = expression.split(alphaPattern);
   const parts = opaqueExpression.split(':');
   const baseL = parseFloat(parts[parts.length - 1]);
@@ -74,6 +77,7 @@ const helicalArcNamedVectors = (
     seriesId,
     namespace,
     values = [],
+    semanticValues,
     resolvedNaming,
   }: Omit<RenderTokensParams<ResolvedHelicalArcSeries>, 'conditionId'>,
   ...definitions: Definitions[]
@@ -82,29 +86,33 @@ const helicalArcNamedVectors = (
     series.physicalValueRelation,
     ...definitions,
   );
+
   return getOklabVectorsFromLuminosities(
     values.map((value) => {
-      const resolvedValue =
-        typeof value === 'string' && value.includes(':')
-          ? resolveContrastLuminosity(value)
-          : value;
+      const resolvedValue = isValueExpression(value)
+        ? resolveContrastLuminosity(value)
+        : value;
       const [l] = parseAlphaLuminosity(resolvedValue);
       return physicalValueFromValueRelation(l, resolvedPhysicalValueRelation);
     }),
     constellationFromPalette(series),
   ).map((oklabVector, index) => {
-    const isExpression =
-      typeof values[index] === 'string' &&
-      (values[index] as string).includes(':');
+    const value = values[index];
+    const isExpression = isValueExpression(value);
+    const resolvedValue = isExpression
+      ? resolveContrastLuminosity(value)
+      : value;
     return {
-      value: values[index],
+      value: resolvedValue,
+      originalValue: semanticValues?.[seriesId].get(value as number)?.[0]
+        ?.originalValue,
       variableName: variableNameFromValue(
         isExpression
           ? valueNameFromValueRelation(
               oklabVector[0],
               resolvedPhysicalValueRelation,
             )
-          : values[index],
+          : value,
         resolvedNaming,
         seriesId,
         namespace,
@@ -116,9 +124,12 @@ const helicalArcNamedVectors = (
 
 export const renderHelicalArcTokens: RenderTokens<ResolvedHelicalArcSeries> = (
   params,
+  resolvedExpressions,
   ...definitions
-) =>
-  helicalArcNamedVectors(params, ...definitions).map(
+) => {
+  const namedVectors = helicalArcNamedVectors(params, ...definitions);
+
+  const cssDeclarations = namedVectors.map(
     ({ oklabVector, value, variableName }) => {
       const [_, alpha] = parseAlphaLuminosity(value);
       return `${variableName}: ${oklabVectorToValue(
@@ -129,11 +140,20 @@ export const renderHelicalArcTokens: RenderTokens<ResolvedHelicalArcSeries> = (
     },
   );
 
+  namedVectors.forEach(({ originalValue, variableName }) => {
+    if (isValueExpression(originalValue)) {
+      resolvedExpressions.set(originalValue, variableName);
+    }
+  });
+
+  return [cssDeclarations, resolvedExpressions];
+};
+
 export const renderPhysicalColorLayer = (
   layer: ColorsPhysicalLayer,
   semanticValues?: SemanticValues,
   ...definitions: Definitions[]
-): string =>
+): [string, PhysicalResolvedValueExpressions] =>
   renderPhysicalLayer<
     ColorsPhysicalLayer,
     HelicalArcSeries,

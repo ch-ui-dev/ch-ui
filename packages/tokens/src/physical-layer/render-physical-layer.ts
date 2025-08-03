@@ -4,9 +4,11 @@ import {
   Definitions,
   InvariantCheck,
   PhysicalLayer,
+  PhysicalResolvedValueExpressions,
   RenderTokens,
   SemanticValues,
   Series,
+  ValueOfSeries,
 } from '../types';
 import {
   renderCondition,
@@ -25,8 +27,10 @@ export const renderPhysicalLayer = <
   invariantCheck: InvariantCheck,
   semanticValues?: SemanticValues,
   ...ancestorDefinitions: Definitions[]
-) => {
-  return `${Object.entries(conditions)
+): [string, PhysicalResolvedValueExpressions] => {
+  const allResolvedExpressions = new Map<string | number, string>();
+
+  const cssString = `${Object.entries(conditions)
     .map(([conditionId, statements]) =>
       renderCondition(
         Object.entries(series)
@@ -43,7 +47,7 @@ export const renderPhysicalLayer = <
             const values = Array.from(
               seriesValues(resolvedSeries, semanticValues?.[seriesId]).keys(),
             );
-            return renderTokens(
+            const [cssDeclarations, resolvedExpressions] = renderTokens(
               {
                 seriesId,
                 conditionId,
@@ -51,10 +55,18 @@ export const renderPhysicalLayer = <
                 namespace,
                 resolvedNaming,
                 values,
+                semanticValues,
               },
+              new Map<ValueOfSeries<S>, string>(),
               layerDefinitions,
               ...ancestorDefinitions,
-            ).join('\n');
+            );
+
+            resolvedExpressions.forEach((value, key) => {
+              allResolvedExpressions.set(key, value);
+            });
+
+            return cssDeclarations.join('\n');
           })
           .join('\n\n'),
         0,
@@ -62,4 +74,6 @@ export const renderPhysicalLayer = <
       ),
     )
     .join('\n\n')}`;
+
+  return [cssString, allResolvedExpressions];
 };

@@ -10,6 +10,7 @@ import {
   FacetAnnotatedValues,
   SemanticAnnotatedValues,
   ResolvedAccompanyingSeries,
+  isValueExpression,
 } from '../types';
 
 /**
@@ -51,7 +52,7 @@ const semanticGraphNodeKey = (conditionId: string, sememeName: string) =>
   `${conditionId}〜${sememeName}`;
 
 const isDependentValue = (value: any): false | [string, string] => {
-  if (typeof value === 'string' && value.includes(':')) {
+  if (isValueExpression(value)) {
     const parts = value.split(':');
     const dependencyOrValue = parts[1];
     if (isNaN(parseFloat(dependencyOrValue))) {
@@ -79,7 +80,8 @@ export const facetSemanticValues = <
   type ValueMetadata = {
     seriesId: S;
     value: V;
-  } & SememeAnnotation;
+    originalValue?: V;
+  } & SememeAnnotation<V>;
 
   // Create a dependency graph
   const graph = new DepGraph<ValueMetadata>();
@@ -92,6 +94,7 @@ export const facetSemanticValues = <
       graph.addNode(nodeKey, {
         seriesId,
         value,
+        originalValue: value,
         sememeName,
         conditionId,
       });
@@ -108,7 +111,7 @@ export const facetSemanticValues = <
   graph.overallOrder().forEach((nodeKey) => {
     const metadata = graph.getNodeData(nodeKey);
 
-    const { value, conditionId, ...rest } = metadata;
+    const { value, originalValue, conditionId, ...rest } = metadata;
 
     const dependsOnSememe = isDependentValue(value);
     if (dependsOnSememe) {
@@ -117,13 +120,12 @@ export const facetSemanticValues = <
       );
       graph.setNodeData(nodeKey, {
         value: `${dependsOnSememe[0]}:${dependentValue}` as V,
+        originalValue: value,
         conditionId,
         ...rest,
       });
     }
   });
-
-  console.log('[graph]', graph.size, graph.overallOrder(), graph);
 
   return graph.overallOrder().reduce(
     (result, nodeKey) => {
@@ -132,7 +134,7 @@ export const facetSemanticValues = <
       const { seriesId, value, ...annotation } = metadata;
 
       if (!result[seriesId]) {
-        result[seriesId] = new Map<V, SememeAnnotation[]>();
+        result[seriesId] = new Map<V, SememeAnnotation<V>[]>();
       }
 
       if (result[seriesId].has(value)) {

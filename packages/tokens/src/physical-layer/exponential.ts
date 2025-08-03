@@ -10,6 +10,7 @@ import {
   RenderTokens,
   ResolvedExponentialSeries,
   Definitions,
+  PhysicalResolvedValueExpressions,
 } from '../types';
 import { renderPhysicalLayer } from './render-physical-layer';
 import { variableNameFromValue, resolveAccompanyingSeries } from '../util';
@@ -75,20 +76,25 @@ const exponentialNamedResolvedValues = (
 
 export const renderExponentialTokens: RenderTokens<
   ResolvedExponentialSeries
-> = (params, ...definitions) =>
-  exponentialNamedResolvedValues(params, ...definitions).map(
-    ({ resolvedValue, variableName }) => {
-      return `${variableName}: ${resolvedValue.toFixed(3)}${
-        params.series.unit
-      };`;
-    },
-  );
+> = (
+  params,
+  resolvedExpressions,
+  ...definitions
+): [string[], PhysicalResolvedValueExpressions] => {
+  const namedValues = exponentialNamedResolvedValues(params, ...definitions);
+
+  const cssDeclarations = namedValues.map(({ resolvedValue, variableName }) => {
+    return `${variableName}: ${resolvedValue.toFixed(3)}${params.series.unit};`;
+  });
+
+  return [cssDeclarations, resolvedExpressions];
+};
 
 export const renderExponentialLayer = (
   layer: ExponentialPhysicalLayer,
   semanticValues?: SemanticValues,
   ...definitions: Definitions[]
-): string =>
+): [string, PhysicalResolvedValueExpressions] =>
   renderPhysicalLayer<
     ExponentialPhysicalLayer,
     ExponentialSeries,
