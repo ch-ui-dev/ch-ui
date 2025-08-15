@@ -24,10 +24,12 @@ test('audits are generated as expected', async () => {
   assert.deepEqual(accent600?.semantic, [
     {
       sememeName: 'bg-accentHover',
+      originalValue: 600,
       conditionId: 'dark',
     },
     {
       sememeName: 'fg-accentHover',
+      originalValue: 600,
       conditionId: 'dark',
     },
   ]);

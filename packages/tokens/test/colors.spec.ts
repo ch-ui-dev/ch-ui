@@ -37,7 +37,7 @@ test('physical, semantic, and alias color tokens are generated as expected', asy
       '@media (prefers-color-scheme: dark) {\n' +
         '  :root {\n' +
         '    --ch-bg-base: var(--ch-neutral-150);\n' +
-        '    --ch-bg-input: var(--ch-neutral-175);',
+        '    --ch-bg-input: var(--ch-neutral-161);',
     ),
     true,
   );
@@ -45,9 +45,9 @@ test('physical, semantic, and alias color tokens are generated as expected', asy
     tokens.includes(
       '@media (color-gamut: rec2020) {\n' +
         '  :root {\n' +
-        '    --ch-neutral-0: color(rec2020 0 0 0);\n' +
-        '    --ch-neutral-150: color(rec2020 0.01335 0.0154 0.02147);\n' +
-        '    --ch-neutral-175: color(rec2020 0.02142 0.02444 0.03325);',
+        '    --ch-neutral-207: color(rec2020 0.03576 0.04032 0.05342);\n' +
+        '    --ch-neutral-161: color(rec2020 0.01646 0.01893 0.02622);\n' +
+        '    --ch-neutral-0: color(rec2020 0 0 0);',
     ),
     true,
   );
