@@ -22,7 +22,6 @@ export const renderSemanticLayer = <
   }: SemanticLayer<K, P, V, Q>,
   resolvedExpressions?: PhysicalResolvedValueExpressions,
 ): string => {
-  console.log('[rsl]', resolvedExpressions);
   return Object.entries(conditions)
     .map(([conditionId, statements]) =>
       renderCondition(

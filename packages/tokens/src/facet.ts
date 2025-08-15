@@ -96,7 +96,6 @@ export const renderFacet = ({
     : isLinearLayer(physical, firstSeries)
     ? renderLinearLayer(physical, semanticValues, facetDefinitions)
     : ['/* Invalid physical layer */', new Map()];
-  console.log('[rf]', resolvedExpressions);
   return [
     renderedPhysicalLayer,
     ...(semantic ? [renderSemanticLayer(semantic, resolvedExpressions)] : []),
