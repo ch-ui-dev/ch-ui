@@ -47,7 +47,8 @@ test('physical, semantic, and alias color tokens are generated as expected', asy
         '  :root {\n' +
         '    --ch-neutral-207: color(rec2020 0.03576 0.04032 0.05342);\n' +
         '    --ch-neutral-161: color(rec2020 0.01646 0.01893 0.02622);\n' +
-        '    --ch-neutral-0: color(rec2020 0 0 0);',
+        '    --ch-neutral-557: color(rec2020 0.38941 0.40143 0.43142);\n' +
+        '    --ch-neutral-0: color(rec2020 0 -0.00001 0.00006);',
     ),
     true,
   );

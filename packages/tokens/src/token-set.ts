@@ -97,8 +97,8 @@ export const defaultSemanticColors = {
       dark: ['accent', 600],
     },
     'bg-neutral': {
-      light: ['neutral', 500],
-      dark: ['neutral', 550],
+      light: ['neutral', '3b:500'],
+      dark: ['neutral', '-3b:500'],
     },
     'bg-neutralHover': {
       light: ['neutral', 550],
