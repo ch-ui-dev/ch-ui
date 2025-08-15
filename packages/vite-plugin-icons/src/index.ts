@@ -117,14 +117,6 @@ export const IconsPlugin = ({
           if (verbose) {
             const symbols = Array.from(detectedSymbols.values());
             symbols.sort();
-            console.log(
-              'Sprite updated:',
-              JSON.stringify(
-                { path: spritePath, size: detectedSymbols.size, symbols },
-                null,
-                2,
-              ),
-            );
           }
         }
       },

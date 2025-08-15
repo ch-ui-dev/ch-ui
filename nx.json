@@ -23,5 +23,8 @@
   "affected": {
     "defaultBase": "main"
   },
-  "nxCloudAccessToken": "ZTY0MzBjOTgtZmU2Mi00M2YxLTk0N2UtNzdkOTJkZjVhN2JmfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "ZTY0MzBjOTgtZmU2Mi00M2YxLTk0N2UtNzdkOTJkZjVhN2JmfHJlYWQtd3JpdGU=",
+  "tui": {
+    "enabled": false
+  }
 }

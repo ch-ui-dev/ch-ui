@@ -1,6 +1,11 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
-import { SemanticLayer, Statements } from './types';
+import {
+  SemanticLayer,
+  Statements,
+  PhysicalResolvedValueExpressions,
+  isValueExpression,
+} from './types';
 import { escapeValue, renderCondition } from './util';
 
 export const renderSemanticLayer = <
@@ -8,12 +13,15 @@ export const renderSemanticLayer = <
   P extends string = string,
   V = number,
   Q extends string = string,
->({
-  conditions,
-  sememes,
-  namespace = '',
-  physicalNamespace = namespace,
-}: SemanticLayer<K, P, V, Q>): string => {
+>(
+  {
+    conditions,
+    sememes,
+    namespace = '',
+    physicalNamespace = namespace,
+  }: SemanticLayer<K, P, V, Q>,
+  resolvedExpressions?: PhysicalResolvedValueExpressions,
+): string => {
   return Object.entries(conditions)
     .map(([conditionId, statements]) =>
       renderCondition(
@@ -26,9 +34,13 @@ export const renderSemanticLayer = <
           .filter(([, sememe]) => sememe[conditionId as K])
           .map(([sememeName, sememe]) => {
             const [seriesName, value] = sememe[conditionId as K]!;
-            return `--${namespace}${sememeName}: var(--${physicalNamespace}${seriesName}-${escapeValue(
-              `${value}`,
-            )});`;
+            return isValueExpression(value)
+              ? `--${namespace}${sememeName}: var(${resolvedExpressions?.get(
+                  value,
+                )});`
+              : `--${namespace}${sememeName}: var(--${physicalNamespace}${seriesName}-${escapeValue(
+                  `${value}`,
+                )});`;
           })
           .join('\n'),
         0,

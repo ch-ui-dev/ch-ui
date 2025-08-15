@@ -23,7 +23,7 @@ export const getLinearSpace = (
   return result;
 };
 
-const alphaPattern = /\//;
+export const alphaPattern = /\//;
 
 export const parseAlphaLuminosity = (
   alphaLuminosity: AlphaLuminosity,

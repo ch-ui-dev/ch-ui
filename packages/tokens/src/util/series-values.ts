@@ -1,5 +1,6 @@
 // Required notice: Copyright (c) 2024, Will Shown <ch-ui@willshown.com>
 
+import { DepGraph } from 'dependency-graph';
 import {
   ResolvedNaming,
   SememeAnnotation,
@@ -9,6 +10,7 @@ import {
   FacetAnnotatedValues,
   SemanticAnnotatedValues,
   ResolvedAccompanyingSeries,
+  isValueExpression,
 } from '../types';
 
 /**
@@ -46,6 +48,23 @@ export const seriesValues = <V = number>(
   return seriesAnnotatedValues;
 };
 
+const semanticGraphNodeKey = (conditionId: string, sememeName: string) =>
+  `${conditionId}〜${sememeName}`;
+
+const isDependentValue = (value: any): false | [string, string] => {
+  if (isValueExpression(value)) {
+    const parts = value.split(':');
+    const dependencyOrValue = parts[1];
+    if (isNaN(parseFloat(dependencyOrValue))) {
+      return parts as [string, string];
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
 export const facetSemanticValues = <
   K extends string = string,
   S extends string = string,
@@ -53,29 +72,80 @@ export const facetSemanticValues = <
 >(
   semanticLayer?: SemanticLayer<K, S, V>,
 ): SemanticValues<S, V> => {
-  return semanticLayer
-    ? Object.entries(semanticLayer.sememes).reduce(
-        (acc, [sememeName, sememe]) => {
-          Object.entries(sememe).forEach(([conditionId, sememe]) => {
-            const [seriesId, value] = sememe as [S, V];
-            const annotation = {
-              sememeName,
-              conditionId,
-            } satisfies SememeAnnotation;
-            if (!acc[seriesId]) {
-              acc[seriesId] = new Map<V, SememeAnnotation[]>();
-            }
-            if (acc[seriesId].has(value)) {
-              acc[seriesId].get(value)!.push(annotation);
-            } else {
-              acc[seriesId].set(value, [annotation]);
-            }
-          });
-          return acc;
-        },
-        {} as SemanticValues<S, V>,
-      )
-    : ({} as SemanticValues<S, V>);
+  if (!semanticLayer) {
+    return {} as SemanticValues<S, V>;
+  }
+
+  // Temporary storage for values and their metadata
+  type ValueMetadata = {
+    seriesId: S;
+    value: V;
+    originalValue?: V;
+  } & SememeAnnotation<V>;
+
+  // Create a dependency graph
+  const graph = new DepGraph<ValueMetadata>();
+
+  Object.entries(semanticLayer.sememes).forEach(([sememeName, sememe]) => {
+    Object.entries(sememe).forEach(([conditionId, sememe]) => {
+      const [seriesId, value] = sememe as [S, V];
+      const nodeKey = semanticGraphNodeKey(conditionId, sememeName);
+
+      graph.addNode(nodeKey, {
+        seriesId,
+        value,
+        originalValue: value,
+        sememeName,
+        conditionId,
+      });
+
+      const dependsOnSememe = isDependentValue(value);
+      dependsOnSememe &&
+        graph.addDependency(
+          nodeKey,
+          semanticGraphNodeKey(conditionId, dependsOnSememe[1]),
+        );
+    });
+  });
+
+  graph.overallOrder().forEach((nodeKey) => {
+    const metadata = graph.getNodeData(nodeKey);
+
+    const { value, originalValue, conditionId, ...rest } = metadata;
+
+    const dependsOnSememe = isDependentValue(value);
+    if (dependsOnSememe) {
+      const { value: dependentValue } = graph.getNodeData(
+        semanticGraphNodeKey(conditionId, dependsOnSememe[1]),
+      );
+      graph.setNodeData(nodeKey, {
+        value: `${dependsOnSememe[0]}:${dependentValue}` as V,
+        originalValue: value,
+        conditionId,
+        ...rest,
+      });
+    }
+  });
+
+  return graph.overallOrder().reduce(
+    (result, nodeKey) => {
+      const metadata = graph.getNodeData(nodeKey);
+
+      const { seriesId, value, ...annotation } = metadata;
+
+      if (!result[seriesId]) {
+        result[seriesId] = new Map<V, SememeAnnotation<V>[]>();
+      }
+
+      if (result[seriesId].has(value)) {
+        result[seriesId].get(value)!.push(annotation);
+      } else {
+        result[seriesId].set(value, [annotation]);
+      }
+      return result;
+    },
+    {} as SemanticValues<S, V>,
+  );
 };
 
 const defaultRelation: ResolvedAccompanyingSeries = {
@@ -88,6 +158,11 @@ export const physicalValueFromValueRelation = (
   value: number,
   { initial, slope }: ResolvedAccompanyingSeries = defaultRelation,
 ) => (value - initial) / slope;
+
+export const valueNameFromValueRelation = (
+  value: number,
+  { initial, slope }: ResolvedAccompanyingSeries = defaultRelation,
+) => Math.round(value * slope + initial);
 
 export const resolveNaming = (
   naming: Series['naming'] = 'toString',

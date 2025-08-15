@@ -164,6 +164,33 @@ export const defaultSemanticColors = {
 } satisfies SemanticLayer;
 ```
 
+### Semantic expressions
+
+Semantic layers support expressions where, instead of a literal value, you can specify some operation on either a literal value or a reference to another semantic token, for example:
+
+```ts
+export const defaultSemanticColors = {
+  // ...
+  sememes: {
+    'bg-base': {
+      // ...
+    },
+    'fg-base': {
+      light: ['neutral', '88f:bg-base'],
+      dark: ['neutral', '-88f:bg-base'],
+    },
+    // ...
+  },
+  // ...
+} satisfies SemanticLayer;
+```
+
+With this configuration, `fg-base`’s light and dark values will be computed to be a value that should each result in an [APCA Lc value](https://apcacontrast.com/) of ±88 when `fg-base` is used as a foreground against `bg-base`.
+
+Note when referring to other tokens in expressions that they must not cycle and must ultimately resolve to a literal value.
+
+Valid operations depend on the type of series the semantic layer configures. Currently only `f` and `b` operations are supported, and `f` and `b` only apply to color series a.k.a. `HelicalArcSeries`.
+
 ## Facets
 
 Rendered by `renderFacet(facet: Facet)`.

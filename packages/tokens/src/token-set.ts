@@ -73,12 +73,12 @@ export const defaultSemanticColors = {
       dark: ['neutral', 150],
     },
     'bg-input': {
-      light: ['neutral', 950],
-      dark: ['neutral', 175],
+      light: ['neutral', '20b:bg-base'],
+      dark: ['neutral', '-20b:bg-base'],
     },
     'bg-hover': {
-      light: ['neutral', 925],
-      dark: ['neutral', 200],
+      light: ['neutral', '10f:bg-input'],
+      dark: ['neutral', '-10f:bg-input'],
     },
     'bg-accent': {
       light: ['accent', 500],
@@ -97,8 +97,8 @@ export const defaultSemanticColors = {
       dark: ['accent', 600],
     },
     'bg-neutral': {
-      light: ['neutral', 500],
-      dark: ['neutral', 550],
+      light: ['neutral', '3b:500'],
+      dark: ['neutral', '-3b:500'],
     },
     'bg-neutralHover': {
       light: ['neutral', 550],
@@ -118,7 +118,7 @@ export const defaultSemanticColors = {
     },
   },
   namespace: 'ch-',
-} satisfies SemanticLayer;
+} satisfies SemanticLayer<string, string, number | string>;
 
 const defaultWeights = {
   initial: 0,

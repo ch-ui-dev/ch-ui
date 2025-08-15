@@ -33,6 +33,7 @@
   ],
   "dependencies": {
     "@ch-ui/colors": "workspace:^",
+    "dependency-graph": "^1.0.0",
     "invariant": "^2.2.4",
     "postcss": "^8.4.38"
   },
