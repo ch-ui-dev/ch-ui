@@ -71,6 +71,9 @@ const resolveContrastLuminosity = (expression: string): AlphaLuminosity => {
   return alpha ? `${result}/${alpha}` : result;
 };
 
+const getLastExpressionOperation = (expression: string) =>
+  expression.match(/^[^:]*/)?.[0];
+
 const helicalArcNamedVectors = (
   {
     series,
@@ -99,13 +102,22 @@ const helicalArcNamedVectors = (
   ).map((oklabVector, index) => {
     const value = values[index];
     const isExpression = isValueExpression(value);
+    const lastExpressionOperation = isExpression
+      ? getLastExpressionOperation(value) ?? null
+      : null;
     const resolvedValue = isExpression
       ? resolveContrastLuminosity(value)
       : value;
     return {
       value: resolvedValue,
-      originalValue: semanticValues?.[seriesId].get(value as number)?.[0]
-        ?.originalValue,
+      originalValue: semanticValues?.[seriesId]
+        .get(value as number)
+        ?.find(({ originalValue }) => {
+          return originalValue && lastExpressionOperation
+            ? getLastExpressionOperation(originalValue.toString()) ===
+                lastExpressionOperation
+            : true;
+        })?.originalValue,
       variableName: variableNameFromValue(
         isExpression
           ? valueNameFromValueRelation(
