@@ -33,3 +33,6 @@ tmp
 
 # NX
 .nx
+
+# TypeScript incremental build info
+*.tsbuildinfo
