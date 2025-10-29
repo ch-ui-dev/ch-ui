@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/tailwind-tokens",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "type": "module",
   "description": "A tokens system for a more malleable web.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
