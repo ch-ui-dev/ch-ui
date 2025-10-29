@@ -6,13 +6,28 @@
   "targets": {
     "build": {
       "command": "rm packages/tokens/dist/package.json",
-      "dependsOn": ["preBuild"]
+      "dependsOn": ["preBuildSystem", "preBuildPostcss"]
     },
-    "preBuild": {
+    "preBuildSystem": {
       "executor": "@nx/esbuild:esbuild",
       "options": {
         "external": ["@ch-ui/colors", "postcss"],
         "main": "{projectRoot}/src/index.ts",
+        "outputPath": "{projectRoot}/dist",
+        "tsConfig": "{projectRoot}/tsconfig.json",
+        "format": ["cjs", "esm"],
+        "declarationRootDir": "{projectRoot}",
+        "sourcemap": true,
+        "generatePackageJson": false
+      },
+      "dependsOn": ["^build"],
+      "outputs": ["{options.outputPath}"]
+    },
+    "preBuildPostcss": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "external": ["@ch-ui/colors", "postcss"],
+        "main": "{projectRoot}/src/postcss.ts",
         "outputPath": "{projectRoot}/dist",
         "tsConfig": "{projectRoot}/tsconfig.json",
         "format": ["cjs", "esm"],
