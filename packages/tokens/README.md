@@ -17,7 +17,7 @@ Then, use any of the render functions as you like. If you’re using Vite, there
 To add to your PostCSS setup:
 
 ```ts
-import chTokens from '@ch-ui/tokens';
+import chTokens from '@ch-ui/tokens/postcss';
 import myTokenSet from './config';
 //...
 plugins: [
@@ -43,7 +43,8 @@ If you like, you can resolve different sets of tokens using the `params` provide
 A “default token set” is provided if you suffer from blank canvas syndrome:
 
 ```ts
-import chTokens, { defaultTokenSet } from '@ch-ui/tokens';
+import chTokens from '@ch-ui/tokens/postcss';
+import { defaultTokenSet } from '@ch-ui/tokens';
 import myTokenSet from './config';
 //...
 plugins: [

@@ -3,13 +3,10 @@
 import { Plugin } from 'vite';
 import autoprefixer from 'autoprefixer';
 import nesting from 'postcss-nesting';
-import chTokens, { type PluginOptions } from '@ch-ui/tokens';
+import chTokens, { type PluginOptions } from '@ch-ui/tokens/postcss';
 
-export {
-  type TokenSet,
-  type PluginOptions,
-  defaultTokenSet,
-} from '@ch-ui/tokens';
+export { type PluginOptions } from '@ch-ui/tokens/postcss';
+export { type TokenSet, defaultTokenSet } from '@ch-ui/tokens';
 
 export default function vitePluginTokens(options?: PluginOptions): Plugin {
   // TODO: render CSS custom property declarations from options…?
