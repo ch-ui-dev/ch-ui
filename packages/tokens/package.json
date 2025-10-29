@@ -32,6 +32,13 @@
       "import": "./README.md"
     }
   },
+  "typesVersions": {
+    "*": {
+      "postcss": [
+        "./dist/src/postcss.d.ts"
+      ]
+    }
+  },
   "files": [
     "src",
     "dist"
