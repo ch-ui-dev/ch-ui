@@ -57,10 +57,11 @@ export class IconsPlugin {
     for (const contentPath of contentPaths) {
       // Only ignore node_modules if the content path doesn't explicitly reference it
       const shouldIgnoreNodeModules = !contentPath.includes('node_modules');
+      const shouldIgnoreDist = !contentPath.includes('dist');
       const ignorePatterns = [
         ...(shouldIgnoreNodeModules ? ['**/node_modules/**'] : []),
+        ...(shouldIgnoreDist ? ['**/dist/**'] : []),
         '**/.next/**',
-        '**/dist/**',
       ];
 
       // Resolve the glob pattern relative to the context path
