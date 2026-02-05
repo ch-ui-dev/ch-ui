@@ -49,19 +49,31 @@ export class IconsPlugin {
     const { contentPaths, verbose } = this.params;
 
     if (verbose) {
-      console.log(`[${PLUGIN_NAME}] Scanning content globs for icon patterns...`);
+      console.log(
+        `[${PLUGIN_NAME}] Scanning content globs for icon patterns...`,
+      );
     }
 
     for (const contentPath of contentPaths) {
+      // Only ignore node_modules if the content path doesn't explicitly reference it
+      const shouldIgnoreNodeModules = !contentPath.includes('node_modules');
+      const ignorePatterns = [
+        ...(shouldIgnoreNodeModules ? ['**/node_modules/**'] : []),
+        '**/.next/**',
+        '**/dist/**',
+      ];
+
       // Resolve the glob pattern relative to the context path
       const files = await fg(contentPath, {
         cwd: contextPath,
         absolute: true,
-        ignore: ['**/node_modules/**', '**/.next/**', '**/dist/**'],
+        ignore: ignorePatterns,
       });
 
       if (verbose) {
-        console.log(`[${PLUGIN_NAME}] Found ${files.length} files matching ${contentPath}`);
+        console.log(
+          `[${PLUGIN_NAME}] Found ${files.length} files matching ${contentPath}`,
+        );
       }
 
       for (const file of files) {
@@ -78,7 +90,9 @@ export class IconsPlugin {
     }
 
     if (verbose) {
-      console.log(`[${PLUGIN_NAME}] Total detected symbols: ${this.detectedSymbols.size}`);
+      console.log(
+        `[${PLUGIN_NAME}] Total detected symbols: ${this.detectedSymbols.size}`,
+      );
     }
   }
 
