@@ -4,6 +4,8 @@ import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
 import picomatch from 'picomatch';
 import type { Compiler } from 'webpack';
 import { resolve } from 'path';
+import { readFileSync } from 'fs';
+import fg from 'fast-glob';
 
 export type IconsPluginParams = Omit<BundleParams, 'spritePath'> & {
   spriteFile: string;
@@ -43,6 +45,43 @@ export class IconsPlugin {
     return updated;
   }
 
+  private async scanAllContentGlobs(contextPath: string) {
+    const { contentPaths, verbose } = this.params;
+
+    if (verbose) {
+      console.log(`[${PLUGIN_NAME}] Scanning content globs for icon patterns...`);
+    }
+
+    for (const contentPath of contentPaths) {
+      // Resolve the glob pattern relative to the context path
+      const files = await fg(contentPath, {
+        cwd: contextPath,
+        absolute: true,
+        ignore: ['**/node_modules/**', '**/.next/**', '**/dist/**'],
+      });
+
+      if (verbose) {
+        console.log(`[${PLUGIN_NAME}] Found ${files.length} files matching ${contentPath}`);
+      }
+
+      for (const file of files) {
+        try {
+          const content = readFileSync(file, 'utf-8');
+          this.scan(content);
+        } catch (err) {
+          // Skip files that can't be read
+          if (verbose) {
+            console.warn(`[${PLUGIN_NAME}] Could not read file: ${file}`, err);
+          }
+        }
+      }
+    }
+
+    if (verbose) {
+      console.log(`[${PLUGIN_NAME}] Total detected symbols: ${this.detectedSymbols.size}`);
+    }
+  }
+
   apply(compiler: Compiler) {
     const {
       spriteFile,
@@ -53,6 +92,12 @@ export class IconsPlugin {
       verbose,
     } = this.params;
 
+    // Scan all content globs at the start of each compilation
+    compiler.hooks.beforeCompile.tapPromise(PLUGIN_NAME, async () => {
+      await this.scanAllContentGlobs(compiler.context);
+    });
+
+    // Also scan modules as they're processed for additional coverage (e.g., HMR)
     compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
       compilation.hooks.succeedModule.tap(PLUGIN_NAME, (module) => {
         // @ts-ignore

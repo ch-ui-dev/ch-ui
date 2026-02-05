@@ -1,6 +1,6 @@
 {
   "name": "@ch-ui/webpack-plugin-icons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Webpack plugin for automating icon sprite bundling.",
   "bugs": "https://github.com/ch-ui-dev/ch-ui/issues",
   "authors": [
@@ -32,6 +32,7 @@
   ],
   "dependencies": {
     "@ch-ui/icons": "workspace:^",
+    "fast-glob": "^3.3.3",
     "picomatch": "^4.0.2"
   },
   "devDependencies": {
