@@ -84,7 +84,8 @@ export const IconsPlugin = ({
               visitedFiles.add(file);
               try {
                 const src = fs.readFileSync(file, 'utf8');
-                status.updated ||= scan(src);
+                const match = scan(src);
+                status.updated ||= match;
               } catch (err) {
                 if (verbose) {
                   console.warn(
