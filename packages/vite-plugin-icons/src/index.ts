@@ -2,6 +2,7 @@
 // Based upon @tailwindcss/vite, fetched on 9 April 2024 from <https://github.com/tailwindlabs/tailwindcss/blob/next/packages/%40tailwindcss-vite/package.json>
 
 import { type BundleParams, makeSprite, scanString } from '@ch-ui/icons';
+import fg from 'fast-glob';
 import fs from 'fs';
 import picomatch from 'picomatch';
 import type { Plugin, ViteDevServer } from 'vite';
@@ -11,6 +12,8 @@ export type IconsPluginParams = Omit<BundleParams, 'spritePath'> & {
   spriteFile: string;
   verbose?: boolean;
 };
+
+const PLUGIN_NAME = 'IconsPlugin';
 
 export const IconsPlugin = ({
   assetPath,
@@ -58,6 +61,47 @@ export const IconsPlugin = ({
       configResolved: (config) => {
         rootDir = resolve(config.root);
         spritePath = resolve(config.publicDir, spriteFile);
+      },
+
+      buildStart() {
+        if (verbose) {
+          console.log(
+            `[${PLUGIN_NAME}] Scanning content globs for icon patterns...`,
+          );
+        }
+
+        for (const contentPath of contentPaths) {
+          const files = fg.sync(contentPath, { absolute: true });
+
+          if (verbose) {
+            console.log(
+              `[${PLUGIN_NAME}] Found ${files.length} files matching ${contentPath}`,
+            );
+          }
+
+          for (const file of files) {
+            if (!visitedFiles.has(file)) {
+              visitedFiles.add(file);
+              try {
+                const src = fs.readFileSync(file, 'utf8');
+                status.updated ||= scan(src);
+              } catch (err) {
+                if (verbose) {
+                  console.warn(
+                    `[${PLUGIN_NAME}] Could not read file: ${file}`,
+                    err,
+                  );
+                }
+              }
+            }
+          }
+        }
+
+        if (verbose) {
+          console.log(
+            `[${PLUGIN_NAME}] Total detected symbols: ${detectedSymbols.size}`,
+          );
+        }
       },
 
       configureServer: (_server) => {
@@ -115,8 +159,9 @@ export const IconsPlugin = ({
           );
 
           if (verbose) {
-            const symbols = Array.from(detectedSymbols.values());
-            symbols.sort();
+            console.log(
+              `[${PLUGIN_NAME}] Generated sprite with ${detectedSymbols.size} icons.`,
+            );
           }
         }
       },
